@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Vendor Register";
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <h2>Vendor Registration</h2>
+
+        <form action="/Vendor/Login">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Business Name</label>
+                    <input type="text" placeholder="Enter business name" />
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Enter business email" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" placeholder="Enter phone number" />
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" placeholder="Food / Nutrition / Fitness" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Create password" />
+            </div>
+
+            <button class="btn">Register as Vendor</button>
+
+            <div class="link">
+                <a href="/Vendor/Login">Already a vendor? Login</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
