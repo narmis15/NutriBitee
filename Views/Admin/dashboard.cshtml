@@ -1,0 +1,174 @@
+﻿@{
+    ViewData["Title"] = "Nutribite Admin Dashboard";
+    Layout = null;   // baad me admin layout banana ho to hata dena
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+
+    <style>
+        :root {
+            --green: #63B34E;
+            --light-green: #EAF6E7;
+            --white: #FFFFFF;
+            --text-dark: #2E2E2E;
+            --text-muted: #8A8A8A;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--light-green);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background: #2c3e50;
+            position: fixed;
+            color: white;
+        }
+
+            .sidebar h2 {
+                margin: 0;
+                padding: 15px;
+                text-align: center;
+                background: #1a252f;
+            }
+
+            .sidebar a {
+                display: block;
+                padding: 12px;
+                color: white;
+                text-decoration: none;
+                border-bottom: 1px solid #34495e;
+            }
+
+                .sidebar a:hover {
+                    background: #34495e;
+                }
+
+        /* Main content */
+        .main {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .breadcrumb {
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Cards */
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card {
+            width: 200px;
+            height: 110px;
+            background: #3498db;
+            color: white;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .green {
+            background: #2ecc71;
+        }
+
+        .orange {
+            background: #e67e22;
+        }
+
+        .red {
+            background: #e74c3c;
+        }
+
+        .purple {
+            background: #9b59b6;
+        }
+
+        .dark {
+            background: #34495e;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>NUTRIBITE</h2>
+
+        <a asp-controller="Admin" asp-action="Dashboard">Admin Home</a>
+        <a href="#">Manage Vendors</a>
+        <a href="#">Food Category</a>
+        <a href="#">Approve Product</a>
+        <a href="#">View Product</a>
+        <a href="#">View Orders</a>
+        <a href="#">Offers</a>
+        <a href="#">View Feedback</a>
+        <a href="#">View Users</a>
+        <a asp-controller="Admin" asp-action="Logout">Logout</a>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="header">
+            <h2>Admin Home</h2>
+            <div class="breadcrumb">Admin / Home</div>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>@ViewBag.Users</h3>
+                <p>No of Users</p>
+            </div>
+
+            <div class="card green">
+                <h3>@ViewBag.Vendors</h3>
+                <p>No of Vendors</p>
+            </div>
+
+            <div class="card orange">
+                <h3>@ViewBag.Orders</h3>
+                <p>No of Orders</p>
+            </div>
+
+            <div class="card red">
+                <h3>@ViewBag.Products</h3>
+                <p>Product Sold</p>
+            </div>
+
+            <div class="card purple">
+                <h3>₹ @ViewBag.TotalAmount</h3>
+                <p>Total Amount</p>
+            </div>
+
+            <div class="card dark">
+                <h3>₹ @ViewBag.Profit</h3>
+                <p>Profit Share</p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
+
