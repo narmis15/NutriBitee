@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "User Orders & Calories";
+    var userId = ViewBag.UserId ?? Context.Request.Query["userId"].ToString();
+}
+
+<link rel="stylesheet" href="~/css/Users.css" />
+<link rel="stylesheet" href="~/css/users-orders.css" />
+
+<div class="users-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="page-title">Order History & Calories</h3>
+            <small class="text-muted">Meal-level orders with calorie information</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <label class="mb-0 small">From</label>
+            <input id="fromDate" type="date" class="form-control form-control-sm" />
+            <label class="mb-0 small ms-2">To</label>
+            <input id="toDate" type="date" class="form-control form-control-sm" />
+            <button id="applyBtn" class="btn btn-sm btn-approve ms-2">Apply</button>
+        </div>
+    </div>
+
+    <div class="card p-3 mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <strong>Total calories in range:</strong>
+                <span id="totalCalories" class="ms-2">0 kcal</span>
+                <small class="text-muted ms-3">Daily avg: <span id="dailyAvg">0</span> kcal</small>
+            </div>
+            <div>
+                <a asp-controller="Users" asp-action="Profile" asp-route-userId="@userId" class="btn btn-sm btn-outline-secondary">View Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="users-table-wrapper">
+        <table class="users-table" id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Meal</th>
+                    <th>Order Date</th>
+                    <th>Calories</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="4" class="text-muted">Loading…</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const uid = '@userId';
+            const api = '/Users/GetUserOrdersData';
+
+            function isoDate(d) {
+                return d.toISOString().slice(0,10);
+            }
+
+            function initDates() {
+                const to = new Date();
+                const from = new Date(); from.setDate(to.getDate() - 6);
+                $('#fromDate').val(isoDate(from));
+                $('#toDate').val(isoDate(to));
+            }
+
+            function renderOrders(data) {
+                const $tbody = $('#ordersTable tbody').empty();
+                if (!data || !data.orders || data.orders.length === 0) {
+                    $tbody.html('<tr><td colspan="4" class="text-muted">No orders found</td></tr>');
+                    $('#totalCalories').text('0 kcal');
+                    $('#dailyAvg').text('0');
+                    return;
+                }
+
+                data.orders.forEach(o => {
+                    const tr = $('<tr></tr>');
+                    tr.append($('<td>').text(o.mealName || o.MealName));
+                    const dt = new Date(o.orderDate || o.OrderDate);
+                    tr.append($('<td>').text(dt.toLocaleString()));
+                    tr.append($('<td>').text((o.calories || o.Calories) + ' kcal'));
+                    const status = (o.status || o.Status) || '';
+                    const statusEl = $('<span>').addClass('badge badge-muted').text(status);
+                    if (status === 'Picked' || status === 'Completed') statusEl.removeClass().addClass('badge badge-success');
+                    if (status === 'Cancelled') statusEl.removeClass().addClass('badge badge-danger');
+                    tr.append($('<td>').append(statusEl));
+                    $tbody.append(tr);
+                });
+
+                $('#totalCalories').text((data.totalCalories || data.totalCalories === 0 ? data.totalCalories : 0) + ' kcal');
+                $('#dailyAvg').text((data.dailyAverage || data.dailyAverage === 0 ? data.dailyAverage : 0));
+            }
+
+            function load() {
+                const from = $('#fromDate').val();
+                const to = $('#toDate').val();
+                $.getJSON(api, { userId: uid, from: from, to: to })
+                    .done(function (res) {
+                        renderOrders(res);
+                    }).fail(function () {
+                        $('#ordersTable tbody').html('<tr><td colspan="4" class="text-danger">Failed to load orders</td></tr>');
+                    });
+            }
+
+            $(function () {
+                initDates();
+                load();
+                $('#applyBtn').on('click', load);
+            });
+        })();
+    </script>
+}

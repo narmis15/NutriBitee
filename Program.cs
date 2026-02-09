@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // MVC
 builder.Services.AddControllersWithViews();
 
-// Session
+// 🔥 REQUIRED FOR SESSION
+builder.Services.AddDistributedMemoryCache();
+
+// SESSION
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -28,12 +31,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession();   // VERY IMPORTANT
+// 🔥 MUST be before Authorization
+app.UseSession();
 
 app.UseAuthorization();
 
+// 🔥 DEFAULT ROUTE FIXED
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Admin}/{action=Login}/{id?}");
 
 app.Run();
+

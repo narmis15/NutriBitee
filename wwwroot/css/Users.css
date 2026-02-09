@@ -1,0 +1,228 @@
+﻿body {
+}
+
+:root{
+    --users-accent:#63B34E;
+    --users-muted:#6b7280;
+    --users-bg:#ffffff;
+    --users-card-shadow: 0 8px 20px rgba(11,23,39,0.04);
+    --users-danger:#ef4444;
+    --users-warning:#f59e0b;
+    --users-info:#60a5fa;
+    --users-soft:#f3f7f4;
+}
+
+/* Container helpers */
+.users-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 18px;
+}
+
+/* User list / card grid */
+.user-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 18px;
+}
+
+.user-card {
+    background: var(--users-bg);
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: var(--users-card-shadow);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.user-avatar {
+    width:56px;
+    height:56px;
+    border-radius:8px;
+    background: linear-gradient(135deg,#e6f4ea,#d1efd4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:var(--users-accent);
+    flex:0 0 56px;
+}
+
+/* info column */
+.user-info {
+    flex:1;
+}
+
+.user-info .name {
+    font-weight:700;
+    color:#111827;
+    font-size:15px;
+}
+
+.user-info .meta {
+    color:var(--users-muted);
+    font-size:13px;
+    margin-top:4px;
+}
+
+/* badges */
+.user-badges {
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+}
+
+.badge {
+    display:inline-block;
+    padding:4px 8px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:12px;
+    border:1px solid rgba(0,0,0,0.06);
+}
+
+.badge-success { background:#ecfdf5; color:#065f46; border-color:#bbf7d0; }
+.badge-warning { background:#fff7ed; color:#92400e; border-color:#ffd8a8; }
+.badge-danger  { background:#fff1f2; color:#7f1d1d; border-color:#fecaca; }
+.badge-muted   { background:#f8fafc; color:#334155; border-color:#e2e8f0; }
+
+/* calorie bar (compact) */
+.calorie-row {
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.calorie-bar {
+    height:10px;
+    background:#f1f5f9;
+    border-radius:999px;
+    width:100%;
+    overflow:hidden;
+    position:relative;
+}
+
+.calorie-fill {
+    height:100%;
+    background:linear-gradient(90deg,var(--users-accent),#4fa23c);
+    width:0%;
+    transition:width .6s ease;
+}
+
+/* risk indicator */
+.risk-pill {
+    padding:6px 8px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:12px;
+    background:#fff7ed;
+    color:#92400e;
+    border:1px solid #ffd8a8;
+}
+
+/* user table helpers */
+.users-table-wrapper {
+    background:var(--users-bg);
+    border-radius:10px;
+    padding:12px;
+    box-shadow:var(--users-card-shadow);
+}
+
+.users-table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+.users-table thead th {
+    background: var(--users-soft);
+    color: #0f172a;
+    font-weight:700;
+    padding:12px 14px;
+    text-align:left;
+    border-bottom:1px solid rgba(0,0,0,0.06);
+}
+
+.users-table tbody td {
+    padding:12px 14px;
+    border-bottom:1px solid #f1f5f9;
+    vertical-align:middle;
+}
+
+/* blocked user row */
+.blocked-row {
+    background: #fff1f2;
+}
+
+.blocked-row td { color:#7f1d1d; font-weight:600; }
+
+/* support actions (compact button group) */
+.support-actions {
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.support-actions .btn {
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:13px;
+    border:none;
+    cursor:pointer;
+}
+
+.btn-block { background:#ef4444; color:white; }
+.btn-unblock { background:#10b981; color:white; }
+.btn-note { background:#60a5fa; color:white; }
+
+/* timeline (user activity) */
+.activity-timeline {
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.activity-timeline li {
+    display:flex;
+    gap:12px;
+    padding:10px 0;
+    border-bottom:1px dashed #eef2f3;
+}
+
+.activity-timeline .time { width:110px; color:var(--users-muted); font-size:13px; }
+.activity-timeline .txt { flex:1; font-size:14px; color:#111827; }
+
+/* Add / append these All Users specific rules (keeps global Users.css intact) */
+
+/* table: uniform row height */
+.users-table tbody tr { height: 62px; }
+
+/* action buttons in table */
+.support-actions .btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+/* makes the 'Block' button red, 'View' neutral */
+.support-actions .btn-outline-secondary {
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.support-actions .btn-block-toggle {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+/* smaller on mobile */
+@media (max-width:768px) {
+    .users-table thead { display: none; }
+    .users-table tbody td { display: block; width: 100%; }
+    .users-page { padding: 12px; }
+}

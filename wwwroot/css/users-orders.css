@@ -1,0 +1,36 @@
+/* Orders & Calories specific styles (kept light & aligned with Users.css) */
+
+.users-table thead th {
+    background: #f7fcf8;
+    color: #0f172a;
+    font-weight: 700;
+    padding: 10px 14px;
+}
+
+.users-table tbody tr {
+    border-bottom: 1px solid #eef2f3;
+    background: #fff;
+    height: 62px; /* uniform row height */
+}
+
+.users-table tbody td {
+    padding: 12px 14px;
+    vertical-align: middle;
+}
+
+#totalCalories {
+    font-size: 18px;
+    color: #065f46;
+    font-weight: 700;
+}
+
+#dailyAvg {
+    color: #374151;
+    font-weight: 600;
+}
+
+/* responsive */
+@media (max-width:768px) {
+    .users-table thead { display: none; }
+    .users-table tbody td { display: block; width: 100%; padding: 8px 10px; }
+}

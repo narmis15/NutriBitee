@@ -1,0 +1,17 @@
+/* Calorie Analytics page styles (light, green accents) */
+
+.summary-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(11,23,39,0.04);
+}
+
+.summary-card .title { font-size:13px; color:#6b7280; }
+.summary-card .value { font-size:20px; font-weight:700; color:#0f172a; }
+.summary-card .sub { font-size:12px; color:#6b7280; margin-top:6px; }
+
+.card-header { background:#ffffff; border-bottom: none; padding:8px 12px; }
+.alert-info { background:#ecf7ff; color:#0b5ea8; border:1px solid #d1ecf9; padding:8px; border-radius:6px; }
+.alert-warning { background:#fff7e6; color:#7a4a00; border:1px solid #ffecb5; padding:8px; border-radius:6px; }
+
+#calorieTrend { background: #fff; border-radius:8px; padding:8px; }

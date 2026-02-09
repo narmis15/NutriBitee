@@ -1,0 +1,26 @@
+/* Coupon Misuse styles (scoped) */
+
+.users-table thead th {
+    background: #f7fcf8;
+    color: #0f172a;
+    font-weight: 700;
+    padding: 10px 14px;
+}
+
+.suspicious-row { background: #fff8f0; } /* pale warning */
+.suspicious-row td { border-left: 4px solid #f59e0b; }
+
+/* badges */
+.badge { display:inline-block; padding:4px 8px; border-radius:999px; font-weight:700; }
+.badge-warning { background:#fff7ed; color:#92400e; border:1px solid #ffd8a8; }
+.badge-success { background:#ecfdf5; color:#065f46; border:1px solid #bbf7d0; }
+
+/* lightweight table rows */
+.users-table tbody tr { border-bottom:1px solid #eef2f3; background:#fff; height:58px; }
+.users-table tbody td { padding:10px 12px; vertical-align:middle; }
+
+/* small-screen */
+@media (max-width:768px) {
+    .users-table thead { display:none; }
+    .users-table tbody td { display:block; width:100%; padding:8px 10px; }
+}

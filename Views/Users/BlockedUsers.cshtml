@@ -1,0 +1,165 @@
+﻿@{
+    ViewData["Title"] = "Blocked Users";
+}
+
+<link rel="stylesheet" href="~/css/Users.css" />
+<link rel="stylesheet" href="~/css/users-blocked.css" />
+
+<div class="users-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="page-title">Blocked / Restricted Users</h3>
+            <small class="text-muted">Manage restricted accounts — reasons, durations and admin notes</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <input id="searchQ" class="form-control form-control-sm" placeholder="Search name, email, phone or reason" style="min-width:280px" />
+            <label class="mb-0 small">From</label>
+            <input id="fromDate" type="date" class="form-control form-control-sm" />
+            <label class="mb-0 small ms-2">To</label>
+            <input id="toDate" type="date" class="form-control form-control-sm" />
+            <select id="statusFilter" class="form-select form-select-sm ms-2">
+                <option>All</option>
+                <option>Active</option>
+                <option>Expired</option>
+            </select>
+            <button id="applyBtn" class="btn btn-sm btn-primary ms-2">Apply</button>
+        </div>
+    </div>
+
+    <div class="users-table-wrapper">
+        <table class="users-table" id="blockedTable">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Contact</th>
+                    <th>Reason</th>
+                    <th>Blocked At</th>
+                    <th>Expires</th>
+                    <th>Blocked By</th>
+                    <th>Admin Note</th>
+                    <th style="width:150px">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="8" class="text-muted">Loading…</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Note modal -->
+<div class="modal fade" id="noteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Admin Note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <textarea id="adminNoteText" class="form-control" rows="4" placeholder="Internal note"></textarea>
+        <input type="hidden" id="noteUserId" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="saveNoteBtn" class="btn btn-sm btn-primary">Save Note</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const api = '/Users/GetBlockedUsersData';
+            const unblockApi = '/Users/UnblockUser';
+            const addNoteApi = '/Users/AddBlockNote';
+            const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+            function formatDate(d) {
+                if (!d) return '-';
+                const dt = new Date(d);
+                return dt.toLocaleString();
+            }
+
+            function load() {
+                const q = $('#searchQ').val();
+                const from = $('#fromDate').val();
+                const to = $('#toDate').val();
+                const status = $('#statusFilter').val();
+                $('#blockedTable tbody').html('<tr><td colspan="8" class="text-muted">Loading…</td></tr>');
+
+                $.getJSON(api, { q: q, from: from, to: to, status: status })
+                    .done(function (res) {
+                        const items = res.items || res.Items || [];
+                        const $b = $('#blockedTable tbody').empty();
+                        if (!items || items.length === 0) {
+                            $b.html('<tr><td colspan="8" class="text-muted">No blocked users</td></tr>');
+                            return;
+                        }
+                        items.forEach(u => {
+                            const tr = $('<tr>').attr('data-id', u.userId);
+                            const userHtml = '<div class="name">' + (u.userName || u.UserName) + '</div><div class="meta small text-muted">' + (u.email || u.Email) + '</div>';
+                            tr.append($('<td>').html(userHtml));
+                            tr.append($('<td>').text(u.phone || u.Phone));
+                            tr.append($('<td>').text(u.reason || u.Reason));
+                            tr.append($('<td>').text(formatDate(u.blockedAt || u.BlockedAt)));
+                            tr.append($('<td>').text((u.expiresAt ? formatDate(u.expiresAt) : 'Indefinite')));
+                            tr.append($('<td>').text(u.blockedBy || u.BlockedBy));
+                            tr.append($('<td>').text(u.adminNote || u.AdminNote || ''));
+                            const actions = $('<div class="support-actions"></div>');
+                            actions.append('<button class="btn btn-sm btn-outline-secondary view-note" data-id="' + u.userId + '">Note</button>');
+                            actions.append('<button class="btn btn-sm btn-unblock ms-1" data-id="' + u.userId + '">Unblock</button>');
+                            tr.append($('<td>').append(actions));
+                            $b.append(tr);
+                        });
+                    })
+                    .fail(function () {
+                        $('#blockedTable tbody').html('<tr><td colspan="8" class="text-danger">Failed to load data</td></tr>');
+                    });
+            }
+
+            // Unblock
+            $(document).on('click', '.btn-unblock', function () {
+                const id = $(this).data('id');
+                if (!confirm('Unblock this user?')) return;
+                $.post({
+                    url: unblockApi,
+                    data: { userId: id, __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) load();
+                    else alert(res?.message || 'Failed to unblock');
+                }).fail(function () { alert('Server error'); });
+            });
+
+            // View / add note
+            $(document).on('click', '.view-note', function () {
+                const id = $(this).data('id');
+                $('#noteUserId').val(id);
+                $('#adminNoteText').val('');
+                var m = new bootstrap.Modal(document.getElementById('noteModal'));
+                m.show();
+            });
+
+            $('#saveNoteBtn').on('click', function () {
+                const id = $('#noteUserId').val();
+                const note = $('#adminNoteText').val().trim();
+                if (!note) { alert('Note required'); return; }
+                $.post({
+                    url: addNoteApi,
+                    data: { userId: id, note: note, __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) { alert('Note saved'); $('#noteModal').modal('hide'); load(); }
+                    else alert(res?.message || 'Failed');
+                }).fail(function () { alert('Server error'); });
+            });
+
+            $('#applyBtn').on('click', load);
+            $('#searchQ').on('keypress', function (e) { if (e.which === 13) load(); });
+
+            $(function () { load(); });
+        })();
+    </script>
+}

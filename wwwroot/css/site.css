@@ -1,22 +1,466 @@
-html {
-  font-size: 14px;
+﻿/* Order action buttons (used by _OrderActions partial) */
+.order-action-group {
+    display: inline-flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
-@media (min-width: 768px) {
-  html {
+.order-action-group .action-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    line-height: 1;
+}
+
+/* smaller variants in table cells */
+.admin-table .order-action-group .action-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* neutral outlines */
+.order-action-group .btn-outline-danger {
+    border: 1px solid #f87171;
+    color: #b91c1c;
+    background: #fff;
+}
+
+/* disabled appearance */
+.order-action-group .action-btn[disabled],
+.order-action-group .action-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* spacing for grouped actions inside a cell */
+.admin-table td .order-action-group {
+    gap: 4px;
+}
+
+/* confirmation affordance (minor) */
+.order-action-group .action-btn[data-confirm] {
+    position: relative;
+}
+
+/* visually emphasize cancel/refund */
+.order-action-group .cancel-btn { border: 1px solid #dc2626; color: #fff; background: #dc2626; }
+.order-action-group .refund-btn { border: 1px solid #b91c1c; color: #b91c1c; background: #fff; }
+
+/* ensure action buttons do not break table layout on small screens */
+@media (max-width: 576px) {
+    .order-action-group { gap: 4px; }
+    .order-action-group .action-btn { padding: 4px 6px; font-size: 11px; }
+}
+
+/* Flagged orders page specific styles */
+
+#flaggedTable tbody tr td {
+    vertical-align: middle;
+}
+
+#flaggedTable .verify-btn {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+#flaggedTable .cancel-btn {
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+#flaggedTable .block-btn {
+    background: #fff;
+    color: #b91c1c;
+    border: 1px solid #f87171;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+/* resolved / unresolved distinct */
+.badge.bg-success { background-color: #16a34a !important; }
+.badge.bg-warning { background-color: #f59e0b !important; color: #111827 !important; }
+
+/* compact on small screens */
+@media (max-width: 768px) {
+    #flaggedTable thead { display: none; }
+    #flaggedTable tbody td { display: block; width: 100%; }
+    #flaggedTable tbody td:first-child { margin-top: 8px; }
+    #flaggedTable tbody tr { margin-bottom: 12px; display: block; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+}
+
+/* Pickup slots styles */
+
+.slot-card {
+    background: #ffffff;
+    border: 1px solid #eef2f7;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.03);
+    padding: 12px;
+}
+
+.slot-card .capacity-input {
+    max-width: 120px;
+}
+
+.badge.slot-open {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #bbf7d0;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.badge.slot-full {
+    background: #fff7ed;
+    color: #92400e;
+    border: 1px solid #ffd8a8;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.badge.slot-disabled {
+    background: #f8fafc;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+/* small helpers */
+.slot-card .small { font-size: 12px; }
+
+/* Cancelled & Refund tracking styles */
+
+#cancelledTable td, #cancelledTable th {
+    vertical-align: middle;
+}
+
+#cancelledTable .mark-refund {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+#cancelledTable .add-note {
+    background: #fff;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+/* refund badges (re-use or override earlier rules) */
+#cancelledTable .badge.bg-warning { background-color: #f59e0b !important; color: #111827 !important; }
+#cancelledTable .badge.bg-success { background-color: #16a34a !important; }
+
+/* admin notes preview */
+#cancelledTable td small.text-muted { display: inline-block; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* modal small adjustments */
+.modal .modal-body textarea.form-control {
+    resize: vertical;
+}
+
+/* responsive adjustments */
+@media (max-width: 768px) {
+    #cancelledTable thead { display: none; }
+    #cancelledTable tbody td { display: block; width: 100%; }
+    #cancelledTable tbody tr { margin-bottom: 12px; display: block; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+}
+
+/* Manage Vendors — exact look adjustments (append to site.css) */
+
+/* Wrapper to match screenshot spacing and rounded look */
+.table-wrapper {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(11, 23, 39, 0.04);
+    max-width: 1100px;
+    margin: 0 auto 28px;
+}
+
+/* Vendor table: separated rows with card-like rows */
+.vendor-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px; /* vertical gap between rows */
+    background: transparent;
+    font-size: 15px;
+}
+
+/* Header styling: full-width green band with white text */
+.vendor-table thead th {
+    background-color: #63B34E; /* primary green */
+    color: #ffffff;
+    font-weight: 700;
+    padding: 14px 18px;
+    text-align: left;
+    border: none;
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+/* Make the header appear as a continuous rounded bar */
+.vendor-table thead th:first-child {
+    border-top-left-radius: 8px;
+}
+.vendor-table thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Row card visuals */
+.vendor-table tbody tr {
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(11, 23, 39, 0.03);
+    border-radius: 8px;
+}
+
+/* Remove default cell borders and increase padding */
+.vendor-table td {
+    padding: 16px 18px;
+    border: none;
+    vertical-align: middle;
+    color: #111827;
+    font-weight: 600;
+    background: transparent; /* cell inherits row card background */
+}
+
+/* subtle lighter text for small details (email/phone if needed) */
+.vendor-table td small,
+.vendor-table td .muted {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Action column: square buttons matching screenshot */
+.vendor-table td .tick-btn,
+.vendor-table td .cross-btn,
+.vendor-table td .btn-approve,
+.vendor-table td .btn-delete {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
     font-size: 16px;
-  }
+    box-shadow: none;
+    border: none;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* green check */
+.vendor-table td .tick-btn {
+    background: #16a34a; /* green */
+    color: #fff;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+/* red cross */
+.vendor-table td .cross-btn {
+    background: #ef4444; /* red */
+    color: #fff;
 }
 
-body {
-  margin-bottom: 60px;
+/* hover states */
+.vendor-table td .tick-btn:hover { background: #13803d; }
+.vendor-table td .cross-btn:hover { background: #dc2626; }
+
+/* Controls row (top of table) */
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
+
+/* entries select and search aligned */
+.table-controls .left,
+.table-controls .right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.table-controls select,
+.table-controls input[type="search"] {
+    border: 1px solid #e5e7eb;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+/* Make table responsive */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Small screens: stack cells vertically for clarity */
+@media (max-width: 768px) {
+    .vendor-table thead { display: none; }
+    .vendor-table tbody td { display: block; width: 100%; padding: 10px 12px; }
+    .vendor-table tbody tr { margin-bottom: 12px; display: block; }
+    .table-wrapper { padding: 16px; margin: 12px; }
+}
+/* ============================= */
+/* FIX: View Product & Meal Category Tables */
+/* ============================= */
+
+/* Reuse existing wrapper look */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+    /* Header row */
+    .admin-table thead th {
+        background: #f3f4f6;
+        color: #111827;
+        font-weight: 700;
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        white-space: nowrap; /* FIX broken header text */
+    }
+
+    /* Table cells */
+    .admin-table td {
+        padding: 12px 14px;
+        vertical-align: middle; /* FIX vertical misalignment */
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        /* Sr No / Id column */
+        .admin-table td:first-child,
+        .admin-table th:first-child {
+            width: 80px;
+            text-align: center;
+        }
+
+        /* Category name column */
+        .admin-table td:nth-child(2) {
+            font-weight: 600;
+            color: #111827;
+        }
+
+    /* Image column */
+    .admin-table img {
+        width: 80px; /* FIX image overflow */
+        height: 60px;
+        object-fit: cover;
+        border-radius: 6px;
+        display: block;
+    }
+
+    /* Action column */
+    .admin-table td:last-child {
+        white-space: nowrap;
+    }
+
+/* Responsive safety */
+@media (max-width: 768px) {
+    .admin-table img {
+        width: 60px;
+        height: 45px;
+    }
+}
+/* ============================= */
+/* FIX: Add Food Category - Add Button */
+/* ============================= */
+
+.add-category-btn,
+button[type="submit"].add-btn {
+    background-color: #16a34a; /* green */
+    color: #ffffff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+    /* Hover */
+    .add-category-btn:hover,
+    button[type="submit"].add-btn:hover {
+        background-color: #15803d;
+        box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25);
+    }
+/* Action buttons container */
+.action-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap:nowrap;
+}
+
+/* Base button style */
+.btn-action {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 90px;
+    justify-content: center;
+}
+
+/* EDIT button */
+.btn-edit {
+    background-color: #22c55e; /* green */
+    height: 34px;
+}
+
+    .btn-edit:hover {
+        background-color: #16a34a;
+    }
+
+/* DELETE button */
+.btn-delete {
+    background-color: #ef4444; /* red */
+    height: 34px;
+}
+
+    .btn-delete:hover {
+        background-color: #dc2626;
+    }
+/* Small visual helpers for Reports & Analytics submenu (append to site.css) */
+
+.menu-item.has-submenu.open .submenu {
+    display: block;
+}
+
+.menu-item .submenu a {
+    color: #b0bec5;
+    padding: 8px 22px;
+    font-size: 14px;
+    display: block;
+    text-decoration: none;
+}
+
+.menu-item .submenu a:hover {
+    color: #ffffff;
+    background-color: rgba(255,255,255,0.03);
+}
+

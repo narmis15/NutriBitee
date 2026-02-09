@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "All Users";
+}
+
+<link rel="stylesheet" href="~/css/Users.css" />
+
+<div class="users-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="page-title">All Users</h3>
+            <small class="text-muted">Registered users — search, filter and manage accounts</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <input id="userSearch" type="search" class="form-control form-control-sm" placeholder="Search by name, email or phone" style="min-width:300px" />
+            <select id="statusFilter" class="form-select form-select-sm">
+                <option value="All">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Blocked">Blocked</option>
+            </select>
+            <button id="refreshBtn" class="btn btn-sm btn-primary">Refresh</button>
+        </div>
+    </div>
+
+    <div class="users-table-wrapper">
+        <table class="users-table" id="usersTable" aria-describedby="All registered users">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Contact</th>
+                    <th>Orders</th>
+                    <th>Status</th>
+                    <th>Registered</th>
+                    <th style="width:140px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="6" class="text-muted">Loading…</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const $table = $('#usersTable tbody');
+            const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+            function statusBadge(status) {
+                if (!status) return '<span class="badge badge-muted">Unknown</span>';
+                if (status === 'Active') return '<span class="badge badge-success">Active</span>';
+                if (status === 'Blocked') return '<span class="badge badge-danger">Blocked</span>';
+                return '<span class="badge badge-muted">' + status + '</span>';
+            }
+
+            function load() {
+                const q = $('#userSearch').val() || '';
+                const st = $('#statusFilter').val() || 'All';
+                $table.html('<tr><td colspan="6" class="text-muted">Loading…</td></tr>');
+
+                $.getJSON('/Users/GetUsersData', { q: q, status: st })
+                    .done(function (list) {
+                        $table.empty();
+                        if (!list || list.length === 0) {
+                            $table.html('<tr><td colspan="6" class="text-muted">No users found</td></tr>');
+                            return;
+                        }
+                        list.forEach(u => {
+                            const row = $('<tr></tr>').attr('data-id', u.userId);
+                            const name = '<div class="name">' + (u.name || '') + '</div><div class="meta">' + (u.email || '') + '</div>';
+                            const contact = (u.phone || '');
+                            const actions = '<div class="support-actions">' +
+                                '<a class="btn btn-sm btn-outline-secondary" href="/Users/Profile?userId=' + u.userId + '">View</a>' +
+                                '<button class="btn btn-sm btn-block-toggle" data-id="' + u.userId + '" data-status="' + (u.status || '') + '">' +
+                                    ((u.status === 'Blocked') ? 'Unblock' : 'Block') +
+                                '</button>' +
+                                '</div>';
+
+                            row.append($('<td>').html(name));
+                            row.append($('<td>').text(contact));
+                            row.append($('<td>').text(u.ordersCount || 0));
+                            row.append($('<td>').html(statusBadge(u.status)));
+                            row.append($('<td>').text(u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : '-'));
+                            row.append($('<td>').html(actions));
+                            if ((u.status || '').toLowerCase() === 'blocked') row.addClass('blocked-row');
+                            $table.append(row);
+                        });
+                    })
+                    .fail(function () {
+                        $table.html('<tr><td colspan="6" class="text-danger">Failed to load users</td></tr>');
+                    });
+            }
+
+            // block/unblock handler (delegated)
+            $(document).on('click', '.btn-block-toggle', function () {
+                const $btn = $(this);
+                const id = $btn.data('id');
+                const current = $btn.data('status');
+                const willBlock = current !== 'Blocked';
+                if (!confirm((willBlock ? 'Block' : 'Unblock') + ' this user?')) return;
+
+                $.post({
+                    url: '/Users/BlockUser',
+                    data: { userId: id, block: willBlock, __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) {
+                        load();
+                    } else {
+                        alert(res?.message || 'Action failed');
+                    }
+                }).fail(function () { alert('Server error'); });
+            });
+
+            // search and filter events
+            $('#refreshBtn').on('click', load);
+            $('#userSearch').on('keypress', function (e) { if (e.which === 13) load(); });
+            $('#statusFilter').on('change', load);
+
+            $(function () { load(); });
+        })();
+    </script>
+}

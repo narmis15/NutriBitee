@@ -1,0 +1,153 @@
+﻿@{
+    ViewData["Title"] = "Coupon Misuse";
+}
+
+<link rel="stylesheet" href="~/css/Users.css" />
+<link rel="stylesheet" href="~/css/users-coupon.css" />
+
+<div class="users-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="page-title">Coupon Misuse Monitoring</h3>
+            <small class="text-muted">Behavioral & financial patterns related to coupon usage</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <input id="couponFilter" class="form-control form-control-sm" placeholder="Coupon code (optional)" />
+            <label class="mb-0 small">From</label>
+            <input id="fromDate" type="date" class="form-control form-control-sm" />
+            <label class="mb-0 small ms-2">To</label>
+            <input id="toDate" type="date" class="form-control form-control-sm" />
+            <select id="statusFilter" class="form-select form-select-sm ms-2">
+                <option>All</option>
+                <option>Normal</option>
+                <option>Review</option>
+                <option>Suspicious</option>
+            </select>
+            <button id="applyBtn" class="btn btn-sm btn-approve ms-2">Apply</button>
+        </div>
+    </div>
+
+    <div class="d-flex gap-3 mb-3 align-items-center">
+        <div class="summary-card p-3" style="min-width:220px;">
+            <div class="title">Avg Misuse Score</div>
+            <div id="avgScore" class="value">-</div>
+            <div class="sub text-muted">Higher → more suspicious</div>
+        </div>
+
+        <div class="summary-card p-3" style="flex:1;">
+            <div class="title">Top Suspicious Users</div>
+            <div id="topList" class="sub text-muted">—</div>
+        </div>
+    </div>
+
+    <div class="users-table-wrapper">
+        <table class="users-table" id="misuseTable">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Coupon</th>
+                    <th>Uses</th>
+                    <th>Cancels</th>
+                    <th>Last Used</th>
+                    <th>Score</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="7" class="text-muted">Loading…</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const api = '/Users/GetCouponMisuseData';
+            const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+            function formatRow(r) {
+                const tr = $('<tr>').attr('data-user', r.userId);
+                if (r.misuseScore > 60) tr.addClass('suspicious-row');
+                tr.append($('<td>').text((r.userName || r.UserName) + ' ( #' + r.userId + ' )'));
+                tr.append($('<td>').text(r.couponCode || r.CouponCode));
+                tr.append($('<td>').text(r.uses || r.Uses));
+                tr.append($('<td>').text(r.cancels || r.Cancels));
+                tr.append($('<td>').text(new Date(r.lastUsed || r.LastUsed).toLocaleDateString()));
+                const badge = $('<span>').addClass('badge').text((r.misuseScore || r.MisuseScore) + '%');
+                if ((r.misuseScore || r.MisuseScore) > 60) badge.addClass('badge-warning');
+                tr.append($('<td>').append(badge));
+                const actions = $('<div class="support-actions"></div>');
+                actions.append('<button class="btn btn-sm btn-outline-secondary warn-btn" data-id="' + r.userId + '">Warn</button>');
+                actions.append('<button class="btn btn-sm btn-block-toggle restrict-btn ms-1" data-coupon="' + (r.couponCode || r.CouponCode) + '">Restrict Coupon</button>');
+                tr.append($('<td>').append(actions));
+                return tr;
+            }
+
+            function render(model) {
+                $('#avgScore').text((model.summary?.avgMisuseScore ?? model.Summary?.AvgMisuseScore ?? 0) + ' %');
+                const rows = model.rows || model.Rows || [];
+                const $tbody = $('#misuseTable tbody').empty();
+                if (!rows || rows.length === 0) {
+                    $tbody.html('<tr><td colspan="7" class="text-muted">No records</td></tr>');
+                    $('#topList').text('—');
+                    return;
+                }
+                rows.forEach(r => $tbody.append(formatRow(r)));
+                const top = rows.filter(x => (x.misuseScore ?? x.MisuseScore) > 60).slice(0,3).map(x => (x.userName || x.UserName) + ' (' + (x.couponCode || x.CouponCode) + ')' );
+                $('#topList').text(top.length ? top.join(', ') : 'None');
+            }
+
+            function load() {
+                const coupon = $('#couponFilter').val();
+                const from = $('#fromDate').val();
+                const to = $('#toDate').val();
+                const status = $('#statusFilter').val();
+                $('#misuseTable tbody').html('<tr><td colspan="7" class="text-muted">Loading…</td></tr>');
+                $.getJSON(api, { coupon: coupon, from: from, to: to, status: status })
+                    .done(function (res) { render(res); })
+                    .fail(function () { $('#misuseTable tbody').html('<tr><td colspan="7" class="text-danger">Failed to load data</td></tr>'); });
+            }
+
+            // Warn user
+            $(document).on('click', '.warn-btn', function () {
+                const id = $(this).data('id');
+                const msg = prompt('Enter warning message to send to user (optional):', 'Please avoid abusive coupon usage.');
+                if (msg === null) return;
+                $.post({
+                    url: '/Users/WarnUser',
+                    data: { userId: id, message: msg || '', __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) alert('Warning saved/sent');
+                }).fail(function () { alert('Failed'); });
+            });
+
+            // Restrict coupon
+            $(document).on('click', '.restrict-btn', function () {
+                const code = $(this).data('coupon');
+                if (!confirm('Restrict coupon ' + code + ' for new use?')) return;
+                $.post({
+                    url: '/Users/RestrictCoupon',
+                    data: { couponCode: code, __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) { alert('Coupon restricted'); load(); }
+                    else alert(res?.message || 'Failed');
+                }).fail(function () { alert('Server error'); });
+            });
+
+            // init
+            $(function () {
+                // defaults
+                const to = new Date();
+                const from = new Date(); from.setDate(to.getDate() - 13);
+                $('#fromDate').val(from.toISOString().slice(0,10));
+                $('#toDate').val(to.toISOString().slice(0,10));
+                $('#applyBtn').on('click', load);
+                load();
+            });
+        })();
+    </script>
+}

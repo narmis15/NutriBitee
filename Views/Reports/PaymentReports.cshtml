@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Payment Reports";
+}
+
+<link rel="stylesheet" href="~/css/reports.css" />
+
+<div class="table-wrapper reports-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4>Payment Reports</h4>
+            <small class="text-muted">Monitor successful payments, failures, refunds and cancellations</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <label class="mb-0 small">From</label>
+            <input id="fromDate" type="date" class="form-control form-control-sm" />
+            <label class="mb-0 small ms-2">To</label>
+            <input id="toDate" type="date" class="form-control form-control-sm" />
+            <select id="statusFilter" class="form-select form-select-sm ms-2">
+                <option value="All">All</option>
+                <option value="Success">Success</option>
+                <option value="Failed">Failed</option>
+                <option value="Refunded">Refunded</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+            <button id="apply" class="btn btn-sm btn-approve ms-2">Apply</button>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Successful</div>
+                <div id="countSuccess" class="value">-</div>
+                <div class="sub text-muted">Payments completed</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Failed</div>
+                <div id="countFailed" class="value">-</div>
+                <div class="sub text-muted">Failed transactions</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Refunded</div>
+                <div id="countRefunded" class="value">-</div>
+                <div class="sub text-muted">Refunds issued</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Cancelled</div>
+                <div id="countCancelled" class="value">-</div>
+                <div class="sub text-muted">Order cancellations</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-3">
+        <h5 class="mb-2">Payments</h5>
+        <div class="table-responsive">
+            <table id="paymentsTable" class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Order</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Method</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Gateway Ref</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const api = '/Reports/GetPaymentReportsData';
+            const $from = $('#fromDate'), $to = $('#toDate'), $status = $('#statusFilter');
+
+            function initDates() {
+                const today = new Date();
+                const start = new Date(); start.setDate(today.getDate() - 13);
+                $from.val(start.toISOString().slice(0,10));
+                $to.val(today.toISOString().slice(0,10));
+            }
+
+            function statusChip(s) {
+                if (!s) return '<span class="status-chip status-unknown">Unknown</span>';
+                if (s === 'Success') return '<span class="status-chip status-success">Success</span>';
+                if (s === 'Failed') return '<span class="status-chip status-failed">Failed</span>';
+                if (s === 'Refunded') return '<span class="status-chip status-refunded">Refunded</span>';
+                if (s === 'Cancelled') return '<span class="status-chip status-cancelled">Cancelled</span>';
+                return '<span class="status-chip status-unknown">' + s + '</span>';
+            }
+
+            function render(model) {
+                $('#countSuccess').text(model.totalSuccess ?? model.TotalSuccess ?? 0);
+                $('#countFailed').text(model.totalFailed ?? model.TotalFailed ?? 0);
+                $('#countRefunded').text(model.totalRefunded ?? model.TotalRefunded ?? 0);
+                $('#countCancelled').text(model.totalCancelled ?? model.TotalCancelled ?? 0);
+
+                const $tbody = $('#paymentsTable tbody').empty();
+                (model.payments || model.Payments || []).forEach(p => {
+                    const date = new Date(p.paymentDate || p.PaymentDate).toLocaleString();
+                    const tr = $('<tr></tr>');
+                    tr.append('<td>' + (p.paymentId || p.PaymentId) + '</td>');
+                    tr.append('<td><a href="/Admin/OrderDetails?orderId=' + (p.orderId || p.OrderId) + '">#' + (p.orderId || p.OrderId) + '</a></td>');
+                    tr.append('<td>' + date + '</td>');
+                    tr.append('<td>' + (p.customerName || p.CustomerName) + '</td>');
+                    tr.append('<td>' + (p.method || p.Method) + '</td>');
+                    tr.append('<td>₹' + (Number(p.amount || p.Amount).toFixed(2)) + '</td>');
+                    tr.append('<td>' + statusChip(p.status || p.Status) + '</td>');
+                    tr.append('<td>' + (p.gatewayRef || p.GatewayRef) + '</td>');
+                    tr.append('<td>' + (p.notes || p.Notes) + '</td>');
+                    $tbody.append(tr);
+                });
+            }
+
+            function fetch() {
+                $.getJSON(api, { from: $from.val(), to: $to.val(), status: $status.val() })
+                 .done(function (res) { render(res); })
+                 .fail(function () { alert('Failed to load payment data'); });
+            }
+
+            $(function () {
+                initDates();
+                fetch();
+                $('#apply').on('click', fetch);
+            });
+        })();
+    </script>
+}

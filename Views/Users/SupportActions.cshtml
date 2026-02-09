@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Support & Health Actions";
+    var userId = ViewBag.UserId ?? Context.Request.Query["userId"].ToString();
+}
+
+<link rel="stylesheet" href="~/css/Users.css" />
+<link rel="stylesheet" href="~/css/users-support.css" />
+
+<div class="users-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="page-title">Support & Health Actions</h3>
+            <small class="text-muted">Audit-style timeline of admin notes and interventions</small>
+        </div>
+
+        <div>
+            <a asp-controller="Users" asp-action="Index" class="btn btn-sm btn-outline-secondary">Back to users</a>
+        </div>
+    </div>
+
+    <div class="card p-3 mb-3">
+        <div class="d-flex gap-3">
+            <div style="flex:1;">
+                <label class="mb-1 small">Add internal note</label>
+                <textarea id="supportNote" class="form-control" rows="3" placeholder="Enter admin note..."></textarea>
+            </div>
+
+            <div style="width:220px;">
+                <label class="mb-1 small">Quick actions</label>
+                <div class="d-grid gap-2">
+                    <button id="btnWarn" class="btn btn-warning">Warn User</button>
+                    <button id="btnUnblock" class="btn btn-success">Unblock User</button>
+                    <button id="btnRecordNote" class="btn btn-primary">Save Note</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-3">
+        <h5 class="mb-3">Action Timeline</h5>
+
+        <div id="timeline" class="action-timeline">
+            <!-- timeline entries injected by script -->
+            <div class="text-muted small">Loading…</div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const userId = '@userId';
+            const getApi = '/Users/GetSupportActionsData';
+            const addNoteApi = '/Users/AddSupportNote';
+            const performApi = '/Users/PerformAdminAction';
+            const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+            function renderEntry(e) {
+                const time = new Date(e.timestamp || e.Timestamp).toLocaleString();
+                const cls = (e.severity || e.Severity) === 'success' ? 'entry-success' :
+                            (e.severity || e.Severity) === 'warning' ? 'entry-warning' : 'entry-info';
+
+                return $('<div class="timeline-entry"></div>').append(
+                    $('<div class="time"></div>').text(time),
+                    $('<div class="content"></div>').append(
+                        $('<div class="meta"></div>').text((e.admin || e.Admin) + ' • ' + (e.actionType || e.ActionType)),
+                        $('<div class="note small text-muted"></div>').text(e.note || e.Note || ''),
+                        $('<div class="result small"></div>').text(e.result || e.Result || '')
+                    ).addClass(cls)
+                );
+            }
+
+            function load() {
+                $('#timeline').html('<div class="text-muted small">Loading…</div>');
+                $.getJSON(getApi, { userId: userId, limit: 100 }).done(function (res) {
+                    const items = res.items || res.Items || [];
+                    const $t = $('#timeline').empty();
+                    if (!items || items.length === 0) {
+                        $t.html('<div class="text-muted small">No actions recorded</div>');
+                        return;
+                    }
+                    items.forEach(it => $t.append(renderEntry(it)));
+                }).fail(function () {
+                    $('#timeline').html('<div class="text-danger small">Failed to load timeline</div>');
+                });
+            }
+
+            function postAction(url, data, cb) {
+                data.__RequestVerificationToken = token;
+                $.post({ url: url, data: data, dataType: 'json' })
+                    .done(function (res) { if (res && res.success) { cb && cb(res); load(); } else alert(res?.message || 'Action failed'); })
+                    .fail(function () { alert('Server error'); });
+            }
+
+            $('#btnRecordNote').on('click', function () {
+                const note = $('#supportNote').val().trim();
+                if (!note) { alert('Enter a note'); return; }
+                postAction(addNoteApi, { userId: userId, note: note }, function () { $('#supportNote').val(''); });
+            });
+
+            $('#btnWarn').on('click', function () {
+                const note = $('#supportNote').val().trim() || 'Manual warning issued';
+                if (!confirm('Send warning to user?')) return;
+                postAction(performApi, { userId: userId, actionType: 'Warning', note: note }, function () { $('#supportNote').val(''); });
+            });
+
+            $('#btnUnblock').on('click', function () {
+                if (!confirm('Unblock this user?')) return;
+                postAction(performApi, { userId: userId, actionType: 'Unblock', note: 'Unblocked by admin' });
+            });
+
+            $(function () { load(); });
+        })();
+    </script>
+}

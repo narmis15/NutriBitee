@@ -1,0 +1,45 @@
+/* Support & Health timeline styles (scoped) */
+
+.action-timeline { display:flex; flex-direction:column; gap:12px; }
+
+.timeline-entry {
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:#fff;
+    border-radius:8px;
+    padding:12px;
+    box-shadow:0 6px 12px rgba(11,23,39,0.03);
+    border-left:4px solid transparent;
+}
+
+.timeline-entry .time {
+    width:160px;
+    font-size:12px;
+    color:#6b7280;
+}
+
+.timeline-entry .content .meta {
+    font-weight:700;
+    color:#111827;
+    margin-bottom:6px;
+}
+
+.timeline-entry .content .note { color:#374151; }
+
+.timeline-entry.entry-success { border-left-color: #16a34a; }
+.timeline-entry.entry-warning { border-left-color: #f59e0b; }
+.timeline-entry.entry-info { border-left-color: #94a3b8; }
+
+.entry-success .meta { color:#065f46; }
+.entry-warning .meta { color:#92400e; }
+.entry-info .meta { color:#0f172a; }
+
+/* editor area */
+.card textarea.form-control { min-height:84px; }
+
+/* responsive */
+@media (max-width:768px) {
+    .timeline-entry { flex-direction:column; align-items:flex-start; }
+    .timeline-entry .time { width:100%; font-size:12px; }
+}

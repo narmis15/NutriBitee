@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Add Food Category";
+}
+
+<h2 class="page-title">Add Food Category</h2>
+
+<div class="admin-card">
+
+    <form asp-action="AddFoodCategory"
+          method="post"
+          enctype="multipart/form-data">
+
+        <!-- PRODUCT CATEGORY -->
+        <div class="form-row">
+            <label>Product Category</label>
+
+            <div class="input-group">
+                <select name="ProductCategory">
+                    <option>Veg</option>
+                    <option>Non-Veg</option>
+                    <option>Eggitarian</option>
+                    <option>Jain</option>
+                    <option>Vegan</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <input type="text"
+                       name="CustomProductCategory"
+                       placeholder="Enter custom product category" />
+            </div>
+        </div>
+
+        <!-- MEAL CATEGORY -->
+        <div class="form-row">
+            <label>Meal Category</label>
+
+            <div class="input-group">
+                <select name="MealCategory">
+                    <option>Special Thali</option>
+                    <option>Deluxe Thali</option>
+                    <option>Classic Thali</option>
+                    <option>Comfort Thali</option>
+                    <option>Standard Thali</option>
+                    <option>Jain Thali</option>
+                    <option>Rice Combo</option>
+                    <option>Healthy</option>
+                    <option>Breakfast</option>
+                    <option>Low Calorie Meals</option>
+                    <option>Protein Meal</option>
+                    <option>Salads</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <input type="text"
+                       name="CustomMealCategory"
+                       placeholder="Enter custom meal category" />
+            </div>
+        </div>
+
+        <!-- IMAGE UPLOAD -->
+        <div class="form-row">
+            <label>Upload Image</label>
+            <input type="file"
+                   name="CategoryImage" />
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                Add Category
+            </button>
+        </div>
+
+    </form>
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="success-msg">
+            @ViewBag.Success
+        </div>
+    }
+</div>

@@ -1,0 +1,31 @@
+﻿@model string
+@using System
+@using System.Collections.Generic
+
+@{
+    // status -> [css class, icon, tooltip]
+    var map = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["New"]             = new[] { "status-new", "🟡", "New — awaiting acceptance by the kitchen" },
+        ["Accepted"]        = new[] { "status-accepted", "🟠", "Accepted — vendor has accepted the order" },
+        ["Ready for Pickup"] = new[] { "status-ready", "🟢", "Ready — order is ready for customer pickup" },
+        ["Picked"]          = new[] { "status-picked", "🔵", "Picked — order collected by customer" },
+        ["Flagged"]         = new[] { "status-flagged", "⚠️", "Flagged — suspicious or requires attention" },
+        ["Cancelled"]       = new[] { "status-cancelled", "⛔", "Cancelled — order was cancelled" }
+    };
+
+    var statusKey = (Model ?? "").ToString();
+    if (!map.TryGetValue(statusKey, out var entry))
+    {
+        entry = new[] { "status-unknown", "ℹ️", statusKey ?? "Unknown status" };
+    }
+
+    var css = entry[0];
+    var icon = entry[1];
+    var tooltip = entry[2];
+}
+
+<span class="order-status-badge @css" title="@tooltip" aria-label="@tooltip" role="status" data-status="@statusKey">
+    <span class="status-icon">@Html.Raw(icon)</span>
+    <span class="status-text">@Html.Encode(statusKey)</span>
+</span>

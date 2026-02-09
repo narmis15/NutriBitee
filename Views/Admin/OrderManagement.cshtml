@@ -1,0 +1,240 @@
+﻿@{
+    ViewData["Title"] = "Order Management";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="table-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Order Management</h3>
+
+        <div>
+            <span id="liveIndicator" class="badge bg-success me-2">Live</span>
+            <label class="form-check-label me-2">Auto-refresh</label>
+            <input id="autoRefreshToggle" class="form-check-input" type="checkbox" checked />
+            <span id="lastUpdated" class="ms-3 text-muted"></span>
+        </div>
+    </div>
+
+    <!-- Submenu -->
+    <nav class="mb-3">
+        <a asp-controller="Admin" asp-action="OrderDetails" class="me-3">Order Details</a>
+        <a asp-controller="Admin" asp-action="ViewCategory" class="me-3">Order Status Badge</a>
+        <a asp-controller="Admin" asp-action="ManageVendor" class="me-3">Order Action</a>
+        <a asp-controller="Admin" asp-action="FlaggedOrders" class="me-3">Flagged Orders</a>
+        <a asp-controller="Admin" asp-action="PickupSlots" class="me-3">Pickup Slots</a>
+        <a asp-controller="Admin" asp-action="CancelledOrders" class="me-3">Cancelled Orders</a>
+    </nav>
+
+    <!-- Status tabs -->
+    <ul class="nav nav-tabs mb-3" id="statusTabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-status="All" href="#">All <span class="badge bg-light text-dark ms-1" id="count-All">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-status="New" href="#">New <span class="badge bg-light text-dark ms-1" id="count-New">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-status="Accepted" href="#">Accepted <span class="badge bg-light text-dark ms-1" id="count-Accepted">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-status="Ready for Pickup" href="#">Ready for Pickup <span class="badge bg-light text-dark ms-1" id="count-Ready for Pickup">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-status="Picked" href="#">Picked <span class="badge bg-light text-dark ms-1" id="count-Picked">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-status="Flagged" href="#">Flagged <span class="badge bg-light text-dark ms-1" id="count-Flagged">0</span></a></li>
+    </ul>
+
+    <!-- Orders table -->
+    <div class="table-responsive">
+        <table class="table admin-table" id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Order Id</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Pickup Slot</th>
+                    <th>Calories</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- rows injected by script -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="noOrders" class="no-records" style="display:none;">
+        No active orders.
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+        (function ($) {
+            const pollIntervalMs = 10000; // 10s
+            let pollTimer = null;
+            let currentFilter = "All";
+            const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+            const statusClass = {
+                "New": "order-row-new",
+                "Accepted": "order-row-accepted",
+                "Ready for Pickup": "order-row-ready",
+                "Picked": "order-row-picked",
+                "Flagged": "order-row-flagged"
+            };
+
+            function formatBadge(status) {
+                let cls = "badge bg-secondary";
+                if (status === "New") cls = "badge bg-success";
+                else if (status === "Accepted") cls = "badge bg-warning text-dark";
+                else if (status === "Ready for Pickup") cls = "badge bg-info text-dark";
+                else if (status === "Picked") cls = "badge bg-primary";
+                else if (status === "Flagged") cls = "badge bg-danger";
+                return '<span class="' + cls + '">' + status + '</span>';
+            }
+
+            function buildActionButtons(order) {
+                // Buttons follow quick action flow: Accept -> Mark Ready -> Mark Picked
+                let btns = [];
+
+                if (order.Status === "New") {
+                    btns.push('<button class="btn btn-sm btn-success action-btn" data-action="AcceptOrder" data-id="' + order.OrderId + '">Accept</button>');
+                } else if (order.Status === "Accepted") {
+                    btns.push('<button class="btn btn-sm btn-warning action-btn" data-action="MarkReady" data-id="' + order.OrderId + '">Mark Ready</button>');
+                } else if (order.Status === "Ready for Pickup") {
+                    btns.push('<button class="btn btn-sm btn-primary action-btn" data-action="MarkPicked" data-id="' + order.OrderId + '">Mark Picked</button>');
+                }
+
+                // flag toggle
+                const flagLabel = order.IsFlagged ? 'Unflag' : 'Flag';
+                btns.push('<button class="btn btn-sm btn-outline-danger action-btn ms-1" data-action="ToggleFlag" data-id="' + order.OrderId + '">' + flagLabel + '</button>');
+
+                return btns.join('');
+            }
+
+            function renderOrders(list) {
+                const $tbody = $('#ordersTable tbody');
+                $tbody.empty();
+
+                if (!list || list.length === 0) {
+                    $('#noOrders').show();
+                    $('#ordersTable').hide();
+                    return;
+                }
+
+                $('#noOrders').hide();
+                $('#ordersTable').show();
+
+                // update counts
+                const counts = { "All": list.length, "New": 0, "Accepted": 0, "Ready for Pickup": 0, "Picked": 0, "Flagged": 0 };
+                list.forEach(o => {
+                    if (o.Status in counts) counts[o.Status]++;
+                    if (o.IsFlagged) counts["Flagged"]++;
+                });
+
+                for (const k in counts) {
+                    const id = 'count-' + k;
+                    $('#' + id.replace(/\s/g, '\\ ')).text(counts[k]);
+                }
+
+                list.forEach(order => {
+                    const cls = statusClass[order.Status] || '';
+                    if (currentFilter !== "All" && currentFilter !== order.Status && !(currentFilter === "Flagged" && order.IsFlagged)) {
+                        return; // skip based on filter
+                    }
+
+                    const flaggedIcon = order.IsFlagged ? '<span class="order-warning ms-2" title="Flagged">⚠</span>' : '';
+                    const orderLink = '<a href="/Admin/OrderDetails?orderId=' + order.OrderId + '">#' + order.OrderId + '</a>';
+
+                    const $tr = $('<tr>').addClass(cls).attr('data-id', order.OrderId);
+                    $tr.append($('<td>').html(orderLink + (order.IsFlagged ? ' <span class="text-danger ms-1">⚑</span>' : '')));
+                    $tr.append($('<td>').text(order.CustomerName + ' • ' + order.CustomerPhone));
+                    $tr.append($('<td>').text(order.TotalItems));
+                    $tr.append($('<td>').text(order.PickupSlot));
+                    $tr.append($('<td>').text(order.TotalCalories ?? 0));
+                    $tr.append($('<td>').text(order.PaymentStatus));
+                    $tr.append($('<td>').html(formatBadge(order.Status) + flaggedIcon));
+                    $tr.append($('<td>').html(buildActionButtons(order)));
+
+                    $tbody.append($tr);
+                });
+                $('#lastUpdated').text('Updated: ' + new Date().toLocaleTimeString());
+            }
+
+            function fetchOrders() {
+                $.ajax({
+                    url: '/Admin/GetActiveOrders',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        renderOrders(data);
+                    },
+                    error: function () {
+                        $('#liveIndicator').removeClass('bg-success').addClass('bg-danger').text('Disconnected');
+                    }
+                });
+            }
+
+            // Action button handler (delegated)
+            $(document).on('click', '.action-btn', function (e) {
+                e.preventDefault();
+                const $btn = $(this);
+                const action = $btn.data('action');
+                const id = $btn.data('id');
+
+                $btn.prop('disabled', true);
+                $.post({
+                    url: '/Admin/' + action,
+                    data: { orderId: id, __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) {
+                        fetchOrders();
+                    } else {
+                        alert(res?.message || 'Action failed');
+                    }
+                }).fail(function () {
+                    alert('Server error while performing action.');
+                }).always(function () {
+                    $btn.prop('disabled', false);
+                });
+            });
+
+            // Tab filter clicks
+            $('#statusTabs').on('click', 'a', function (e) {
+                e.preventDefault();
+                $('#statusTabs a').removeClass('active');
+                $(this).addClass('active');
+                currentFilter = $(this).data('status');
+                fetchOrders();
+            });
+
+            // Auto-refresh toggle
+            $('#autoRefreshToggle').on('change', function () {
+                const enabled = $(this).is(':checked');
+                if (enabled) startPolling();
+                else stopPolling();
+            });
+
+            function startPolling() {
+                if (pollTimer) return;
+                pollTimer = setInterval(fetchOrders, pollIntervalMs);
+                fetchOrders();
+            }
+
+            function stopPolling() {
+                if (!pollTimer) return;
+                clearInterval(pollTimer);
+                pollTimer = null;
+            }
+
+            // initial load
+            $(function () {
+                startPolling();
+
+                // allow manual refresh by custom event (used by individual row actions if needed)
+                $(document).on('orders:refresh', function () {
+                    fetchOrders();
+                });
+            });
+
+        })(jQuery);
+    </script>
+}

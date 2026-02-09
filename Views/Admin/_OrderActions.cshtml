@@ -1,0 +1,100 @@
+﻿@model dynamic
+@{
+    // Expect model.OrderId (int), model.Status (string), model.IsFlagged (bool), model.PaymentStatus (string)
+    int orderId = Model?.OrderId ?? 0;
+    string status = (Model?.Status ?? "").ToString();
+    bool isFlagged = Model?.IsFlagged == true;
+    string paymentStatus = (Model?.PaymentStatus ?? "").ToString();
+
+    // helper: allowed actions
+    bool canAccept = status.Equals("New", StringComparison.OrdinalIgnoreCase);
+    bool canMarkReady = status.Equals("Accepted", StringComparison.OrdinalIgnoreCase);
+    bool canMarkPicked = status.Equals("Ready for Pickup", StringComparison.OrdinalIgnoreCase);
+    bool canCancel = !status.Equals("Cancelled", StringComparison.OrdinalIgnoreCase) && !status.Equals("Picked", StringComparison.OrdinalIgnoreCase);
+    bool canRefund = paymentStatus.Equals("Paid", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(paymentStatus);
+}
+@Html.AntiForgeryToken()
+
+<div class="order-action-group" data-order-id="@orderId" data-status="@status" data-flagged="@isFlagged">
+    <!-- Primary flow -->
+    <button type="button" class="btn btn-sm btn-success action-btn accept-btn" data-action="AcceptOrder" data-order-id="@orderId"
+            @(canAccept ? "" : "disabled") title="Accept order">Accept</button>
+
+    <button type="button" class="btn btn-sm btn-warning action-btn ready-btn" data-action="MarkReady" data-order-id="@orderId"
+            @(canMarkReady ? "" : "disabled") title="Mark order ready for pickup">Mark Ready</button>
+
+    <button type="button" class="btn btn-sm btn-primary action-btn picked-btn" data-action="MarkPicked" data-order-id="@orderId"
+            @(canMarkPicked ? "" : "disabled") title="Mark order picked by customer">Mark Picked</button>
+
+    <!-- Secondary / destructive -->
+    <button type="button" class="btn btn-sm btn-outline-danger action-btn cancel-btn" data-action="CancelOrder" data-order-id="@orderId"
+            @(canCancel ? "" : "disabled") data-confirm="Cancel this order? This cannot be undone." title="Cancel order">Cancel</button>
+
+    <button type="button" class="btn btn-sm btn-outline-danger action-btn refund-btn" data-action="TriggerRefund" data-order-id="@orderId"
+            @(canRefund ? "" : "disabled") data-confirm="Trigger refund for this order?" title="Trigger refund">Refund</button>
+
+    <button type="button" class="btn btn-sm btn-outline-warning action-btn flag-btn" data-action="ToggleFlag" data-order-id="@orderId"
+            title="Flag or unflag order">@((isFlagged) ? "Unflag" : "Flag")</button>
+</div>
+
+@section Scripts {
+    <script>
+        (function ($) {
+            const token = $('input[name="__RequestVerificationToken"]', '.order-action-group').first().val();
+
+            function ajaxPost(actionUrl, data, $btn, onSuccess, onFail) {
+                data.__RequestVerificationToken = token;
+                $btn.prop('disabled', true);
+                $.post({
+                    url: actionUrl,
+                    data: data,
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) {
+                        onSuccess && onSuccess(res);
+                        // notify pages to refresh lists or update row
+                        $(document).trigger('orders:refresh');
+                        $(document).trigger('order:updated', [data.orderId, res]);
+                    } else {
+                        onFail && onFail(res);
+                        alert(res?.message || 'Action failed');
+                    }
+                }).fail(function () {
+                    alert('Server error performing action.');
+                }).always(function () {
+                    $btn.prop('disabled', false);
+                });
+            }
+
+            // delegated handler for action buttons
+            $(document).on('click', '.order-action-group .action-btn', function (e) {
+                e.preventDefault();
+                const $btn = $(this);
+                const action = $btn.data('action');
+                const orderId = $btn.data('order-id');
+
+                // confirmation for destructive actions
+                const confirmText = $btn.data('confirm');
+                if (confirmText) {
+                    if (!confirm(confirmText)) return;
+                }
+
+                // map to controller endpoint
+                const url = '/Admin/' + action;
+
+                ajaxPost(url, { orderId: orderId }, $btn, function (res) {
+                    // optional per-action UI updates
+                    // e.g., if AcceptOrder returns newStatus, update group attributes
+                    if (res && res.newStatus) {
+                        const $group = $btn.closest('.order-action-group');
+                        $group.attr('data-status', res.newStatus);
+                        // toggle availability of buttons quickly client-side
+                        $group.find('.accept-btn').prop('disabled', res.newStatus !== 'New');
+                        $group.find('.ready-btn').prop('disabled', res.newStatus !== 'Accepted');
+                        $group.find('.picked-btn').prop('disabled', res.newStatus !== 'Ready for Pickup');
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+}

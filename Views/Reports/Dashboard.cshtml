@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "Reports Dashboard";
+}
+
+<link rel="stylesheet" href="~/css/reports.css" />
+
+<div class="reports-dashboard">
+    <div class="dashboard-header">
+        <h3>Reports & Analytics — Dashboard</h3>
+        <small class="text-muted">Summary of today's activity and recent alerts</small>
+    </div>
+
+    <div id="summaryCards" class="summary-cards row g-3 mb-4">
+        <!-- cards injected by script -->
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <div class="card shadow-sm p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">Order Trend (last 14 days)</h5>
+                    <small class="text-muted">Orders</small>
+                </div>
+                <canvas id="ordersTrendChart" height="180"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm p-3">
+                <h5 class="mb-2">Alerts</h5>
+                <div class="alerts-table-wrapper">
+                    <table class="table table-sm alerts-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Message</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="alertsBody">
+                            <!-- rows injected by script -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-2">
+                    <a asp-controller="Reports" asp-action="OrderReports" class="small">View full reports →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        (function () {
+            const url = '/Reports/GetDashboardData';
+
+            function severityClass(s) {
+                if (s === 'high') return 'badge bg-danger';
+                if (s === 'medium') return 'badge bg-warning text-dark';
+                return 'badge bg-secondary';
+            }
+
+            function renderSummary(summary) {
+                const container = $('#summaryCards').empty();
+                summary.forEach(s => {
+                    const col = $('<div class="col-md-3"></div>');
+                    const card = $(`
+                        <div class="summary-card p-3 h-100">
+                            <div class="d-flex align-items-start gap-2">
+                                <div class="icon">${s.icon || s.Icon || ''}</div>
+                                <div>
+                                    <div class="title">${s.title || s.Title}</div>
+                                    <div class="value">${s.value || s.Value}</div>
+                                    <div class="sub text-muted">${s.subText || s.SubText}</div>
+                                </div>
+                            </div>
+                        </div>`);
+                    col.append(card);
+                    container.append(col);
+                });
+            }
+
+            let ordersChart = null;
+            function renderTrend(trend) {
+                const labels = trend.map(t => t.label || t.Label);
+                const dataOrders = trend.map(t => t.orders ?? t.Orders);
+                const ctx = document.getElementById('ordersTrendChart').getContext('2d');
+
+                if (ordersChart) {
+                    ordersChart.data.labels = labels;
+                    ordersChart.data.datasets[0].data = dataOrders;
+                    ordersChart.update();
+                    return;
+                }
+
+                ordersChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Orders',
+                            data: dataOrders,
+                            borderColor: '#16a34a',
+                            backgroundColor: 'rgba(22,163,74,0.08)',
+                            pointRadius: 3,
+                            tension: 0.25,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { grid: { display: false } },
+                            y: { beginAtZero: true, grid: { color: '#f3f4f6' } }
+                        }
+                    }
+                });
+            }
+
+            function renderAlerts(alerts) {
+                const $body = $('#alertsBody').empty();
+                if (!alerts || alerts.length === 0) {
+                    $body.append('<tr><td colspan="4" class="text-muted small">No alerts</td></tr>');
+                    return;
+                }
+                alerts.forEach(a => {
+                    const time = new Date(a.time || a.Time).toLocaleString();
+                    const $tr = $('<tr></tr>');
+                    $tr.append('<td class="small text-muted">' + time + '</td>');
+                    $tr.append('<td><span class="' + severityClass(a.severity || a.Severity) + '">' + (a.type || a.Type) + '</span></td>');
+                    $tr.append('<td class="small">' + (a.message || a.Message) + '</td>');
+                    const link = a.orderId ? '<a href="/Admin/OrderDetails?orderId=' + a.orderId + '" class="small">#' + a.orderId + '</a>' : '';
+                    $tr.append('<td class="text-end">' + link + '</td>');
+                    $body.append($tr);
+                });
+            }
+
+            // fetch and render
+            $(function () {
+                $.getJSON(url).done(function (res) {
+                    renderSummary(res.summary || res.Summary);
+                    renderTrend(res.trend || res.Trend);
+                    renderAlerts(res.alerts || res.Alerts);
+                }).fail(function () {
+                    $('#summaryCards').html('<div class="text-danger">Failed to load dashboard data</div>');
+                });
+            });
+        })();
+    </script>
+}

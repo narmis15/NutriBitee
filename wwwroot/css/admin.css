@@ -1,0 +1,140 @@
+﻿/* Shared admin table */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    /* Use a light header so report views and other pages show readable headings */
+    .admin-table thead {
+        background: #f3f4f6; /* pale neutral so headers remain visible */
+        color: #111827;      /* dark text for contrast */
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 12px 14px;
+        text-align: left;
+    }
+
+    .admin-table tbody tr {
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+/* Action buttons */
+.action-cell {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-approve {
+    background: #22c55e;
+}
+
+.btn-reject {
+    background: #ef4444;
+}
+
+.btn-action:hover {
+    opacity: 0.9;
+}
+.page-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.admin-card {
+    max-width: 900px;
+    background: #ffffff;
+    padding: 30px 35px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.form-row {
+    margin-bottom: 22px;
+}
+
+    .form-row label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #374151;
+    }
+
+.input-group {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row select,
+.form-row input[type="text"],
+.form-row input[type="file"] {
+    width: 100%;
+    height: 42px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+.input-group select {
+    max-width: 220px;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34,197,94,0.15);
+}
+
+.form-actions {
+    margin-top: 30px;
+}
+
+.btn-primary {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .btn-primary:hover {
+        background: #16a34a;
+    }
+
+.success-msg {
+    margin-top: 18px;
+    color: #16a34a;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .input-group {
+        flex-direction: column;
+    }
+
+        .input-group select {
+            max-width: 100%;
+        }
+}
+

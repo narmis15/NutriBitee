@@ -1,0 +1,175 @@
+﻿@{
+    ViewData["Title"] = "Sales Analytics";
+}
+
+<link rel="stylesheet" href="~/css/reports.css" />
+
+<div class="table-wrapper reports-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4>Sales Analytics</h4>
+            <small class="text-muted">Revenue performance and breakdown</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <label class="mb-0 small">From</label>
+            <input id="fromDate" type="date" class="form-control form-control-sm" />
+            <label class="mb-0 small ms-2">To</label>
+            <input id="toDate" type="date" class="form-control form-control-sm" />
+            <select id="period" class="form-select form-select-sm ms-2">
+                <option value="daily">Daily</option>
+                <option value="monthly">Monthly</option>
+            </select>
+            <button id="apply" class="btn btn-sm btn-approve ms-2">Apply</button>
+        </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div id="summaryCards" class="row g-3 mb-3">
+        <div class="col-md-4">
+            <div class="summary-card p-3">
+                <div class="title">Total Revenue</div>
+                <div id="totalRevenue" class="value">-</div>
+                <div class="sub text-muted">Gross revenue in range</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card p-3">
+                <div class="title">Average Order Value</div>
+                <div id="avgOrderValue" class="value">-</div>
+                <div class="sub text-muted">Average order value</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card p-3">
+                <div class="title">Estimated Profit</div>
+                <div id="profit" class="value">-</div>
+                <div class="sub text-muted">Estimated margin (sample)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table first -->
+    <div class="card p-3 mb-3">
+        <h5 class="mb-2">Sales Breakdown</h5>
+        <div class="table-responsive">
+            <table id="breakdownTable" class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Orders</th>
+                        <th>Revenue</th>
+                        <th>Avg Order</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Chart second -->
+    <div class="card p-3">
+        <h5 class="mb-2">Revenue Over Time</h5>
+        <canvas id="revenueChart" height="160"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        (function () {
+            const url = '/Reports/GetSalesAnalyticsData';
+            const $from = $('#fromDate');
+            const $to = $('#toDate');
+            const $period = $('#period');
+
+            function initDates() {
+                const today = new Date();
+                const past = new Date();
+                past.setDate(today.getDate() - 13);
+                $from.val(past.toISOString().slice(0,10));
+                $to.val(today.toISOString().slice(0,10));
+            }
+
+            function renderSummary(m) {
+                $('#totalRevenue').text('₹' + (m.totalRevenue ?? m.TotalRevenue ?? 0).toFixed(2));
+                $('#avgOrderValue').text('₹' + (m.averageOrderValue ?? m.AverageOrderValue ?? 0).toFixed(2));
+                $('#profit').text('₹' + (m.profit ?? m.Profit ?? 0).toFixed(2));
+            }
+
+            function renderBreakdown(rows) {
+                const $b = $('#breakdownTable tbody').empty();
+                if (!rows || rows.length === 0) {
+                    $b.append('<tr><td colspan="5" class="text-muted">No data</td></tr>');
+                    return;
+                }
+                rows.forEach(r => {
+                    $b.append('<tr>'
+                        + '<td>' + (r.periodLabel || r.PeriodLabel) + '</td>'
+                        + '<td>' + (r.orders || r.Orders) + '</td>'
+                        + '<td>₹' + Number(r.revenue || r.Revenue).toFixed(2) + '</td>'
+                        + '<td>₹' + Number(r.avgOrderValue || r.AvgOrderValue).toFixed(2) + '</td>'
+                        + '<td>₹' + Number(r.profit || r.Profit).toFixed(2) + '</td>'
+                        + '</tr>');
+                });
+            }
+
+            let chart = null;
+            function renderChart(trend) {
+                const labels = (trend || []).map(t => t.label || t.Label);
+                const data = (trend || []).map(t => Number(t.revenue ?? t.Revenue));
+
+                const ctx = document.getElementById('revenueChart').getContext('2d');
+                if (chart) {
+                    chart.data.labels = labels;
+                    chart.data.datasets[0].data = data;
+                    chart.update();
+                    return;
+                }
+
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Revenue',
+                            data: data,
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37,99,235,0.08)',
+                            pointRadius: 3,
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { x: { grid: { display: false } }, y: { beginAtZero: true } }
+                    }
+                });
+            }
+
+            function fetch() {
+                const q = { from: $from.val(), to: $to.val(), period: $period.val() };
+                $.getJSON(url, q).done(function (res) {
+                    renderSummary(res);
+                    renderBreakdown(res.breakdown || res.Breakdown || []);
+                    renderChart(res.trend || res.Trend || []);
+                }).fail(function () {
+                    alert('Failed to load sales data');
+                });
+            }
+
+            $(function () {
+                initDates();
+                fetch();
+                $('#apply').on('click', fetch);
+            });
+        })();
+    </script>
+}

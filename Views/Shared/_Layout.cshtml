@@ -2,48 +2,349 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NUTRIBITE</title>
+    <title>@ViewData["Title"] - NUTRIBITE Admin</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/NUTRIBITE.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #1f2937;
+            color: white;
+            padding: 20px;
+        }
+
+            .sidebar h4 {
+                color: #63B34E;
+                margin-bottom: 30px;
+            }
+
+            .sidebar a {
+                display: block;
+                color: #d1d5db;
+                padding: 10px 0;
+                text-decoration: none;
+            }
+
+                .sidebar a:hover {
+                    color: #63B34E;
+                }
+
+        .submenu {
+            display: none;
+            padding-left: 15px;
+        }
+
+        .menu-item.open > .submenu {
+            display: block;
+        }
+
+        .menu-arrow {
+            transition: transform 0.2s ease;
+        }
+
+        .menu-item.open .menu-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            background: #f3f4f6;
+            padding: 25px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NUTRIBITE</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="admin-wrapper">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <h4>NUTRIBITE</h4>
+
+            <a asp-controller="Admin" asp-action="Dashboard">Admin Home</a>
+
+            <!-- Orders menu -->
+            @{
+                var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+                var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+                var ordersActions = new[] { "OrderManagement", "OrderDetails", "FlaggedOrders", "PickupSlots", "CancelledOrders", "GetActiveOrders" };
+                var ordersOpen = currentController == "Admin" && ordersActions.Contains(currentAction);
+            }
+            <div class="menu-item has-submenu @(ordersOpen ? "open" : "")">
+                <div class="menu-link">
+                    <span class="menu-text">Orders</span>
+                    <span class="menu-arrow">&#9662;</span>
+                </div>
+
+                <div class="submenu">
+                    <a asp-controller="Admin" asp-action="OrderManagement">Order Management</a>
+                    <a asp-controller="Admin" asp-action="OrderDetails">Order Details</a>
+                    <a asp-controller="Admin" asp-action="FlaggedOrders">
+                        Flagged Orders <span id="flaggedCount" class="badge bg-danger ms-1" style="display:none;">0</span>
+                    </a>
+                    <a asp-controller="Admin" asp-action="PickupSlots">
+                        Pickup Slots <span id="fullSlotsCount" class="badge bg-warning ms-1" style="display:none;">0</span>
+                    </a>
+                    <a asp-controller="Admin" asp-action="CancelledOrders">
+                        Cancelled Orders <span id="cancelledPendingCount" class="badge bg-danger ms-1" style="display:none;">0</span>
+                    </a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+            <!-- Parent toggle (NOT an anchor) -->
+            <div id="vendorToggle" style="cursor:pointer;padding:10px 0;color:#d1d5db;">
+                Manage Vendors ▾
+            </div>
+
+            <!-- Submenu -->
+            <div id="vendorMenu" class="submenu">
+                <a asp-controller="Admin" asp-action="NewVendorRequest">
+                    New Vendor Requests
+                </a>
+                <a asp-controller="Admin" asp-action="ManageVendor">
+                    Manage Vendors
+                </a>
+            </div>
+
+            <!-- FOOD CATEGORY -->
+            @{
+                var foodActions = new[] { "AddFoodCategory", "ViewCategory", "ViewMealCategory" };
+                var foodOpen = currentController == "Admin" && foodActions.Contains(currentAction);
+            }
+            <div class="menu-item has-submenu @(foodOpen ? "open" : "")">
+                <div class="menu-link">
+                    <span class="menu-text">Food Category</span>
+                    <span class="menu-arrow">&#9662;</span> <!-- ▼ down arrow -->
+                </div>
+
+                <!-- Submenu -->
+                <div class="submenu">
+                    <a asp-controller="Admin" asp-action="AddFoodCategory">
+                        Add Category
+                    </a>
+
+                    <a asp-controller="Admin" asp-action="ViewCategory">
+                        View Category
+                    </a>
+
+                    <a asp-controller="Admin" asp-action="ViewMealCategory">
+                        View Meal Category
+                    </a>
+                </div>
+            </div>
+            <!-- COUPONS -->
+            <div class="menu-item">
+                <div class="menu-link">
+                    <span>Coupons</span>
+                    <span class="menu-arrow">&#9662;</span>
+                </div>
+
+                <div class="submenu">
+                    <a asp-controller="Admin" asp-action="AddCoupon">
+                        Add Coupon
+                    </a>
+                </div>
+            </div>
+
+            @* Replace or merge the Reports menu into your sidebar. This block follows the existing pattern
+               and keeps the submenu open when a Reports action is active. Paste this inside your .sidebar
+               where other menu blocks are defined (for example, after Orders menu). *@
+            @{
+                var reportsActions = new[] {
+                    "Dashboard", "OrderReports", "SalesAnalytics", "VendorPerformance",
+                    "LocationAnalytics", "PaymentReports", "SystemLogs"
+                };
+                var reportsOpen = currentController == "Reports" && reportsActions.Contains(currentAction);
+            }
+            <div class="menu-item has-submenu @(reportsOpen ? "open" : "")">
+                <div class="menu-link">
+                    <span class="menu-text">Reports &amp; Analytics</span>
+                    <span class="menu-arrow">&#9662;</span>
+                </div>
+
+                <div class="submenu">
+                    <a asp-controller="Reports" asp-action="Dashboard">Dashboard</a>
+                    <a asp-controller="Reports" asp-action="OrderReports">Order Reports</a>
+                    <a asp-controller="Reports" asp-action="SalesAnalytics">Sales Analytics</a>
+                    <a asp-controller="Reports" asp-action="VendorPerformance">Vendor Performance</a>
+                    <a asp-controller="Reports" asp-action="LocationAnalytics">Location Analytics</a>
+                    <a asp-controller="Reports" asp-action="PaymentReports">Payment Reports</a>
+                    <a asp-controller="Reports" asp-action="SystemLogs">System Logs</a>
+                </div>
+            </div>
+
+            <!-- Users & Customers menu -->
+            @{
+                var usersActions = new[] { "Index", "BlockedUsers", "CouponMisuse", "CalorieAnalytics" };
+                var usersOpen = currentController == "Users" && usersActions.Contains(currentAction);
+            }
+            <div class="menu-item has-submenu @(usersOpen ? "open" : "")">
+                <div class="menu-link">
+                    <span class="menu-text">Users &amp; Customers</span>
+                    <span class="menu-arrow">&#9662;</span>
+                </div>
+
+                <div class="submenu">
+                    <a asp-controller="Users" asp-action="Index">All Users</a>
+                    <a asp-controller="Users" asp-action="BlockedUsers">Blocked Users</a>
+                    <a asp-controller="Users" asp-action="CouponMisuse">Coupon Misuse</a>
+                    <a asp-controller="Users" asp-action="CalorieAnalytics">Calorie Analytics</a>
+                    <a asp-controller="Users" asp-action="Profile" asp-route-userId="1001">Sample Profile</a>
+                </div>
+            </div>
+
+            <a asp-controller="Admin" asp-action="Logout">Logout</a>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="content">
+            <div class="topbar">
+                <strong>Admin Panel</strong>
+            </div>
+    
             @RenderBody()
-        </main>
+        </div>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - NUTRIBITE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggle = document.getElementById("vendorToggle");
+            const menu = document.getElementById("vendorMenu");
+
+                toggle.addEventListener("click", function () {
+                    menu.style.display =
+                        (menu.style.display === "block") ? "none" : "block";
+                });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.querySelectorAll('.menu-link').forEach(item => {
+            item.addEventListener('click', function () {
+                this.parentElement.classList.toggle('open');
+            });
+        });
+    </script>
+
+    @* Add a small global listener so pages can respond to order updates.
+       Paste this just before the closing </body> tag or merge into your existing scripts. *@
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // When any partial triggers orders:refresh, you can auto-refresh current page's order table
+            document.addEventListener('orders:refresh', function () {
+                // If the current page exposes a global fetchOrders function (OrderManagement), call it.
+                if (typeof fetchOrders === 'function') {
+                    fetchOrders();
+                }
+                // If on details page, attempt to re-fetch details if orderId present
+                if (typeof fetchDetails === 'function') {
+                    fetchDetails();
+                }
+            });
+
+            // optional: individual order updated
+            document.addEventListener('order:updated', function (e) {
+                // e.detail may contain [orderId, result] when triggered from partial
+                // pages can subscribe to update single-row UI
+                // no-op here; included for future hooks
+            });
+        });
+    </script>
+
+    <script>
+        (function () {
+            function updateFlaggedCount() {
+                $.getJSON('/Admin/GetFlaggedCount').done(function (res) {
+                    if (!res) return;
+                    const count = res.count || 0;
+                    const $bad = $('#flaggedCount');
+                    if (count > 0) {
+                        $bad.text(count).show();
+                    } else {
+                        $bad.hide();
+                    }
+                }).fail(function () {
+                    // no-op
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                updateFlaggedCount();
+                // refresh every 30s
+                setInterval(updateFlaggedCount, 30000);
+            });
+        })();
+    </script>
+
+    <script>
+        (function () {
+            function updateFullSlotCount() {
+                $.getJSON('/Admin/GetFullSlotCount').done(function (res) {
+                    if (!res) return;
+                    const c = res.count || 0;
+                    const $b = $('#fullSlotsCount');
+                    if (c > 0) { $b.text(c).show(); } else { $b.hide(); }
+                });
+            }
+            document.addEventListener("DOMContentLoaded", function () {
+                updateFullSlotCount();
+                setInterval(updateFullSlotCount, 30000); // every 30s
+            });
+        })();
+    </script>
+
+    <script>
+        (function () {
+            function updateCancelledPendingCount() {
+                $.getJSON('/Admin/GetCancelledCount').done(function (res) {
+                    if (!res) return;
+                    const count = res.count || 0;
+                    const $b = $('#cancelledPendingCount');
+                    if (count > 0) { $b.text(count).show(); } else { $b.hide(); }
+                }).fail(function () { /* no-op */ });
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                updateCancelledPendingCount();
+                setInterval(updateCancelledPendingCount, 30000);
+            });
+        })();
+    </script>
 </body>
 </html>

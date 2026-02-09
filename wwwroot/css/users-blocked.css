@@ -1,0 +1,38 @@
+/* Blocked Users page styling */
+
+.users-table thead th {
+    background: #fff7f7; /* very pale red tint */
+    color: #3b0d0d;
+    font-weight: 700;
+    padding: 10px 14px;
+}
+
+.users-table tbody tr { background:#fff; border-bottom:1px solid #f1f5f9; height:58px; }
+.users-table tbody td { padding:10px 12px; vertical-align:middle; }
+
+.suspicious-row { background: #fff8f0; } /* reuse from coupon styles */
+
+.btn-unblock {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.view-note {
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+/* modal adjustments */
+.modal .modal-body textarea.form-control { resize: vertical; }
+
+/* responsive */
+@media (max-width:768px) {
+    .users-table thead { display:none; }
+    .users-table tbody td { display:block; width:100%; padding:8px 10px; }
+}

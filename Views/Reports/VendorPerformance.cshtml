@@ -1,0 +1,187 @@
+﻿@{
+    ViewData["Title"] = "Vendor Performance";
+}
+
+<link rel="stylesheet" href="~/css/reports.css" />
+
+<div class="table-wrapper reports-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4>Vendor Performance</h4>
+            <small class="text-muted">Ranked vendors by revenue, orders and cancellation rate</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <label class="mb-0 small">From</label>
+            <input id="fromDate" type="date" class="form-control form-control-sm" />
+            <label class="mb-0 small ms-2">To</label>
+            <input id="toDate" type="date" class="form-control form-control-sm" />
+            <input id="topN" type="number" min="3" max="20" value="10" class="form-control form-control-sm ms-2" style="width:80px" />
+            <button id="applyFilters" class="btn btn-sm btn-approve ms-2">Apply</button>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Total Vendors</div>
+                <div id="totalVendors" class="value">-</div>
+                <div class="sub text-muted">All vendors</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Active Vendors</div>
+                <div id="activeVendors" class="value">-</div>
+                <div class="sub text-muted">Vendors with orders</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Total Revenue</div>
+                <div id="totalRevenue" class="value">-</div>
+                <div class="sub text-muted">Sum revenue (range)</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="summary-card p-3">
+                <div class="title">Total Orders</div>
+                <div id="totalOrders" class="value">-</div>
+                <div class="sub text-muted">Sum orders (range)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ranked table -->
+    <div class="card p-3 mb-3">
+        <h5 class="mb-2">Ranked Vendors</h5>
+        <div class="table-responsive">
+            <table id="vendorTable" class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Vendor</th>
+                        <th>Total Orders</th>
+                        <th>Revenue</th>
+                        <th>Cancellation Rate</th>
+                        <th>Performance</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Comparison chart -->
+    <div class="card p-3">
+        <h5 class="mb-2">Top Vendors — Revenue Comparison</h5>
+        <canvas id="vendorChart" height="160"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        (function () {
+            const api = '/Reports/GetVendorPerformanceData';
+            const $from = $('#fromDate'), $to = $('#toDate'), $top = $('#topN');
+
+            function initDates() {
+                const today = new Date();
+                const past = new Date();
+                past.setDate(today.getDate() - 29);
+                $from.val(past.toISOString().slice(0,10));
+                $to.val(today.toISOString().slice(0,10));
+            }
+
+            function renderSummary(s) {
+                $('#totalVendors').text(s.totalVendors ?? s.TotalVendors ?? 0);
+                $('#activeVendors').text(s.activeVendors ?? s.ActiveVendors ?? 0);
+                $('#totalRevenue').text('₹' + ((s.totalRevenue ?? s.TotalRevenue ?? 0).toFixed ? (s.totalRevenue ?? s.TotalRevenue ?? 0).toFixed(2) : s.totalRevenue));
+                $('#totalOrders').text(s.totalOrders ?? s.TotalOrders ?? 0);
+            }
+
+            function renderTable(rows) {
+                const $tbody = $('#vendorTable tbody').empty();
+                if (!rows || rows.length === 0) {
+                    $tbody.append('<tr><td colspan="6" class="no-records">No data</td></tr>');
+                    return;
+                }
+
+                rows.forEach((r, idx) => {
+                    const perfClass = r.performance === 'Good' ? 'perf-good' : (r.performance === 'Poor' ? 'perf-poor' : 'perf-average');
+                    const tr = $('<tr></tr>');
+                    tr.append('<td>' + (idx + 1) + '</td>');
+                    tr.append('<td>' + (r.vendorName || r.VendorName) + '</td>');
+                    tr.append('<td>' + (r.orders || r.Orders) + '</td>');
+                    tr.append('<td>₹' + (Number(r.revenue || r.Revenue).toFixed(2)) + '</td>');
+                    tr.append('<td>' + (Number(r.cancellationRate || r.CancellationRate).toFixed(2)) + '%</td>');
+                    tr.append('<td><span class="perf-badge ' + perfClass + '">' + (r.performance || r.Performance) + '</span></td>');
+                    $tbody.append(tr);
+                });
+            }
+
+            let vendorChart = null;
+            function renderChart(labels, values) {
+                const ctx = document.getElementById('vendorChart').getContext('2d');
+                if (vendorChart) {
+                    vendorChart.data.labels = labels;
+                    vendorChart.data.datasets[0].data = values;
+                    vendorChart.update();
+                    return;
+                }
+
+                vendorChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Revenue',
+                            data: values,
+                            backgroundColor: 'rgba(99,179,46,0.9)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { ticks: { maxRotation: 45, minRotation: 0 } },
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            function fetchAndRender() {
+                const q = { from: $from.val(), to: $to.val(), top: parseInt($top.val() || '10') };
+                $.getJSON(api, q).done(function (res) {
+                    renderSummary(res.summary || res.Summary || {});
+                    renderTable(res.vendors || res.Vendors || []);
+                    const labels = (res.chart && res.chart.labels) ? res.chart.labels : (res.Chart && res.Chart.Labels) || [];
+                    const values = (res.chart && res.chart.values) ? res.chart.values : (res.Chart && res.Chart.Values) || [];
+                    // fallback to Chart object shaped earlier: { Labels:[], Values:[] }
+                    const chartLabels = res.chart?.labels ?? res.Chart?.Labels ?? res.Chart?.Labels ?? (res.Chart?.Labels ?? (res.Chart?.labels ?? []));
+                    const chartValues = res.chart?.values ?? res.Chart?.Values ?? res.Chart?.Values ?? res.Chart?.Values ?? (res.Chart?.Values ?? []);
+                    // easier: when controller returns Chart with Labels/Values:
+                    const cLabels = (res.chart && res.chart.labels) ? res.chart.labels
+                        : (res.Chart && res.Chart.Labels) ? res.Chart.Labels
+                        : (res.Chart && res.Chart.Labels) ? res.Chart.Labels : (res.Chart?.Labels || []);
+                    const cValues = (res.chart && res.chart.values) ? res.chart.values
+                        : (res.Chart && res.Chart.Values) ? res.Chart.Values
+                        : (res.Chart?.Values || []);
+                    renderChart(cLabels, cValues);
+                }).fail(function () {
+                    alert('Failed to load vendor performance data');
+                });
+            }
+
+            $(function () {
+                initDates();
+                fetchAndRender();
+                $('#applyFilters').on('click', fetchAndRender);
+            });
+        })();
+    </script>
+}

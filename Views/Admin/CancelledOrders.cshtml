@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Cancelled Orders";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="table-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Cancelled Orders & Refunds</h3>
+        <div>
+            <button id="refreshBtn" class="btn btn-sm btn-outline-secondary">Refresh</button>
+            <span id="lastUpdated" class="ms-3 text-muted"></span>
+        </div>
+    </div>
+
+    <p class="text-muted">Audit of cancelled orders and refund tracking. Use admin notes for internal context; do not expose sensitive info to customers here.</p>
+
+    <div class="table-responsive">
+        <table class="table admin-table" id="cancelledTable">
+            <thead>
+                <tr>
+                    <th>Order Id</th>
+                    <th>Cancelled At</th>
+                    <th>Cancelled By</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Cancel Reason</th>
+                    <th>Refund Method</th>
+                    <th>Refund Status</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- injected -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="noCancelled" class="no-records" style="display:none;">No cancelled orders found.</div>
+</div>
+
+<!-- Modal for adding admin note (simple) -->
+<div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Admin Note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <textarea id="adminNoteText" class="form-control" rows="4" placeholder="Internal note..."></textarea>
+        <input type="hidden" id="noteOrderId" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="saveNoteBtn" class="btn btn-sm btn-primary">Save Note</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+        (function ($) {
+            const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+            function formatRefundBadge(status) {
+                if (!status) return '<span class="badge bg-secondary">Unknown</span>';
+                if (status === 'Pending') return '<span class="badge bg-warning text-dark">Pending</span>';
+                if (status === 'Completed') return '<span class="badge bg-success">Completed</span>';
+                if (status === 'Failed') return '<span class="badge bg-danger">Failed</span>';
+                return '<span class="badge bg-secondary">' + status + '</span>';
+            }
+
+            function renderRows(list) {
+                const $tbody = $('#cancelledTable tbody').empty();
+                if (!list || list.length === 0) {
+                    $('#noCancelled').show();
+                    $('#cancelledTable').hide();
+                    return;
+                }
+                $('#noCancelled').hide();
+                $('#cancelledTable').show();
+
+                list.forEach(o => {
+                    const orderLink = '<a href="/Admin/OrderDetails?orderId=' + o.OrderId + '">#' + o.OrderId + '</a>';
+                    const cust = (o.CustomerName || '-') + '<br/><small class="text-muted">' + (o.CustomerPhone || '-') + '</small>';
+                    const amount = '₹' + ((o.Amount || 0).toFixed ? o.Amount.toFixed(2) : (o.Amount || '0.00'));
+                    const notesPreview = (o.AdminNotes || '').length > 80 ? (o.AdminNotes || '').slice(0, 80) + '…' : (o.AdminNotes || '-');
+
+                    const $tr = $('<tr>').attr('data-id', o.OrderId);
+                    $tr.append($('<td>').html(orderLink));
+                    $tr.append($('<td>').text(o.CancelledAt ? new Date(o.CancelledAt).toLocaleString() : '-'));
+                    $tr.append($('<td>').text(o.CancelledBy || '-'));
+                    $tr.append($('<td>').html(cust));
+                    $tr.append($('<td>').html(amount));
+                    $tr.append($('<td>').text(o.CancelReason || '-'));
+                    $tr.append($('<td>').text(o.RefundMethod || '-'));
+                    $tr.append($('<td>').html(formatRefundBadge(o.RefundStatus)));
+                    $tr.append($('<td>').html('<small class="text-muted">' + $('<div>').text(notesPreview).html() + '</small>'));
+                    // actions: mark refund completed, add note, export/report
+                    const actions = '<button class="btn btn-sm btn-approve mark-refund" data-id="' + o.OrderId + '">Mark Refunded</button>' +
+                                    '<button class="btn btn-sm btn-outline-secondary ms-1 add-note" data-id="' + o.OrderId + '">Add Note</button>';
+                    $tr.append($('<td>').html(actions));
+                    $tbody.append($tr);
+                });
+
+                $('#lastUpdated').text('Updated: ' + new Date().toLocaleTimeString());
+            }
+
+            function fetchCancelled() {
+                $.ajax({
+                    url: '/Admin/GetCancelledOrders',
+                    method: 'GET',
+                    dataType: 'json'
+                }).done(function (data) {
+                    renderRows(data);
+                }).fail(function () {
+                    alert('Failed to load cancelled orders.');
+                });
+            }
+
+            // delegated actions
+            $(document).on('click', '.mark-refund', function () {
+                const id = $(this).data('id');
+                if (!confirm('Mark refund as Completed for order #' + id + ' ?')) return;
+                $.post({
+                    url: '/Admin/UpdateRefundStatus',
+                    data: { orderId: id, status: 'Completed', __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) {
+                        fetchCancelled();
+                        $(document).trigger('orders:refresh');
+                    } else {
+                        alert(res?.message || 'Failed to update refund status');
+                    }
+                }).fail(function () { alert('Server error'); });
+            });
+
+            $(document).on('click', '.add-note', function () {
+                const id = $(this).data('id');
+                $('#noteOrderId').val(id);
+                $('#adminNoteText').val('');
+                var noteModal = new bootstrap.Modal(document.getElementById('noteModal'));
+                noteModal.show();
+            });
+
+            $('#saveNoteBtn').on('click', function () {
+                const id = $('#noteOrderId').val();
+                const note = $('#adminNoteText').val().trim();
+                if (!note) { alert('Note required'); return; }
+                $.post({
+                    url: '/Admin/AddAdminNote',
+                    data: { orderId: id, note: note, __RequestVerificationToken: token },
+                    dataType: 'json'
+                }).done(function (res) {
+                    if (res && res.success) {
+                        fetchCancelled();
+                        $('#noteModal').modal('hide');
+                    } else {
+                        alert(res?.message || 'Failed to save note');
+                    }
+                }).fail(function () { alert('Server error'); });
+            });
+
+            $('#refreshBtn').on('click', fetchCancelled);
+
+            $(function () {
+                fetchCancelled();
+            });
+        })(jQuery);
+    </script>
+}
