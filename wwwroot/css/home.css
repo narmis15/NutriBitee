@@ -1,0 +1,599 @@
+/* NutriBite homepage (MealAwe-inspired UX) - keeps green + white theme */
+
+/* Hero */
+.hero {
+    background: linear-gradient(90deg, rgba(99,179,46,0.06), rgba(37,99,235,0.03));
+    padding: 40px 20px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+}
+
+/* Categories */
+.categories {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin: 16px 0 28px;
+}
+
+.cat-tile {
+    background:#fff;
+    border-radius:10px;
+    padding:12px 16px;
+    box-shadow: 0 6px 12px rgba(11,23,39,0.04);
+    cursor:pointer;
+    min-width:120px;
+    text-align:center;
+    transition: transform .15s, box-shadow .15s;
+    user-select:none;
+    outline: none;
+}
+
+.cat-tile:focus { box-shadow: 0 10px 18px rgba(11,23,39,0.06); transform: translateY(-2px); }
+.cat-tile.active { transform: translateY(-4px); box-shadow: 0 12px 22px rgba(11,23,39,0.08); border-left:4px solid #63B34E; }
+
+/* Food grid */
+.food-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:16px;
+}
+
+.food-card {
+    background:#fff;
+    border-radius:10px;
+    padding:12px;
+    box-shadow:0 6px 14px rgba(11,23,39,0.04);
+    display:flex;
+    flex-direction:column;
+    transition: transform .18s ease, box-shadow .18s ease, opacity .25s ease;
+    will-change: transform;
+}
+
+.food-card:hover {
+    transform: translateY(-6px);
+    box-shadow:0 18px 40px rgba(11,23,39,0.08);
+}
+
+/* added animation when item is added to a meal */
+.food-card.added {
+    transform: translateY(-8px) scale(0.985);
+    box-shadow: 0 24px 56px rgba(11,23,39,0.11);
+}
+
+/* image + overlays */
+.food-img-wrap {
+    position: relative;
+    border-radius:8px;
+    overflow: hidden;
+    margin-bottom:10px;
+    background: #f8fafc;
+}
+
+/* FIX: ensure full image visibility (no cropping) while keeping container height */
+.food-img-wrap img {
+    /* preserve container height, but make the image fit fully without distortion */
+    width: auto;
+    max-width: 100%;
+    height: 140px;               /* keep existing container visual height */
+    object-fit: contain;         /* show whole image, no cropping */
+    object-position: center;     /* center the image inside the box */
+    display: block;
+    margin: 0 auto;
+}
+
+/* diet tag (top-left) and calorie badge (top-right) */
+.diet-tag {
+    position: absolute;
+    top:8px;
+    left:8px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding:6px 8px;
+    font-size:12px;
+    border-radius:8px;
+    font-weight:600;
+    text-transform:capitalize;
+}
+
+.cal-badge {
+    position: absolute;
+    top:8px;
+    right:8px;
+    background: rgba(255,255,255,0.95);
+    color: #111827;
+    padding:6px 8px;
+    font-size:12px;
+    border-radius:8px;
+    font-weight:700;
+    box-shadow: 0 4px 12px rgba(11,23,39,0.06);
+}
+
+/* Favorite heart (top-right overlay) */
+.fav-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.85);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+    color: #6b7280;
+    padding: 6px;
+    box-shadow: 0 6px 14px rgba(11,23,39,0.04);
+}
+
+.fav-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(11,23,39,0.06); }
+
+/* active (favorited) state */
+.fav-btn.active {
+    background: linear-gradient(135deg,#ef4444,#f97316);
+    color: #fff;
+    box-shadow: 0 14px 32px rgba(249,115,22,0.12);
+}
+
+/* processing state */
+.fav-btn.processing { opacity: 0.8; cursor: progress; transform: none; }
+
+/* svg icon coloring */
+.fav-btn .fav-icon { display:block; width:18px; height:18px; }
+
+/* content */
+.food-card .food-title {
+    display:block;
+    margin-bottom:6px;
+    font-size:15px;
+    color:#0f172a;
+}
+
+.food-card .meta {
+    color:#6b7280;
+    font-size:13px;
+    margin-top:6px;
+    flex:1;
+}
+
+/* slot selector */
+.slot-selector {
+    display:flex;
+    gap:6px;
+    align-items:center;
+}
+.slot-btn {
+    background:#fff;
+    border:1px solid #e6eef0;
+    padding:6px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    color:#111827;
+    transition: transform .12s, box-shadow .12s, background .12s;
+}
+.slot-btn.active {
+    background: linear-gradient(90deg,#dcfce7,#bbf7d0);
+    border-color: #bbf7d0;
+    box-shadow: 0 8px 18px rgba(99,179,46,0.08);
+    transform: translateY(-2px);
+}
+
+/* buttons */
+.btn-row {
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.btn-primary-ghost {
+    background:transparent;
+    border:1px solid #e5e7eb;
+    padding:6px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    color:#374151;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.btn-cta {
+    background:#63B34E;
+    color:#fff;
+    padding:6px 10px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    min-width:82px;
+    position:relative;
+}
+
+/* spinner and success text inside the button */
+.btn-cta .btn-spinner { margin-left:6px; display:inline-flex; align-items:center; }
+.btn-cta .btn-success { margin-left:8px; color:#fff; font-weight:700; background:transparent; }
+
+/* keep success state visually distinct */
+.btn-cta:disabled { opacity:0.9; cursor:progress; }
+
+/* snackbar / toast */
+.snackbar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #111827;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(11,23,39,0.18);
+    transform: translateY(-6px);
+    opacity: 0;
+    transition: transform .22s ease, opacity .22s ease;
+    z-index: 1200;
+    pointer-events: none;
+}
+.snackbar.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+/* Daily calorie summary panel */
+.daily-panel {
+    width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 18px 40px rgba(11,23,39,0.08);
+    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.daily-panel .panel-header {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    justify-content:space-between;
+}
+.daily-panel .panel-body {
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+.daily-panel .panel-footer {
+    border-top: 1px solid #eef2f7;
+    padding-top: 8px;
+}
+.daily-panel .panel-empty {
+    padding: 18px 6px;
+}
+.daily-panel .daily-list {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+.daily-panel .slot-block { margin-bottom: 6px; }
+.daily-panel .slot-title {
+    font-weight:700;
+    font-size:13px;
+    color:#111827;
+    margin-bottom:6px;
+}
+.daily-panel .meal-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:8px;
+    border-radius:8px;
+    background:#fff;
+    box-shadow: 0 6px 12px rgba(11,23,39,0.03);
+}
+.daily-panel .meal-name { font-weight:600; font-size:13px; }
+.daily-panel .meal-meta { font-size:12px; color:#6b7280; }
+
+.daily-panel .totals { display:flex; flex-direction:column; gap:6px; font-weight:700; color:#0f172a; }
+.daily-panel .totals .totalCalories { font-size:16px; }
+.daily-panel .totals .calorieGoal, .daily-panel .totals .remainingCalories { font-weight:600; color:#374151; }
+
+/* responsive: hide panel on small screens if not already using bootstrap classes */
+@media (max-width: 992px) {
+    .daily-panel { display: none !important; }
+}
+
+/* Responsive */
+@media (max-width:768px) {
+    .hero { padding:18px 12px; }
+    .food-img-wrap img { height:120px; }
+    .fav-btn { width:34px; height:34px; top:6px; right:6px; }
+    .snackbar { left: 12px; right: 12px; top: 12px; }
+}
+
+/* Specially For You section - appended styles */
+
+/* Header: centered small uppercase with side rules */
+.special-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9CA3AF; /* light grey */
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    gap: 16px;
+    margin: 0 auto;
+    width: 100%;
+}
+.special-header span {
+    padding: 0 12px;
+    background: transparent;
+}
+/* thin lines left/right */
+.special-header::before,
+.special-header::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: #E6E6E6;
+    flex: 1 1 120px;
+    max-width: 180px;
+}
+
+/* Grid layout for three equal cards */
+.special-grid {
+    display: flex;
+    gap: 18px;
+    align-items: stretch;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+/* Card container */
+.category-card {
+    background: #FBFCFD; /* soft light-grey container */
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 0;
+    min-height: 320px; /* ensures equal height */
+    box-shadow: 0 6px 14px rgba(11,23,39,0.03);
+}
+
+/* Image wrapper and image */
+.category-imgwrap {
+    background: transparent;
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 8px;
+}
+
+/* FIX: show full category images without cropping */
+.category-img {
+    width: auto;
+    max-width: 100%;
+    height: 180px;            /* preserve visual card design */
+    object-fit: contain;      /* show whole image */
+    object-position: center;
+    display: block;
+    margin: 0 auto;
+    transform: scale(1.12);
+}
+.category-card:hover .category-img {
+    transform: scale(1.16);
+    transition: transform 0.3s ease;
+}
+    /* Body area keeps button at bottom */
+    .category-body {
+    margin-top: 12px;
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex: 1 0 auto;
+}
+
+/* Green rounded button spanning most of card width */
+.category-btn {
+    background: #63B34E;
+    color: #fff;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 12px;
+    width: 90%;
+    max-width: 260px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(99,179,46,0.08);
+}
+
+/* Small screens: stack cards vertically */
+@media (max-width: 768px) {
+    .special-grid {
+        flex-direction: column;
+    }
+    .category-card { min-height: auto; }
+    .special-header::before,
+    .special-header::after { max-width: 80px; }
+}
+
+/* Responsive adjustments (keep existing heights but ensure contain still works) */
+@media (max-width:768px) {
+    .hero { padding:18px 12px; }
+    .food-img-wrap img { height:120px; }
+    .fav-btn { width:34px; height:34px; top:6px; right:6px; }
+    .snackbar { left: 12px; right: 12px; top: 12px; }
+}
+
+/* Meal grid: responsive 4-column layout + hover effects
+   - Images use object-fit: contain to show whole image
+   - Cards are anchor elements for SEO and accessible navigation
+*/
+
+/* Section spacing */
+.meals-grid-section { margin-top: 28px; }
+
+/* Header styles (keeps site typography) */
+.meals-grid-header h3 { font-size: 1.25rem; font-weight:700; margin-bottom: 6px; }
+.meals-grid-header p { margin: 0; color: #6b7280; }
+
+/* Grid: 4 columns desktop, auto-wrap on smaller screens */
+.meals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+    gap: 18px;
+    align-items: start;
+}
+
+/* Card (anchor wraps entire card) */
+.meal-card {
+    display: block;                    /* make link fill card area */
+    background: #fff;                  /* clean white background */
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 8px 18px rgba(11,23,39,0.04);
+    transition: transform .22s ease, box-shadow .22s ease;
+    cursor: pointer;
+    padding: 12px;
+    /* Ensure consistent height for rows if desired (optional) */
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Hover: lift and deeper shadow */
+.meal-card:hover,
+.meal-card:focus {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 56px rgba(11,23,39,0.12);
+    outline: none;
+}
+
+/* Image wrapper keeps identical sizing across cards */
+.meal-img-wrap {
+    width: 100%;
+    height: 160px;                 /* fixed visual image height (keeps grid aligned) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;           /* subtle background when image has letterbox */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Image: center + contain to avoid cropping (no distortion) */
+.meal-img {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;           /* important: show whole image */
+    object-position: center;
+    display: block;
+}
+
+/* Meal label under the image */
+.meal-label {
+    margin-top: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: #0f172a;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+/* Responsive breakpoints */
+/* 3 columns on wide tablets / small desktops */
+@media (max-width: 1100px) {
+    .meals-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 2 columns on tablets / large phones */
+@media (max-width: 768px) {
+    .meals-grid { grid-template-columns: repeat(2, 1fr); }
+    .meal-img-wrap { height: 140px; }
+}
+
+/* 1 column on small phones */
+@media (max-width: 480px) {
+    .meals-grid { grid-template-columns: 1fr; }
+    .meal-card { min-height: auto; padding: 10px; }
+    .meal-img-wrap { height: 160px; }
+}
+
+/* Accessibility: focus-visible outline */
+.meal-card:focus-visible {
+    box-shadow: 0 24px 56px rgba(11,23,39,0.12), 0 0 0 3px rgba(99,179,46,0.12);
+}
+
+/* Scoped visual improvements for Food Categories section */
+.food-categories .special-grid {
+    gap: 14px;
+}
+
+.food-categories .category-card {
+    padding: 10px;
+    min-height: 260px;
+    transition: transform .22s ease, box-shadow .22s ease;
+    box-shadow: 0 10px 22px rgba(11,23,39,0.04);
+}
+
+.food-categories .category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(11,23,39,0.10);
+}
+
+.food-categories .category-imgwrap {
+    padding: 6px;
+}
+
+.food-categories .category-img {
+    height: 160px;
+    object-fit: contain;
+    object-position: center;
+    transition: transform .28s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.food-categories .category-card:hover .category-img {
+    transform: scale(1.05);
+}
+
+.food-categories .category-body {
+    margin-top: 10px;
+}
+
+.food-categories .category-body .category-btn {
+    width: 85%;
+    max-width: 220px;
+    background: #63B34E;
+    color: #fff;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 12px;
+    box-shadow: 0 6px 12px rgba(99,179,46,0.08);
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.food-categories .category-body .category-btn:hover,
+.food-categories .category-body .category-btn:focus {
+    background: #4f9b3d;
+    box-shadow: 0 10px 20px rgba(79,155,61,0.12);
+}

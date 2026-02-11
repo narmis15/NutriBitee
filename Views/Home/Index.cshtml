@@ -1,8 +1,682 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "NutriBite — Home";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link rel="stylesheet" href="~/css/home.css" />
+
+<div class="container mt-3">
+    <section class="hero py-5">
+        <div class="row align-items-center">
+            <!-- Left: text + CTA -->
+            <div class="col-md-7">
+                <div class="mb-2 text-uppercase" style="color:#63B34E;font-weight:700;letter-spacing:.06em;">
+                    100% Homemade
+                </div>
+
+                <h1 class="display-4 fw-bold mb-3">Food is Waiting For You</h1>
+
+                <p class="lead text-muted" style="max-width:58ch;">
+                    You can get the best homemade food from your neighbourhood homes. The food will be full of soul, health, &amp; taste.
+                </p>
+
+                <div class="hero-cta mt-3 d-flex gap-2">
+                    <a class="btn btn-success btn-lg" href="/Menu" role="button" aria-label="Order Now">Order Now</a>
+                    <a class="btn btn-outline-secondary btn-lg" href="/Menu" role="button">Explore Menu</a>
+                </div>
+
+                <div class="mt-3">
+                    <span class="d-inline-block rounded-pill px-3 py-2"
+                          style="background:#ecfdf5;color:#065f46;font-weight:700;">
+                        We DO NOT serve food from Restaurants!
+                    </span>
+                </div>
+            </div>
+
+            <!-- Right: hero image -->
+            <div class="col-md-5 text-center d-none d-md-block">
+                <picture>
+                    <source srcset="~/images/hero/hero-food.png" />
+                    <img src="~/images/hero/hero-food.png" alt="Fresh homemade meals" class="img-fluid" style="max-width:360px;" loading="lazy" />
+                </picture>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Food Categories (insert above "Specially For You") -->
+    <section class="food-categories py-5" aria-labelledby="foodCategoriesHeading">
+        <div class="container">
+            <div id="foodCategoriesHeading" class="special-header mb-4" role="heading" aria-level="2">
+                <span>Food Categories</span>
+            </div>
+
+            <div class="special-grid" role="list">
+                <!-- Veg -->
+                <div class="category-card" role="listitem" aria-label="Veg">
+                    <div class="category-imgwrap">
+                        <img src="~/images/Product/Veg.jpeg" alt="Veg" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <a class="category-btn" href="/Meals/Category?name=Veg" role="button">Veg</a>
+                    </div>
+                </div>
+
+                <!-- Non-Veg -->
+                <div class="category-card" role="listitem" aria-label="Non-Veg">
+                    <div class="category-imgwrap">
+                        <img src="~/images/Product/Nonveg.jpeg" alt="Non-Veg" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <a class="category-btn" href="/Meals/Category?name=NonVeg" role="button">Non-Veg</a>
+                    </div>
+                </div>
+
+                <!-- Eggitarian -->
+                <div class="category-card" role="listitem" aria-label="Eggitarian">
+                    <div class="category-imgwrap">
+                        <img src="~/images/Product/Eggitarian.jpeg" alt="Eggitarian" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <a class="category-btn" href="/Meals/Category?name=Eggitarian" role="button">Eggitarian</a>
+                    </div>
+                </div>
+
+                <!-- Jain -->
+                <div class="category-card" role="listitem" aria-label="Jain">
+                    <div class="category-imgwrap">
+                        <img src="~/images/Product/JainFood.jpeg" alt="Jain" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <a class="category-btn" href="/Meals/Category?name=Jain" role="button">Jain</a>
+                    </div>
+                </div>
+
+                <!-- Vegan -->
+                <div class="category-card" role="listitem" aria-label="Vegan">
+                    <div class="category-imgwrap">
+                        <img src="~/images/Product/Vegan.jpeg" alt="Vegan" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <a class="category-btn" href="/Meals/Category?name=Vegan" role="button">Vegan</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End food categories -->
+
+    <!-- 1) SPECIALLY FOR YOU (Students, Elderly, Corporate) -->
+    <section class="specially-for-you py-5" aria-labelledby="specialForYouHeading">
+        <div class="container">
+            <div id="specialForYouHeading" class="special-header mb-4" role="heading" aria-level="2">
+                <span>SPECIALLY FOR YOU</span>
+            </div>
+
+            <div class="special-grid" role="list">
+                <!-- Student -->
+                <div class="category-card" role="listitem" aria-label="Students">
+                    <div class="category-imgwrap">
+                        <img src="~/images/categories/student.jpeg" alt="Students meal" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <button type="button" class="category-btn" aria-label="Students category">STUDENTS</button>
+                    </div>
+                </div>
+
+                <!-- Elderly -->
+                <div class="category-card" role="listitem" aria-label="Elderly">
+                    <div class="category-imgwrap">
+                        <img src="~/images/categories/elderly.jpeg" alt="Elderly meal" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <button type="button" class="category-btn" aria-label="Elderly category">ELDERLY</button>
+                    </div>
+                </div>
+
+                <!-- Corporate -->
+                <div class="category-card" role="listitem" aria-label="Corporate">
+                    <div class="category-imgwrap">
+                        <img src="~/images/categories/corporate.jpeg" alt="Corporate meal" class="category-img" loading="lazy" />
+                    </div>
+                    <div class="category-body">
+                        <button type="button" class="category-btn" aria-label="Corporate category">CORPORATE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2) Meal Categories / Meal Subscription Grid (comes AFTER Specially For You) -->
+    <section class="meals-grid-section py-5" aria-labelledby="mealsGridHeading">
+        <div class="meals-grid-header text-center mb-3">
+            <h3 id="mealsGridHeading" class="m-0">Meal Categories</h3>
+            <p class="text-muted small">Choose a meal plan or browse by category</p>
+        </div>
+
+        <!--
+            Grid of meal cards (4 columns on desktop).
+            Each card is an anchor for SEO; clicking navigates to /Meals/Category?name=MealName
+            Images live at: /wwwroot/images/meals/
+        -->
+        <div class="meals-grid" role="list">
+            <!-- Example card (repeat for each meal). Keep names URL-friendly (no spaces). -->
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=StandardThali" aria-label="Standard Thali">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/Standard_Thali.jpeg" alt="Standard Thali" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Standard Thali</div>
+            </a>
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=SpecialThali" aria-label="Special Thali">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/Special_Thali.jpeg" alt="Special Thali" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Special Thali</div>
+            </a>
+
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=DeluxeThali" aria-label="Deluxe Thali">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/Deluxe_Thali.jpeg" alt="Deluxe Thali" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Deluxe Thali</div>
+            </a>
+
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=ClassicalThali" aria-label="Classical Thali">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/Classical_Thali.jpeg" alt="Classical Thali" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Classical Thali</div>
+            </a>
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=ComfortThali" aria-label="Comfort Thali">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/Comfort_Thali.jpeg" alt="Comfort Thali" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Comfort Thali</div>
+            </a>
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=Jain_Thali" aria-label="Jain Thali">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/Jain_Thali.jpeg" alt="Jain Thali" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Jain Thali</div>
+            </a>
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=RiceCombo" aria-label="Rice Combo">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/Rice_Combo.jpeg" alt="Rice Combo" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Rice Combo</div>
+            </a>
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=LowCalorie" aria-label="Low Calorie">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/low-calorie.jpg" alt="Low Calorie" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Low Calorie</div>
+            </a>
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=ProteinMeal" aria-label="Protein Meal">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/protein.jpg" alt="Protein Meal" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Protein Meal</div>
+            </a>
+
+            <a class="meal-card" role="listitem" href="/Meals/Category?name=SaladBowl" aria-label="Salad Bowl">
+                <div class="meal-img-wrap">
+                    <img src="~/images/meals/salads.jpeg" alt="Salad Bowl" class="meal-img" loading="lazy" />
+                </div>
+                <div class="meal-label">Salad Bowl</div>
+            </a>
+        </div>
+    </section>
+    <!-- End meal grid -->
+
+    <section class="mt-4">
+        <h4>Categories</h4>
+        <div id="categories" class="categories" aria-label="Food categories"></div>
+    </section>
+
+    <section class="mt-3" id="foodsSection">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <h4 id="foodsHeading" class="m-0">Foods</h4>
+
+            <!-- Meal slot selector -->
+            <div class="slot-selector" role="tablist" aria-label="Select meal slot">
+                <button type="button" class="slot-btn active" data-slot="Breakfast">Breakfast</button>
+                <button type="button" class="slot-btn" data-slot="Lunch">Lunch</button>
+                <button type="button" class="slot-btn" data-slot="Dinner">Dinner</button>
+                <button type="button" class="slot-btn" data-slot="Snacks">Snacks</button>
+            </div>
+        </div>
+
+        <div id="loading" class="mt-2" style="display:none;">Loading…</div>
+        <div id="noResults" class="mt-2 text-muted" style="display:none;">No foods found for this category.</div>
+
+        <div class="d-lg-flex gap-3">
+            <div id="foodGrid" class="food-grid mt-3 flex-grow-1" aria-live="polite"></div>
+
+            <!-- Daily calorie summary panel (hidden on small screens) -->
+            <aside id="dailyPanel" class="daily-panel d-none d-lg-block">
+                <div class="panel-header">
+                    <strong>Today's Meals</strong>
+                    <small class="text-muted ms-1" id="panelDate"></small>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-empty text-center text-muted">
+                        <div>Sign in to save & track your meals.</div>
+                        <div class="mt-2">
+                            <button id="panelLoginBtn" class="btn btn-cta btn-sm">Login</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="totals">
+                        <div>Total: <span class="totalCalories">0</span> kcal</div>
+                        <div>Goal: <span class="calorieGoal">—</span></div>
+                        <div>Remaining: <span class="remainingCalories">—</span></div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
 </div>
+
+<!-- snackbar / toast -->
+<div id="snackbar" class="snackbar" aria-live="polite" aria-atomic="true" hidden></div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        /**
+         * Geolocation request on page load (HTML5 Geolocation API)
+         *
+         * - Triggers the browser's permission prompt automatically on DOMContentLoaded.
+         * - Stores latitude/longitude in localStorage as 'user_latitude' and 'user_longitude' on success.
+         * - Logs location to console for debugging.
+         * - Shows fallback alerts on denial, timeout, unavailable or unsupported browsers.
+         *
+         * Notes:
+         * - No backend calls, non-blocking, minimal and self-contained.
+         * - Works on Chrome, Edge and modern mobile browsers supporting navigator.geolocation.
+         */
+        (function () {
+            // Run as soon as DOM is ready
+            window.addEventListener('DOMContentLoaded', function () {
+                try {
+                    // Feature detection
+                    if (!('geolocation' in navigator)) {
+                        // Browser does not support geolocation
+                        alert('Geolocation is not supported by your browser.');
+                        return;
+                    }
+
+                    // Request current position; this triggers the browser permission popup.
+                    navigator.geolocation.getCurrentPosition(
+                        function success(position) {
+                            // Successfully obtained position
+                            var lat = position.coords.latitude;
+                            var lon = position.coords.longitude;
+
+                            // Store values in localStorage for later use
+                            try {
+                                localStorage.setItem('user_latitude', String(lat));
+                                localStorage.setItem('user_longitude', String(lon));
+                            } catch (storageErr) {
+                                // Storage may be unavailable in some privacy modes; just log
+                                console.warn('Unable to store location in localStorage', storageErr);
+                            }
+
+                            // Log for debugging (do not leak to external systems)
+                            console.log('Geolocation success:', { latitude: lat, longitude: lon });
+                        },
+                        function error(err) {
+                            // Handle errors gracefully with user-friendly messages
+                            // err.code: 1=PERMISSION_DENIED, 2=POSITION_UNAVAILABLE, 3=TIMEOUT
+                            switch (err.code) {
+                                case 1:
+                                    alert('Location permission denied. Some features may be limited.');
+                                    break;
+                                case 2:
+                                    alert('Unable to determine your location. Please try again later.');
+                                    break;
+                                case 3:
+                                    alert('Location request timed out. Try again.');
+                                    break;
+                                default:
+                                    alert('Unable to obtain your location.');
+                                    break;
+                            }
+                            console.warn('Geolocation error', err);
+                        },
+                        {
+                            // Options: non-blocking, reasonable timeout
+                            enableHighAccuracy: false,
+                            timeout: 8000,       // 8 seconds
+                            maximumAge: 10 * 60 * 1000 // accept cached position up to 10 minutes
+                        }
+                    );
+                } catch (ex) {
+                    // Unexpected error — log silently and fail gracefully
+                    console.error('Geolocation initialization failed', ex);
+                }
+            }, { passive: true });
+        })();
+    </script>
+
+    <script>
+        (function () {
+            const categories = ["All", "Breakfast", "Lunch", "Dinner", "Snacks", "Drinks"];
+            const $cats = $('#categories');
+            const $grid = $('#foodGrid');
+            const $loading = $('#loading');
+            const $no = $('#noResults');
+            const $sn = $('#snackbar');
+            const $panel = $('#dailyPanel');
+
+            let selectedSlot = 'Breakfast';
+
+            function showSnack(msg) {
+                $sn.text(msg).attr('hidden', null).addClass('show');
+                setTimeout(() => { $sn.removeClass('show'); setTimeout(()=> $sn.attr('hidden', 'hidden'), 300); }, 2200);
+            }
+
+            function renderCategoryTiles() {
+                $cats.empty();
+                categories.forEach((c, idx) => {
+                    const tile = $('<div>').addClass('cat-tile').attr('data-cat', c).attr('role','button').attr('tabindex',0).text(c);
+                    if (idx === 0) tile.addClass('active');
+                    $cats.append(tile);
+                });
+            }
+
+            function buildCard(f) {
+                const id = f.id || f.Id;
+                const name = f.name || f.Name || '';
+                const desc = f.description || f.Description || '';
+                const img = f.image || f.Image || '/images/placeholder.png';
+                const calories = (f.calories || f.Calories || f.cal || '').toString();
+                const diet = (f.diet || f.Diet || f.dietTag || '').toString();
+
+                const card = $('<div>').addClass('food-card').attr('data-id', id);
+
+                const imgWrap = $('<div>').addClass('food-img-wrap');
+                imgWrap.append($('<img>').attr('src', img).attr('alt', name));
+
+                if (diet) imgWrap.append($('<span>').addClass('diet-tag').text(diet));
+                if (calories) imgWrap.append($('<span>').addClass('cal-badge').text(calories + ' kcal'));
+
+                // favorite button
+                const fav = $('<button>').addClass('fav-btn').attr('type','button').attr('aria-pressed','false').attr('data-id', id)
+                    .html('<svg class="fav-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 21s-7.5-4.5-10-7.4C-1 8.4 4.2 3 8.6 5.3 10.8 6.6 12 9 12 9s1.2-2.4 3.4-3.7C19.8 3 25 8.4 22 13.6 19.5 16.5 12 21 12 21z"/></svg>');
+                imgWrap.append(fav);
+
+                card.append(imgWrap);
+                card.append($('<strong>').addClass('food-title').text(name));
+                if (desc) card.append($('<div>').addClass('meta').text(desc));
+
+                const btnRow = $('<div>').addClass('btn-row');
+                btnRow.append($('<a>').addClass('btn-primary-ghost').attr('href', '/Food/Details/' + id).text('View Details'));
+
+                const addBtn = $('<button>').addClass('btn-cta add-btn').attr('data-id', id).attr('type','button');
+                addBtn.append($('<span>').addClass('btn-label').text('Add'));
+                addBtn.append($('<span>').addClass('btn-spinner').hide().html('&nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'));
+                addBtn.append($('<span>').addClass('btn-success').hide().text('✓ Added'));
+                btnRow.append(addBtn);
+
+                card.append(btnRow);
+                return card;
+            }
+
+            function fetchFoods(category) {
+                $loading.show();
+                $no.hide();
+                $grid.empty();
+
+                $.getJSON('/Foods/GetFoods', { category: category === 'All' ? '' : category })
+                    .done(function (list) {
+                        $loading.hide();
+                        if (!list || list.length === 0) {
+                            $no.show();
+                            return;
+                        }
+
+                        list.forEach(f => { $grid.append(buildCard(f)); });
+
+                        // refresh daily panel and favorites state after rendering cards
+                        loadDailyPanel();
+                        $.getJSON('/Auth/IsAuthenticated').done(function (au) {
+                            if (au && au.authenticated) {
+                                $.getJSON('/Favorites/UserFavorites').done(function (res) {
+                                    if (res && res.ids) {
+                                        const ids = new Set(res.ids.map(x => Number(x)));
+                                        $grid.find('.fav-btn').each(function () {
+                                            const fid = Number($(this).data('id'));
+                                            if (ids.has(fid)) $(this).addClass('active').attr('aria-pressed', 'true').attr('title','Remove from favorites');
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    })
+                    .fail(function () {
+                        $loading.hide(); $no.text('Failed to load foods.').show();
+                    });
+            }
+
+            // daily panel rendering
+            function renderPanel(data) {
+                $('#panelDate').text(data.date || '');
+                const $body = $panel.find('.panel-body');
+                if (!data.authenticated) {
+                    $body.html('<div class="panel-empty text-center text-muted"><div>Sign in to save & track your meals.</div><div class="mt-2"><button id="panelLoginBtn" class="btn btn-cta btn-sm">Login</button></div></div>');
+                    $panel.find('.totalCalories').text('0');
+                    $panel.find('.calorieGoal').text('—');
+                    $panel.find('.remainingCalories').text('—');
+                    $body.find('#panelLoginBtn').on('click', function () { if (typeof showAuthModal === 'function') showAuthModal('login'); });
+                    return;
+                }
+
+                const meals = data.meals || [];
+                if (!meals.length) {
+                    $body.html('<div class="panel-empty text-center text-muted">No meals added for today.</div>');
+                } else {
+                    let html = '<div class="daily-list">';
+                    // group by slot
+                    const groups = {};
+                    meals.forEach(m => {
+                        const s = (m.slot || 'Other');
+                        groups[s] = groups[s] || [];
+                        groups[s].push(m);
+                    });
+                    const slotOrder = ['Breakfast','Lunch','Dinner','Snacks'];
+                    slotOrder.forEach(slot => {
+                        if (!groups[slot]) return;
+                        html += `<div class="slot-block"><div class="slot-title">${slot}</div>`;
+                        groups[slot].forEach(m => {
+                            html += `<div class="meal-row"><div class="meal-left"><div class="meal-name">${(m.name||'')}</div><div class="meal-meta text-muted">${(m.calories||0)} kcal</div></div></div>`;
+                        });
+                        html += '</div>';
+                    });
+
+                    // any other slots
+                    Object.keys(groups).forEach(k => {
+                        if (slotOrder.includes(k)) return;
+                        html += `<div class="slot-block"><div class="slot-title">${k}</div>`;
+                        groups[k].forEach(m => {
+                            html += `<div class="meal-row"><div class="meal-left"><div class="meal-name">${(m.name||'')}</div><div class="meal-meta text-muted">${(m.calories||0)} kcal</div></div></div>`;
+                        });
+                        html += '</div>';
+                    });
+
+                    html += '</div>';
+                    $body.html(html);
+                }
+
+                $panel.find('.totalCalories').text((data.totalCalories ?? 0));
+                $panel.find('.calorieGoal').text(data.calorieGoal ?? '—');
+                $panel.find('.remainingCalories').text((data.remaining !== null && data.remaining !== undefined) ? data.remaining : '—');
+            }
+
+            function loadDailyPanel() {
+                $.getJSON('/Meals/Today').done(function (res) {
+                    renderPanel(res || { authenticated: false });
+                }).fail(function () {
+                    // keep existing content
+                });
+            }
+
+            // slot selector
+            $(document).on('click', '.slot-btn', function () {
+                $('.slot-btn').removeClass('active');
+                $(this).addClass('active');
+                selectedSlot = $(this).data('slot');
+                showSnack('Selected ' + selectedSlot);
+            });
+
+            // favorite toggle
+            $(document).on('click', '.fav-btn', function (e) {
+                e.stopPropagation();
+                const $btn = $(this);
+                if ($btn.hasClass('processing')) return;
+                const id = $btn.data('id');
+
+                $.getJSON('/Auth/IsAuthenticated').done(function (res) {
+                    if (!(res && res.authenticated)) {
+                        // preserve intent, then open login modal
+                        if (window.setPendingAction) window.setPendingAction({ type: 'toggleFavorite', foodId: id });
+                        if (typeof showAuthModal === 'function') showAuthModal('login');
+                        else { var mp = document.getElementById('loginPrompt'); if (mp) new bootstrap.Modal(mp).show(); }
+                        return;
+                    }
+
+                    const wasActive = $btn.hasClass('active');
+                    $btn.addClass('processing').prop('disabled', true).toggleClass('active');
+
+                    $.post('/Favorites/Toggle', { foodId: id })
+                        .done(function (resp) {
+                            if (resp && resp.success) {
+                                const fav = !!resp.favorited;
+                                $btn.toggleClass('active', fav).attr('aria-pressed', String(fav));
+                                $btn.attr('title', fav ? 'Remove from favorites' : 'Add to favorites');
+                                showSnack(fav ? 'Added to favorites' : 'Removed from favorites');
+                            } else {
+                                $btn.toggleClass('active', wasActive).attr('aria-pressed', String(wasActive));
+                                alert(resp && resp.message ? resp.message : 'Unable to update favorites.');
+                            }
+                        })
+                        .fail(function () {
+                            $btn.toggleClass('active', wasActive).attr('aria-pressed', String(wasActive));
+                            alert('Unable to update favorites.');
+                        })
+                        .always(function () { $btn.removeClass('processing').prop('disabled', false); });
+                }).fail(function () { alert('Unable to verify authentication status.'); });
+            });
+
+            // Add -> Meals flow (date-wise, slot-aware)
+            $(document).on('click', '.add-btn', function () {
+                const $btn = $(this);
+                if ($btn.data('processing')) return;
+
+                const id = $btn.data('id');
+
+                $.getJSON('/Auth/IsAuthenticated').done(function (res) {
+                    if (!(res && res.authenticated)) {
+                        // preserve intent then open modal
+                        if (window.setPendingAction) window.setPendingAction({ type: 'addMeal', foodId: id, slot: selectedSlot });
+                        if (typeof showAuthModal === 'function') showAuthModal('login');
+                        else { var mp = document.getElementById('loginPrompt'); if (mp) new bootstrap.Modal(mp).show(); }
+                        return;
+                    }
+
+                    // show spinner
+                    $btn.data('processing', true);
+                    $btn.find('.btn-label').hide();
+                    $btn.find('.btn-spinner').show();
+                    $btn.prop('disabled', true);
+
+                    $.post('/Meals/Add', { foodId: id, slot: selectedSlot })
+                        .done(function (resp) {
+                            if (resp && resp.success) {
+                                if (resp.added) {
+                                    const $card = $btn.closest('.food-card');
+                                    $card.addClass('added');
+                                    setTimeout(()=> $card.removeClass('added'), 650);
+                                    showSnack('Added to ' + (resp.slot || selectedSlot));
+                                    // refresh panel
+                                    loadDailyPanel();
+                                } else {
+                                    showSnack(resp.message || 'Already added to that slot today.');
+                                }
+                            } else {
+                                alert(resp && resp.message ? resp.message : 'Unable to add meal.');
+                            }
+                        })
+                        .fail(function () {
+                            alert('Unable to add meal. Try again.');
+                        })
+                        .always(function () {
+                            $btn.find('.btn-spinner').hide();
+                            $btn.find('.btn-success').show();
+                            setTimeout(function () {
+                                $btn.find('.btn-success').hide();
+                                $btn.find('.btn-label').show();
+                                $btn.prop('disabled', false);
+                                $btn.data('processing', false);
+                            }, 1100);
+                        });
+                }).fail(function () { alert('Unable to verify authentication status.'); });
+            });
+
+            // Listen for replayed pending actions (triggered by layout when user logs in)
+            document.addEventListener('pendingAction:done', function (e) {
+                const d = e.detail || {};
+                if (!d.type) return;
+                if (d.type === 'addMeal') {
+                    const fid = d.params && d.params.foodId;
+                    // reflect same UI as manual add success
+                    const $card = $grid.find('.food-card[data-id="' + fid + '"]');
+                    if ($card.length) {
+                        $card.addClass('added');
+                        setTimeout(()=> $card.removeClass('added'), 650);
+                    }
+                    showSnack('Added to ' + (d.resp && (d.resp.slot || d.params.slot)) );
+                    // refresh panel
+                    loadDailyPanel();
+                } else if (d.type === 'toggleFavorite') {
+                    const fid = d.params && d.params.foodId;
+                    const favResp = d.resp || {};
+                    const $btn = $grid.find('.fav-btn[data-id="' + fid + '"]');
+                    if ($btn.length && favResp.success) {
+                        const fav = !!favResp.favorited;
+                        $btn.toggleClass('active', fav).attr('aria-pressed', String(fav));
+                    }
+                    if (d.resp && d.resp.success) showSnack((d.resp.favorited ? 'Added to favorites' : 'Removed from favorites'));
+                } else if (d.type === 'addToCart') {
+                    // fallback: if AJAX add succeeded, show confirmation
+                    if (d.resp && d.resp.success) showSnack('Added to cart');
+                }
+            });
+
+            // category click
+            $cats.on('click keypress', '.cat-tile', function (e) {
+                if (e.type === 'keypress' && e.which !== 13 && e.which !== 32) return;
+                $cats.find('.cat-tile').removeClass('active');
+                $(this).addClass('active');
+                const cat = $(this).data('cat');
+                fetchFoods(cat);
+                const top = $('#foodsHeading').offset().top - 80;
+                $('html,body').animate({ scrollTop: top }, 420);
+            });
+
+            $('#exploreBtn').on('click', function () {
+                $('html,body').animate({ scrollTop: $('#foodsHeading').offset().top - 80 }, 500);
+                fetchFoods('All');
+            });
+
+            // refresh panel when user logs in
+            document.addEventListener('user:login', function () { loadDailyPanel(); });
+
+            // periodic refresh
+            setInterval(loadDailyPanel, 30000);
+
+            $(function () { renderCategoryTiles(); fetchFoods('All'); loadDailyPanel(); });
+        })();
+    </script>
+}

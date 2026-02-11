@@ -1,0 +1,203 @@
+@{
+    ViewData["Title"] = "My Account";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var uid = ViewBag.UserId ?? 0;
+}
+
+<link rel="stylesheet" href="~/css/home.css" />
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card p-3 mb-3">
+                <h4 class="mb-2">Account</h4>
+                <div id="userInfo" class="mb-3">
+                    <div><strong id="userName">—</strong></div>
+                    <div class="text-muted" id="userEmail">—</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small">Daily Calorie Goal</label>
+                    <div class="d-flex gap-2 align-items-center">
+                        <input id="calGoal" type="number" min="0" class="form-control form-control-sm" style="max-width:160px;" />
+                        <button id="saveGoal" class="btn btn-cta btn-sm">Save</button>
+                        <div id="goalMsg" class="text-success small ms-2" style="display:none;">Saved</div>
+                    </div>
+                    <div class="form-text text-muted mt-1">Set your daily calorie target (used in meal summaries).</div>
+                </div>
+            </div>
+
+            <div class="card p-3">
+                <h5 class="mb-2">Recent Meal History</h5>
+                <div class="mb-2 small text-muted">Showing last 7 days. Use meal history to track daily calories.</div>
+                <div id="mealHistory" class="mt-2"></div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <aside class="card p-3">
+                <h6 class="mb-2">Quick Summary</h6>
+                <div class="mb-2"><strong>Today's calories:</strong> <span id="todayCalories">0</span> kcal</div>
+                <div class="mb-2"><strong>Goal:</strong> <span id="summaryGoal">—</span></div>
+                <div class="mb-2"><strong>Remaining:</strong> <span id="summaryRemaining">—</span></div>
+                <div class="mt-3">
+                    <button id="openMealsPanel" class="btn btn-primary-ghost btn-sm">Open Meal Panel</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+        (function () {
+            const uid = '@uid';
+            const $userName = $('#userName');
+            const $userEmail = $('#userEmail');
+            const $calGoal = $('#calGoal');
+            const $saveGoal = $('#saveGoal');
+            const $goalMsg = $('#goalMsg');
+            const $mealHistory = $('#mealHistory');
+            const $todayCalories = $('#todayCalories');
+            const $summaryGoal = $('#summaryGoal');
+            const $summaryRemaining = $('#summaryRemaining');
+
+            function showLoginModal() {
+                if (typeof showAuthModal === 'function') showAuthModal('login');
+                else window.location.href = '/';
+            }
+
+            function loadProfile() {
+                $.getJSON('/Auth/IsAuthenticated').done(function (au) {
+                    if (!(au && au.authenticated)) {
+                        // secure: redirect to home/view login
+                        showLoginModal();
+                        return;
+                    }
+
+                    // re-use existing Users/GetUserProfileData if available
+                    $.getJSON('/Users/GetUserProfileData', { userId: uid })
+                        .done(function (res) {
+                            if (!res) return;
+                            $userName.text(res.Name || res.name || res.UserName || '—');
+                            $userEmail.text(res.Email || res.email || '—');
+                            const goal = res.CalorieGoal ?? res.calorieGoal ?? res.CalorieGoal ?? null;
+                            if (goal !== null && goal !== undefined) {
+                                $calGoal.val(goal);
+                                $summaryGoal.text(goal);
+                            } else {
+                                $calGoal.val('');
+                                $summaryGoal.text('—');
+                            }
+                            // today's calories if available
+                            if (res.TodayCalories !== undefined && res.TodayCalories !== null) {
+                                $todayCalories.text(res.TodayCalories);
+                                if (goal) $summaryRemaining.text(goal - res.TodayCalories);
+                            }
+                        })
+                        .fail(function () {
+                            // fallback: call Meals/Today for today's totals
+                            $.getJSON('/Meals/Today').done(function (mres) {
+                                if (mres && mres.authenticated) {
+                                    $todayCalories.text(mres.totalCalories || 0);
+                                    if (mres.calorieGoal !== null) {
+                                        $summaryGoal.text(mres.calorieGoal);
+                                        $summaryRemaining.text((mres.calorieGoal || 0) - (mres.totalCalories || 0));
+                                        $calGoal.val(mres.calorieGoal || '');
+                                    }
+                                }
+                            });
+                        });
+                }).fail(function () { showLoginModal(); });
+            }
+
+            function loadMealHistory() {
+                $.getJSON('/Users/GetMealHistory', { days: 7 })
+                    .done(function (res) {
+                        if (!res || !res.authenticated) {
+                            showLoginModal(); return;
+                        }
+                        const rows = res.history || [];
+                        if (!rows.length) {
+                            $mealHistory.html('<div class="text-muted small">No meals in the past week.</div>');
+                            return;
+                        }
+
+                        // group by date then by slot
+                        const byDate = {};
+                        rows.forEach(r => {
+                            byDate[r.date] = byDate[r.date] || [];
+                            byDate[r.date].push(r);
+                        });
+
+                        let html = '';
+                        Object.keys(byDate).sort((a,b)=>b.localeCompare(a)).forEach(d => {
+                            html += `<div class="mb-2"><div class="fw-bold">${d}</div>`;
+                            const items = byDate[d];
+                            const bySlot = {};
+                            items.forEach(i => { bySlot[i.slot] = bySlot[i.slot] || []; bySlot[i.slot].push(i); });
+                            ['Breakfast','Lunch','Dinner','Snacks'].forEach(slot => {
+                                if (!bySlot[slot] || !bySlot[slot].length) return;
+                                html += `<div class="mt-1"><small class="text-muted">${slot}</small>`;
+                                bySlot[slot].forEach(it => {
+                                    html += `<div class="d-flex justify-content-between align-items-center py-1"><div>${it.name}</div><div class="text-muted small">${it.calories} kcal</div></div>`;
+                                });
+                                html += `</div>`;
+                            });
+                            // other slots
+                            Object.keys(bySlot).forEach(s => {
+                                if (['Breakfast','Lunch','Dinner','Snacks'].includes(s)) return;
+                                html += `<div class="mt-1"><small class="text-muted">${s}</small>`;
+                                bySlot[s].forEach(it => {
+                                    html += `<div class="d-flex justify-content-between align-items-center py-1"><div>${it.name}</div><div class="text-muted small">${it.calories} kcal</div></div>`;
+                                });
+                                html += `</div>`;
+                            });
+
+                            html += `</div>`;
+                        });
+
+                        $mealHistory.html(html);
+                    })
+                    .fail(function () {
+                        $mealHistory.html('<div class="text-muted small">Failed to load meal history.</div>');
+                    });
+            }
+
+            $saveGoal.on('click', function () {
+                const v = Number($calGoal.val() || 0);
+                if (isNaN(v) || v < 0) { alert('Enter a valid calorie goal'); return; }
+                $.post('/Users/UpdateCalorieGoal', { goal: v })
+                    .done(function (res) {
+                        if (res && res.success) {
+                            $goalMsg.show().fadeOut(1600);
+                            $summaryGoal.text(v);
+                            // refresh today's numbers (remaining)
+                            $.getJSON('/Meals/Today').done(function (mres) {
+                                if (mres && mres.authenticated && mres.totalCalories !== undefined) {
+                                    $todayCalories.text(mres.totalCalories);
+                                    if (mres.calorieGoal !== null) $summaryRemaining.text((mres.calorieGoal || v) - (mres.totalCalories || 0));
+                                    else $summaryRemaining.text(v - (mres.totalCalories || 0));
+                                }
+                            });
+                        } else {
+                            alert(res && res.message ? res.message : 'Failed to save goal.');
+                        }
+                    })
+                    .fail(function () { alert('Failed to save goal.'); });
+            });
+
+            $('#openMealsPanel').on('click', function () {
+                // navigate to home where the daily panel is available
+                window.location.href = '/';
+            });
+
+            $(function () {
+                loadProfile();
+                loadMealHistory();
+            });
+        })();
+    </script>
+}

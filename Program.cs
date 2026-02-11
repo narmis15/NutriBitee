@@ -36,10 +36,21 @@ app.UseSession();
 
 app.UseAuthorization();
 
-// 🔥 DEFAULT ROUTE FIXED
+// Map short-friendly routes for public auth pages (/login, /signup)
+app.MapControllerRoute(
+    name: "login",
+    pattern: "login",
+    defaults: new { controller = "Auth", action = "Login" });
+
+app.MapControllerRoute(
+    name: "signup",
+    pattern: "signup",
+    defaults: new { controller = "Auth", action = "Register" });
+
+// 🔥 DEFAULT ROUTE CHANGED TO HOME INDEX (opens homepage at app start)
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Admin}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 

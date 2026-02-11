@@ -1,0 +1,3 @@
+/* Small modal tweaks to match NutriBite theme */
+#authModal .modal-content { border-radius: 10px; }
+#authModal .modal-title { color: #134e2a; font-weight:700; }

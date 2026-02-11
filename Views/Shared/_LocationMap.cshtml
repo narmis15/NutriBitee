@@ -1,0 +1,38 @@
+@using NUTRIBITE.Helpers
+@{
+    // mode: "mini" or "full" (default full)
+    var mode = (ViewData["mode"] as string ?? "full").ToLowerInvariant();
+    // center and small bbox computation for OSM embed
+    double lat = LocationConfig.Latitude;
+    double lon = LocationConfig.Longitude;
+
+    // bbox delta per mode (small number for precise pin)
+    double delta = mode == "mini" ? 0.003 : 0.02;
+
+    // compute min/max lon/lat for bbox parameter (lon_min,lat_min,lon_max,lat_max)
+    double lonMin = lon - delta;
+    double lonMax = lon + delta;
+    double latMin = lat - delta;
+    double latMax = lat + delta;
+
+    // encode for URL
+    string bbox = $"{lonMin.ToString(System.Globalization.CultureInfo.InvariantCulture)},{latMin.ToString(System.Globalization.CultureInfo.InvariantCulture)},{lonMax.ToString(System.Globalization.CultureInfo.InvariantCulture)},{latMax.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+    string marker = $"{lat.ToString(System.Globalization.CultureInfo.InvariantCulture)},{lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+}
+
+@if (mode == "mini")
+{
+    <div class="footer-map d-inline-block me-3" style="width:140px;height:90px;border-radius:6px;overflow:hidden;background:#f3f4f6;display:inline-block;">
+        <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=@bbox&amp;layer=mapnik&amp;marker=@marker"
+            style="border:0; width:100%; height:100%; pointer-events:none;" aria-hidden="true" sandbox="allow-same-origin allow-popups"></iframe>
+    </div>
+}
+else
+{
+    <div class="location-map" style="width:100%;height:420px;border-radius:8px;overflow:hidden;">
+        <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=@bbox&amp;layer=mapnik&amp;marker=@marker"
+            style="border:0; width:100%; height:100%;" loading="lazy"></iframe>
+    </div>
+}

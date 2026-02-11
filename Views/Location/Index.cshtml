@@ -1,0 +1,45 @@
+@using NUTRIBITE.Helpers
+@{
+    ViewData["Title"] = "Our Location - NutriBite";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-2">Our Location</h2>
+            <p class="text-muted mb-3">Find us and get directions — we welcome visitors for pickup orders and enquiries.</p>
+
+            <div class="mb-3">
+                @* Full-width interactive map partial *@
+                @{
+                    var vd = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(ViewData);
+                    vd["mode"] = "full";
+                }
+                @await Html.PartialAsync("_LocationMap", model: null, viewData: vd)
+            </div>
+
+            <div class="mt-3">
+                <h5>Address</h5>
+                <p class="mb-1"><strong>@LocationConfig.AddressLine</strong></p>
+                <p class="mb-1">@LocationConfig.City, @LocationConfig.State</p>
+                <p class="mb-1">@LocationConfig.Country</p>
+                <p class="small text-muted mt-2">Pin location is approximate. Click "Open in OpenStreetMap" for full interactive map.</p>
+
+                <p class="mt-3">
+                    <a class="btn btn-outline-secondary" target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=@LocationConfig.Latitude&amp;mlon=@LocationConfig.Longitude#map=15/@LocationConfig.Latitude/@LocationConfig.Longitude">Open in OpenStreetMap</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h6 class="mb-2">Contact & Address</h6>
+                <p class="mb-0"><strong>@LocationConfig.AddressLine</strong></p>
+                <p class="mb-0">@LocationConfig.City, @LocationConfig.State</p>
+                <p class="mb-0">@LocationConfig.Country</p>
+                <p class="mt-2 small text-muted">Landmark: Near Central Park (optional)</p>
+            </div>
+        </div>
+    </div>
+</div>

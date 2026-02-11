@@ -14,6 +14,8 @@
 
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
 
+    <!-- Auth modal styles (user-side) -->
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
 
     <style>
         body {
@@ -228,10 +230,33 @@
 
         <!-- MAIN CONTENT -->
         <div class="content">
-            <div class="topbar">
+            <div class="topbar d-flex justify-content-between align-items-center">
                 <strong>Admin Panel</strong>
+
+                <!-- User / Auth area (site-wide) -->
+                <div id="siteAuthArea" class="d-flex align-items-center">
+                    <!-- Login button for guests -->
+                    <button id="authBtn" class="btn btn-sm btn-outline-secondary me-2" type="button">Login</button>
+
+                    <!-- Cart (hidden for guests) -->
+                    <a id="cartBtn" class="btn btn-sm btn-outline-secondary me-2 d-none" href="/Cart">Cart</a>
+
+                    <!-- Profile dropdown for logged-in users (hidden by default) -->
+                    <div id="profileDropdown" class="dropdown d-none">
+                        <a class="d-flex align-items-center" href="#" id="profileToggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img id="profileAvatar" src="~/images/avatar.png" alt="Profile" class="rounded-circle" width="32" height="32" />
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileToggle">
+                            <li><a class="dropdown-item" href="/Users/Profile">My Profile</a></li>
+                            <li><a class="dropdown-item" href="/Users/UserOrders">My Meals</a></li>
+                            <li><a class="dropdown-item" href="/Users/Favorites">Favorites</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" id="logoutLink" href="/Auth/Logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-    
+
             @RenderBody()
         </div>
 
@@ -346,5 +371,147 @@
             });
         })();
     </script>
+
+    <!-- Auth modal partial -->
+    @await Html.PartialAsync("_AuthModal")
+    <script>
+        (function () {
+            // Update topbar based on authentication state
+            function updateAuthUI() {
+                $.getJSON('/Auth/IsAuthenticated')
+                    .done(function (res) {
+                        if (res && res.authenticated) {
+                            $('#authBtn').hide();
+                            $('#profileDropdown').removeClass('d-none');
+                            $('#cartBtn').removeClass('d-none');
+                        } else {
+                            $('#authBtn').show();
+                            $('#profileDropdown').addClass('d-none');
+                            $('#cartBtn').addClass('d-none');
+                        }
+                    })
+                    .fail(function () {
+                        // keep default guest state
+                        $('#authBtn').show();
+                        $('#profileDropdown').addClass('d-none');
+                        $('#cartBtn').addClass('d-none');
+                    });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                updateAuthUI();
+
+                // auth button opens modal (partial exposes showAuthModal)
+                $('#authBtn').on('click', function () {
+                    if (typeof showAuthModal === 'function') showAuthModal('login');
+                });
+
+                // close profile dropdown when clicking outside (Bootstrap handles normally, added guard)
+                document.addEventListener('click', function (e) {
+                    var dropdown = document.getElementById('profileDropdown');
+                    var toggle = document.getElementById('profileToggle');
+                    if (!dropdown || !toggle) return;
+                    if (!dropdown.contains(e.target) && e.target !== toggle) {
+                        var dd = bootstrap.Dropdown.getInstance(toggle);
+                        if (dd) dd.hide();
+                    }
+                });
+
+                // listen for login event (emitted by modal script) to update UI and resume actions
+                document.addEventListener('user:login', function (e) {
+                    updateAuthUI();
+                });
+            });
+        })();
+    </script>
+
+    <!-- Pending-action / post-login replay helper -->
+    <script>
+        (function () {
+            // Stores pending action in memory + sessionStorage and replays after login.
+            window.pendingAction = null;
+
+            function persistPending(obj) {
+                window.pendingAction = obj || null;
+                try {
+                    if (obj) sessionStorage.setItem('pendingAction', JSON.stringify(obj));
+                    else sessionStorage.removeItem('pendingAction');
+                } catch (e) { /* ignore storage errors */ }
+            }
+
+            window.setPendingAction = persistPending;
+            window.clearPendingAction = function () { persistPending(null); };
+
+            // restore from sessionStorage on load
+            try {
+                const s = sessionStorage.getItem('pendingAction');
+                if (s) window.pendingAction = JSON.parse(s);
+            } catch (e) { window.pendingAction = null; }
+
+            function replayPending() {
+                const a = window.pendingAction;
+                if (!a) return;
+
+                // addMeal
+                if (a.type === 'addMeal') {
+                    $.post('/Meals/Add', { foodId: a.foodId, slot: a.slot || 'Breakfast' })
+                        .done(function (resp) {
+                            document.dispatchEvent(new CustomEvent('pendingAction:done', { detail: { type: 'addMeal', params: a, resp: resp } }));
+                        })
+                        .fail(function () {
+                            document.dispatchEvent(new CustomEvent('pendingAction:failed', { detail: { type: 'addMeal', params: a } }));
+                        })
+                        .always(function () {
+                            window.clearPendingAction();
+                        });
+                    return;
+                }
+
+                // toggleFavorite
+                if (a.type === 'toggleFavorite') {
+                    $.post('/Favorites/Toggle', { foodId: a.foodId })
+                        .done(function (resp) {
+                            document.dispatchEvent(new CustomEvent('pendingAction:done', { detail: { type: 'toggleFavorite', params: a, resp: resp } }));
+                        })
+                        .fail(function () {
+                            document.dispatchEvent(new CustomEvent('pendingAction:failed', { detail: { type: 'toggleFavorite', params: a } }));
+                        })
+                        .always(function () {
+                            window.clearPendingAction();
+                        });
+                    return;
+                }
+
+                // addToCart (try AJAX then fallback to navigation)
+                if (a.type === 'addToCart') {
+                    $.ajax({ url: '/Cart/AddAjax', method: 'POST', data: { id: a.foodId }, dataType: 'json', timeout: 8000 })
+                        .done(function (resp) {
+                            document.dispatchEvent(new CustomEvent('pendingAction:done', { detail: { type: 'addToCart', params: a, resp: resp } }));
+                        })
+                        .fail(function () {
+                            // fallback: navigate
+                            window.location.href = '/Cart/Add/' + a.foodId;
+                        })
+                        .always(function () {
+                            window.clearPendingAction();
+                        });
+                    return;
+                }
+
+                // unknown: clear
+                window.clearPendingAction();
+            }
+
+            document.addEventListener('user:login', function () {
+                // replay after login
+                replayPending();
+            });
+
+            // also attempt replay if user logged in in another tab (auth check)
+            // pages can call window.replayPending() directly if needed
+            window.replayPending = replayPending;
+        })();
+    </script>
+
 </body>
 </html>
