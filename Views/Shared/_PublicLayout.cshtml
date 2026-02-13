@@ -1,6 +1,6 @@
 @*
-    Public layout for NutriBite — updated to include explicit Login and Sign Up buttons in navbar.
-    Kept styling, spacing and responsiveness unchanged.
+    Public layout for NutriBite — updated to include modern multi-column footer (nb-footer).
+    Kept styling, spacing and responsiveness unchanged for header/navigation.
 *@
 <!DOCTYPE html>
 <html lang="en">
@@ -21,10 +21,14 @@
         /* small public-only helpers */
         .navbar-brand { font-weight: 800; color: #16a34a !important; }
         .hero-cta { margin-top: 20px; }
-        footer.site-footer { background:#0b1220; color:#fff; padding:28px 0; margin-top:32px; }
-        footer.site-footer a { color: #d1fae5; text-decoration: none; }
-        footer.site-footer a:hover { text-decoration: underline; }
     </style>
+
+    <!-- Preconnect + preload important images for the homepage -->
+    <link rel="preconnect" href="https://your-cdn.example.com" crossorigin />
+    <link rel="preload" href="~/images/hero/hero-food.png" as="image" />
+    <link rel="preload" href="~/images/hero/slide 1.png" as="image" />
+    <link rel="preload" href="~/images/hero/slide 2.png" as="image" />
+    <!-- Add more preloads for top carousel slides as needed -->
 </head>
 <body>
     <header>
@@ -42,12 +46,13 @@
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="/Menu">Menu</a></li>
                         <li class="nav-item"><a class="nav-link" href="/About">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/location">Location</a></li>
                     </ul>
 
                     <div class="d-flex align-items-center">
                         <a id="cartBtnPublic" class="btn btn-outline-secondary me-2 d-none" href="/Cart">Cart</a>
 
-                        <!-- NEW: Login & Sign Up buttons side-by-side (preserve styles/spacing) -->
+                        <!-- Login & Sign Up -->
                         <a id="loginBtnPublic" class="btn btn-sm btn-outline-secondary me-2" href="/login">Login</a>
                         <a id="signupBtnPublic" class="btn btn-sm btn-success" href="/signup">Sign Up</a>
                     </div>
@@ -56,27 +61,57 @@
         </nav>
     </header>
 
-    <main role="main">
-        <div class="container my-4">
-            @RenderBody()
-        </div>
-    </main>
+    <div class="page-container">
+        <main role="main">
+            <div class="container my-4">
+                @RenderBody()
+            </div>
+        </main>
 
-    <footer class="site-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <strong>NutriBite</strong>
-                    <div class="small text-muted">Fresh, healthy meals delivered fast.</div>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="/Terms" class="me-3">Terms</a>
-                    <a href="/Privacy" class="me-3">Privacy</a>
-                    <span class="small text-muted">© @DateTime.Now.Year NutriBite</span>
+        <footer class="nb-footer">
+            <div class="container">
+                <div class="nb-footer-grid">
+                    <div class="nb-col nb-col-1">
+                        <a class="nb-logo" href="/">NutriBite</a>
+                        <p class="nb-desc">We at NutriBite use smart nutrition technology to help you eat better every day.
+Our calorie-focused meals are thoughtfully crafted to match your health goals—without compromising on taste or flexibility.</p>
+                        <div class="nb-social">
+                            <a href="#" class="nb-social-link" aria-label="Facebook">f</a>
+                            <a href="#" class="nb-social-link" aria-label="Instagram">i</a>
+                            <a href="#" class="nb-social-link" aria-label="YouTube">y</a>
+                            <a href="#" class="nb-social-link" aria-label="LinkedIn">in</a>
+                        </div>
+                    </div>
+
+                    <div class="nb-col">
+                        <h4 class="nb-heading">Company</h4>
+                        <ul class="nb-links">
+                            <li><a href="/Home/About">About Us</a></li>
+                            <li><a href="/Home/WhyUs">Why Us</a></li>
+                            <li><a href="/Home/Careers">Careers</a></li>
+                            <li><a href="/Home/Contact">Contact Us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="nb-col">
+                        <h4 class="nb-heading">Information</h4>
+                        <ul class="nb-links">
+                            <li><a href="/Home/Privacy">Privacy Policy</a></li>
+                            <li><a href="/Home/Terms">Terms &amp; Conditions</a></li>
+                            <li><a href="/Home/Refund">Cancellation &amp; Refunds</a></li>
+                            <li><a href="/Home/Blog">Blogs</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="nb-col">
+                        <h4 class="nb-heading">Contact us</h4>
+                        <p class="nb-contact"><a href="tel:9026775653">Phone: 9026775653</a></p>
+                        <p class="nb-contact"><a href="mailto:help@nutribite.com">Email: help@nutribite.com</a></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <!-- Core scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -96,7 +131,6 @@
                         var cart = document.getElementById('cartBtnPublic');
 
                         if (res && res.authenticated) {
-                            // hide login/signup, show cart/profile link
                             if (loginBtn) loginBtn.style.display = 'none';
                             if (signupBtn) signupBtn.style.display = 'none';
                             if (cart) cart.classList.remove('d-none');
@@ -113,8 +147,6 @@
 
             document.addEventListener('DOMContentLoaded', function () {
                 updateAuthUI();
-
-                // listen for login event emitted by modal / pages
                 document.addEventListener('user:login', function () {
                     updateAuthUI();
                 });

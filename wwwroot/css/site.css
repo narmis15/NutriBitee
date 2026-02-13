@@ -464,3 +464,99 @@ button[type="submit"].add-btn {
     background-color: rgba(255,255,255,0.03);
 }
 
+/* NutriBite footer (scoped minimal styles) */
+.nb-footer {
+    background: #1f2937;
+    color: #e6eef2;
+    padding: 48px 0;
+    margin-top: 32px;
+    flex-shrink: 0;
+}
+
+.nb-footer .nb-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.nb-footer .nb-col { min-width: 0; }
+
+.nb-footer .nb-logo {
+    font-weight: 800;
+    color: #63B34E;
+    font-size: 24px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.nb-footer .nb-desc {
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin: 0 0 18px 0;
+    max-width: 420px;
+}
+
+.nb-footer .nb-social { display:flex; gap:10px; }
+
+.nb-footer .nb-social-link {
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(255,255,255,0.06);
+    color:#e6eef2;
+    text-decoration:none;
+    font-weight:700;
+    background:transparent;
+}
+
+.nb-footer .nb-heading {
+    font-size:18px;
+    margin:0 0 12px 0;
+    color:#ffffff;
+}
+
+.nb-footer .nb-links {
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.nb-footer .nb-links li { margin-bottom:10px; }
+
+.nb-footer .nb-links a {
+    color:#c7e7d0; /* soft green tint */
+    text-decoration:none;
+}
+
+.nb-footer .nb-links a:hover { text-decoration:underline; color:#a8d7a9; }
+
+.nb-footer .nb-contact { margin:8px 0; color:#e6eef2; }
+
+.nb-footer .nb-contact a {
+    color:#e6eef2;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* responsive */
+@media (max-width: 992px) {
+    .nb-footer .nb-footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .nb-footer .nb-desc { max-width: none; }
+}
+
+@media (max-width: 560px) {
+    .nb-footer { padding: 28px 0; }
+    .nb-footer .nb-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+    .nb-footer .nb-desc { margin-bottom:12px; }
+}
+
