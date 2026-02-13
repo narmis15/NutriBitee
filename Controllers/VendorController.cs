@@ -19,9 +19,9 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
-      /*  public IActionResult Dashboard()
+       public IActionResult Dashboard()
         {
             return View();
-        }*/
+        }
     }
 }
