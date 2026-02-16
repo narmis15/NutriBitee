@@ -308,6 +308,14 @@
 
                     <div class="d-flex align-items-center gap-3">
 
+    <!-- Join Us -->
+    <a id="joinBtnPublic"
+       class="btn btn-sm btn-outline-success me-2 fw-semibold"
+       style="border-radius: 20px; padding: 6px 18px;"
+       href="/Vendor/Register">
+        Join Us
+    </a>
+
     <!-- Login -->
     <a id="loginBtnPublic"
        class="btn btn-sm btn-outline-secondary px-3"
@@ -564,7 +572,7 @@ if (res && res.authenticated) {
                 let attempts = 0;
                 const interval = setInterval(function () {
                     attempts++;
-                    isAuthenticated().then(res => {
+                    isAuthenticated().then res => {
                         if (res && res.authenticated) {
                             clearInterval(interval);
                             try { sessionStorage.removeItem('postLoginRedirect'); } catch (ex) { }
