@@ -33,8 +33,10 @@ namespace NUTRIBITE.Controllers
 
         public IActionResult Dashboard()
         {
-           /* if (HttpContext.Session.GetString("VendorEmail") == null)
-                return RedirectToAction("Login");*/
+           // if (HttpContext.Session.GetString("VendorEmail") == null)
+           // {
+               // return RedirectToAction("Login");
+           // }
 
             return View();
         }
@@ -44,6 +46,7 @@ namespace NUTRIBITE.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
+
         // GET: Vendor/AddFood
         public IActionResult AddFood()
         {
@@ -60,16 +63,22 @@ namespace NUTRIBITE.Controllers
             TempData["Success"] = "Food added successfully (UI demo).";
             return RedirectToAction("MyFood");
         }
+
         public IActionResult MyFood()
         {
             return View();
         }
+
         public IActionResult Profile()
         {
             return View();
         }
 
         public IActionResult Orders()
+        {
+            return View();
+        }
+        public IActionResult ForgotPassword()
         {
             return View();
         }

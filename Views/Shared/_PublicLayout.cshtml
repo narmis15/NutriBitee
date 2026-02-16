@@ -1,4 +1,9 @@
-﻿@*
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var userId = Context.Session.GetInt32("UserId");
+    var userName = Context.Session.GetString("UserName");
+}
+@*
     Public layout for NutriBite — updated to include modern multi-column footer (nb-footer).
     Kept styling, spacing and responsiveness unchanged for header/navigation.
 *@
@@ -165,6 +170,7 @@
             font-size: 15px;
             cursor: pointer;
             transition: 0.2s ease;
+            padding: 0 10px;
         }
 
         .profile-circle:hover {
@@ -308,29 +314,46 @@
 
                     <div class="d-flex align-items-center gap-3">
 
-    <!-- Join Us -->
-    <a id="joinBtnPublic"
-       class="btn btn-sm btn-outline-success me-2 fw-semibold"
-       style="border-radius: 20px; padding: 6px 18px;"
-       href="/Vendor/Register">
-        Join Us
-    </a>
+    <div class="nav-buttons">
 
-    <!-- Login -->
-    <a id="loginBtnPublic"
-       class="btn btn-sm btn-outline-secondary px-3"
-       href="/login">
-        Login
-    </a>
+        <!-- Keep original Join Us button exactly as it was -->
+        <a id="joinBtnPublic"
+           class="btn btn-sm btn-outline-success me-2 fw-semibold"
+           style="border-radius: 20px; padding: 6px 18px;"
+           asp-controller="Vendor" asp-action="Register">
+            Join Us
+        </a>
 
-    <!-- Sign Up -->
-    <a id="signupBtnPublic"
-       class="btn btn-sm btn-success px-3"
-       href="/signup">
-        Sign Up
-    </a>
+        @if (userId != null)
+        {
+            <!-- Logged in view: use existing button classes for Cart / Logout and existing profile styling -->
+            <a id="cartBtnPublic" class="btn btn-sm btn-outline-secondary px-3" href="/Cart">🛒</a>
 
-    <!-- Premium Profile -->
+            <span id="userNamePublic" class="profile-circle">
+                @userName
+            </span>
+
+            <a id="logoutBtnPublic" class="btn btn-sm btn-outline-secondary px-3" href="/Auth/Logout">Logout</a>
+        }
+        else
+        {
+            <!-- Guest view: keep original Login and Sign Up exactly as they were -->
+            <a id="loginBtnPublic"
+               class="btn btn-sm btn-outline-secondary px-3"
+               href="/Auth/Login">
+                Login
+            </a>
+
+            <a id="signupBtnPublic"
+               class="btn btn-sm btn-success px-3"
+               href="/Auth/Register">
+                Sign Up
+            </a>
+        }
+
+    </div>
+
+    <!-- Existing Premium Profile dropdown remains (unchanged) -->
     <div class="dropdown">
 
         <button class="profile-btn"

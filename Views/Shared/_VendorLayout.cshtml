@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Vendor Panel - NutriBite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f8;
+        }
+
+        .vendor-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .vendor-sidebar {
+            width: 250px;
+            background: #1e2d24;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .vendor-logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #7ddf9b;
+        }
+
+        .vendor-sidebar a {
+            display: block;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+            .vendor-sidebar a:hover {
+                background: #2e4d3c;
+            }
+
+        .logout {
+            margin-top: 40px;
+            color: #ff8a8a !important;
+        }
+
+        /* Main Content */
+        .vendor-main {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .vendor-topbar {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vendor-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .primary-btn {
+            background: #48b774;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+            .primary-btn:hover {
+                background: #3ca765;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="vendor-container">
+
+        <div class="vendor-sidebar">
+            <div class="vendor-logo">NutriBite Vendor</div>
+
+            <a href="/Vendor/Dashboard">Dashboard</a>
+            <a href="/Vendor/MyFood">My Foods</a>
+            <a href="/Vendor/AddFood">Add Food</a>
+            <a href="/Vendor/Orders">Orders</a>
+            <a href="/Vendor/Profile">Profile</a>
+
+            <a href="/Vendor/Logout" class="logout">Logout</a>
+        </div>
+
+        <div class="vendor-main">
+            <div class="vendor-topbar">
+                <h3>Vendor Panel</h3>
+                <a href="/Vendor/AddFood" class="primary-btn">+ Add Food</a>
+            </div>
+
+            @RenderBody()
+        </div>
+
+    </div>
+</body>
+</html>

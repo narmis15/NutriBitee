@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using NUTRIBITE.Models;
+using NUTRIBITE.Models; // Ensure ErrorViewModel is defined in this namespace
+
 
 namespace NUTRIBITE.Controllers
 {
@@ -32,7 +33,5 @@ namespace NUTRIBITE.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
-
     }
 }
