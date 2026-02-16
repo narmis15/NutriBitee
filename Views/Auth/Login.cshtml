@@ -1,40 +1,150 @@
-@{
+﻿@{
     ViewData["Title"] = "Login - NutriBite";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-6 col-lg-5">
-        <div class="card p-4 shadow-sm">
-            <h4 class="mb-3">Login</h4>
+<style>
+    .login-wrapper {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #e8f5e9, #f5f5f5);
+    }
+
+    .login-container {
+        display: flex;
+        width: 900px;
+        max-width: 95%;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        background: white;
+    }
+
+    .login-left {
+        width: 50%;
+        background-color: #2e7d32;
+        color: white;
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+        .login-left h2 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .login-left p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+    .leaf-icon {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+
+    .login-right {
+        width: 50%;
+        padding: 50px 40px;
+        background: #ffffff;
+    }
+
+    .brand {
+        color: #2e7d32;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .custom-input {
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .custom-btn {
+        border-radius: 10px;
+        padding: 10px;
+        background-color: #2e7d32;
+        border: none;
+        font-weight: 500;
+    }
+
+        .custom-btn:hover {
+            background-color: #1b5e20;
+        }
+
+    @@media (max-width: 768px) {
+        .login-container
+
+    {
+        flex-direction: column;
+    }
+
+    .login-left,
+    .login-right {
+        width: 100%;
+    }
+
+    .login-left {
+        text-align: center;
+    }
+
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-container">
+
+        <!-- LEFT SIDE -->
+        <div class="login-left">
+            <h2>Welcome to NutriBite</h2>
+            <div class="leaf-icon">🍃</div>
+            <p>
+                Healthy homemade meals crafted with care.
+                Log in to explore nutritious food options
+                and track your meals effortlessly.
+            </p>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="login-right">
+
+            <h4 class="brand">NutriBite</h4>
+            <h5 class="mb-4">Welcome Back 👋</h5>
 
             <div id="loginError" class="alert alert-danger small" style="display:none;"></div>
 
             <form id="loginForm" method="post" action="javascript:void(0);">
                 @Html.AntiForgeryToken()
+
                 <div class="mb-3">
                     <label for="email" class="form-label small">Email</label>
-                    <input id="email" name="email" type="email" class="form-control" required />
+                    <input id="email" name="email" type="email" class="form-control custom-input" required />
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label small">Password</label>
                     <div class="input-group">
-                        <input id="password" name="password" type="password" class="form-control" required aria-describedby="togglePassword" />
-                        <button id="togglePassword" class="btn btn-outline-secondary" type="button" tabindex="-1" aria-label="Show password">Show</button>
+                        <input id="password" name="password" type="password" class="form-control custom-input" required />
+                        <button id="togglePassword" class="btn btn-outline-secondary" type="button">Show</button>
                     </div>
                 </div>
 
                 <div class="d-grid">
-                    <button id="loginBtn" class="btn btn-success">Login</button>
+                    <button id="loginBtn" class="btn btn-success custom-btn">Login</button>
                 </div>
 
                 <div class="mt-3 d-flex justify-content-between small">
-                    <div>Don't have an account? <a href="/signup">Sign up</a></div>
+                    <div>Don't have an account? <a href="/signup" class="link-success">Sign up</a></div>
                     <div><a href="/Auth/Forgot">Forgot password?</a></div>
                 </div>
+
             </form>
         </div>
+
     </div>
 </div>
 
@@ -42,19 +152,18 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
         (function () {
-            // If already authenticated, redirect to account/dashboard
+
             $.getJSON('/Auth/IsAuthenticated').done(function (res) {
                 if (res && res.authenticated) {
                     window.location.href = '/Users/Account';
                 }
             });
 
-            // Toggle password visibility
             $('#togglePassword').on('click', function () {
                 const $pwd = $('#password');
                 const type = $pwd.attr('type') === 'password' ? 'text' : 'password';
                 $pwd.attr('type', type);
-                $(this).text(type === 'password' ? 'Show' : 'Hide').attr('aria-label', type === 'password' ? 'Show password' : 'Hide password');
+                $(this).text(type === 'password' ? 'Show' : 'Hide');
             });
 
             $('#loginForm').on('submit', function (e) {
@@ -69,13 +178,11 @@
                     return;
                 }
 
-                // read antiforgery token value from rendered input
                 var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
 
                 $.post('/Auth/Login', { email: email, password: password, __RequestVerificationToken: token })
                     .done(function (res) {
                         if (res && res.success) {
-                            // redirect to user account/dashboard
                             window.location.href = '/Users/Account';
                         } else {
                             $('#loginError').text(res && res.message ? res.message : 'Invalid login credentials.').show();
@@ -84,6 +191,7 @@
                         $('#loginError').text('Unable to reach server. Please try again.').show();
                     });
             });
+
         })();
     </script>
 }

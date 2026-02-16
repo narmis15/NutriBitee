@@ -25,6 +25,7 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
+
         // Lightweight probe used by client UI
         [HttpGet]
         public IActionResult IsAuthenticated()

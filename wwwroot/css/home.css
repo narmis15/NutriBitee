@@ -1223,3 +1223,16 @@ body, html { overflow-x: hidden; }
   .how-it-works .step-icon { width: 52px; height: 52px; font-size: 20px; }
   .how-it-works .how-step { padding: 14px; min-height: 120px; }
 }
+.hero-search {
+    max-width: 500px;
+}
+
+    .hero-search .form-control {
+        border-radius: 12px 0 0 12px;
+        padding: 12px;
+    }
+
+    .hero-search .btn {
+        border-radius: 0 12px 12px 0;
+        padding: 12px 20px;
+    }
