@@ -278,6 +278,47 @@
                 transform: translateY(0);
             }
         }
+        /* ===== CLEAN RIGHT SIDE UI ===== */
+
+        .cart-icon {
+            font-size: 18px;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: 0.2s ease;
+        }
+
+            .cart-icon:hover {
+                background: #f3f4f6;
+            }
+
+        /* Remove old profile-circle if present */
+        .profile-circle {
+            display: none !important;
+        }
+
+        /* Slightly cleaner navbar spacing */
+        .navbar {
+            padding: 12px 0;
+        }
+
+        .navbar,
+        .navbar-collapse {
+            overflow: visible !important;
+        }
+
+
+        .dropdown-menu {
+            z-index: 5000 !important;
+            margin-top: 18px !important;
+            border-radius: 16px;
+            padding: 12px 0;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+            border: none;
+            animation: dropdownFade 0.25s ease;
+        }
+
+
     </style>
 
 
@@ -290,118 +331,110 @@
 </head>
 <body>
     <header>
-         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
-           
-
-
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
+
+                <!-- Logo -->
                 <a class="navbar-brand" href="/">NutriBite</a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav"
-                        aria-controls="publicNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#publicNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="publicNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/Menu">Menu</a></li>
+
+                    <!-- Left Links -->
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Menu">Menu</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="/location">Location</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Location">Location</a>
+                        </li>
                     </ul>
 
+                    <!-- Right Side -->
                     <div class="d-flex align-items-center gap-3">
 
-    <div class="nav-buttons">
+                        <!-- Join Us always visible -->
+                        <a class="btn btn-outline-success btn-sm px-3 rounded-pill fw-semibold"
+                           asp-controller="Vendor"
+                           asp-action="Register">
+                            Join Us
+                        </a>
 
-        <!-- Keep original Join Us button exactly as it was -->
-        <a id="joinBtnPublic"
-           class="btn btn-sm btn-outline-success me-2 fw-semibold"
-           style="border-radius: 20px; padding: 6px 18px;"
-           asp-controller="Vendor" asp-action="Register">
-            Join Us
-        </a>
+                        @if (userId != null)
+                        {
+                            <!-- Cart -->
+                            <a asp-controller="Cart" asp-action="Index" class="cart-icon">
+                                🛒
+                            </a>
 
-        @if (userId != null)
-        {
-            <!-- Logged in view: use existing button classes for Cart / Logout and existing profile styling -->
-            <a id="cartBtnPublic" class="btn btn-sm btn-outline-secondary px-3" href="/Cart">🛒</a>
 
-            <span id="userNamePublic" class="profile-circle">
-                @userName
-            </span>
+                            <!-- Profile Dropdown -->
+                            <div class="dropdown">
+                                <button class="profile-btn"
+                                        type="button"
+                                        data-bs-toggle="dropdown">
 
-            <a id="logoutBtnPublic" class="btn btn-sm btn-outline-secondary px-3" href="/Auth/Logout">Logout</a>
-        }
-        else
-        {
-            <!-- Guest view: keep original Login and Sign Up exactly as they were -->
-            <a id="loginBtnPublic"
-               class="btn btn-sm btn-outline-secondary px-3"
-               href="/Auth/Login">
-                Login
-            </a>
+                                    <div class="profile-avatar">
+                                        @userName?.Substring(0, 1).ToUpper()
+                                    </div>
+                                </button>
 
-            <a id="signupBtnPublic"
-               class="btn btn-sm btn-success px-3"
-               href="/Auth/Register">
-                Sign Up
-            </a>
-        }
+                                <ul class="dropdown-menu dropdown-menu-end premium-dropdown shadow">
 
-    </div>
+                                    <li>
+                                        <a class="dropdown-item" href="/Users/Account">
+                                            👤 My Profile
+                                        </a>
+                                    </li>
 
-    <!-- Existing Premium Profile dropdown remains (unchanged) -->
-    <div class="dropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="/Orders">
+                                            📦 My Orders
+                                        </a>
+                                    </li>
 
-        <button class="profile-btn"
-                type="button"
-                id="profileDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
+                                    <li>
+                                        <a class="dropdown-item" href="/Settings">
+                                            ⚙ Settings
+                                        </a>
+                                    </li>
 
-            <div id="profileCircle" class="profile-avatar">
-                U
-            </div>
+                                    <li><hr class="dropdown-divider"></li>
 
-            <span class="profile-badge d-none" id="profileBadge"></span>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="/Auth/Logout">
+                                            🚪 Logout
+                                        </a>
+                                    </li>
 
-        </button>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-secondary btn-sm px-3"
+                               href="/Auth/Login">
+                                Login
+                            </a>
 
-        <ul class="dropdown-menu dropdown-menu-end premium-dropdown shadow"
-            aria-labelledby="profileDropdown">
+                            <a class="btn btn-success btn-sm px-3"
+                               href="/Auth/Register">
+                                Sign Up
+                            </a>
+                        }
 
-            <!-- Guest Items -->
-            <li class="guest-only">
-                <a class="dropdown-item" href="/login">Login</a>
-            </li>
-            <li class="guest-only">
-                <a class="dropdown-item" href="/signup">Sign Up</a>
-            </li>
-
-            <!-- Authenticated Items -->
-            <li class="auth-only d-none">
-                <a class="dropdown-item" href="/Users/Account">👤 My Profile</a>
-            </li>
-            <li class="auth-only d-none">
-                <a class="dropdown-item" href="/Orders">📦 My Orders</a>
-            </li>
-            <li class="auth-only d-none">
-                <a class="dropdown-item" href="/Settings">⚙ Settings</a>
-            </li>
-            <li class="auth-only d-none">
-                <hr class="dropdown-divider">
-            </li>
-            <li class="auth-only d-none">
-                <a class="dropdown-item text-danger" href="/Auth/Logout">🚪 Logout</a>
-            </li>
-
-        </ul>
-    </div>
-
-</div>
+                    </div>
                 </div>
             </div>
         </nav>

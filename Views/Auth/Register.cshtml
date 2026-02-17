@@ -113,7 +113,7 @@
             <div id="signupError" class="alert alert-danger small" style="display:none;"></div>
             <div id="signupSuccess" class="alert alert-success small" style="display:none;"></div>
 
-            <form id="signupForm" method="post" action="javascript:void(0);">
+            <form asp-controller="Auth" asp-action="Register" method="post" id="signupForm">
                 @Html.AntiForgeryToken()
 
                 <div class="mb-3">
