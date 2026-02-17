@@ -1223,3 +1223,39 @@ body, html { overflow-x: hidden; }
   .how-it-works .step-icon { width: 52px; height: 52px; font-size: 20px; }
   .how-it-works .how-step { padding: 14px; min-height: 120px; }
 }
+.step-icon {
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .step-icon img {
+        width: 80px;
+        height: 80px;
+        clip-path: circle(50%);
+    }
+
+.icon-fix-1 {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    clip-path: circle(50%);
+    transform: translateY(-6px);
+    mask-image: radial-gradient(circle, black 60%, transparent 61%);
+}
+@media (max-width: 768px) {
+    .step-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+        .step-icon img {
+            width: 32px;
+            height: 32px;
+        }
+}
+.how-step:hover .step-icon {
+    transform: scale(1.08);
+    transition: 0.3s ease;
+}
