@@ -1,5 +1,10 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var userId = Context.Session.GetInt32("UserId");
+    var userName = Context.Session.GetString("UserName");
+}
 @*
-    Public layout for NutriBite � updated to include modern multi-column footer (nb-footer).
+    Public layout for NutriBite — updated to include modern multi-column footer (nb-footer).
     Kept styling, spacing and responsiveness unchanged for header/navigation.
 *@
 <!DOCTYPE html>
@@ -18,10 +23,304 @@
 
     @RenderSection("HeadExtras", required: false)
     <style>
-        /* small public-only helpers */
-        .navbar-brand { font-weight: 800; color: #16a34a !important; }
-        .hero-cta { margin-top: 20px; }
+        /* ===== Slim Premium Sticky Glass Navbar ===== */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 8px 0;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.92) !important;
+            transition: all 0.3s ease;
+        }
+
+        /* Shadow on scroll */
+        .navbar.scrolled {
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        /* ===== Logo Styling + Micro Animation ===== */
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 22px;
+            color: #16a34a !important;
+            letter-spacing: 0.6px;
+            margin-right: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: translateY(-2px) scale(1.05);
+            text-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+        }
+
+        /* ===== Navigation Links ===== */
+
+        .navbar-nav {
+            gap: 20px;
+        }
+
+        .nav-link {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c2c2c !important;
+            position: relative;
+            padding: 4px 0;
+            transition: 0.3s ease;
+        }
+
+        /* Animated gradient underline */
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, #16a34a, #22c55e);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #16a34a !important;
+        }
+
+        /* Active page highlight */
+        .nav-link.active {
+            color: #16a34a !important;
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Buttons refinement */
+        .btn-success,
+        .btn-outline-secondary {
+            padding: 6px 14px;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(22, 163, 74, 0.25);
+        }
+
+        /* ------------------------------------------------------------------
+           Preserve the rest of existing styles below (footers, profile avatar, dropdown fixes, etc.)
+           ------------------------------------------------------------------ */
+
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .nb-footer {
+            background: #111;
+            color: #fff;
+            padding: 60px 0 40px;
+        }
+
+            .nb-footer a {
+                color: #ccc;
+                text-decoration: none;
+                transition: 0.2s ease;
+            }
+
+                .nb-footer a:hover {
+                    color: #16a34a;
+                }
+
+        .nb-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #16a34a;
+            text-decoration: none;
+        }
+
+        .nb-heading {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .profile-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #16a34a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            padding: 0 10px;
+        }
+
+        .profile-circle:hover {
+            background-color: #15803d;
+        }
+
+        /* Premium Profile Avatar */
+
+        .profile-btn {
+            border: none;
+            background: transparent;
+            position: relative;
+            padding: 0;
+        }
+
+        .profile-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(22,163,74,0.3);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.07);
+            box-shadow: 0 6px 20px rgba(22,163,74,0.45);
+        }
+
+        .profile-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .premium-dropdown {
+            border-radius: 14px;
+            padding: 8px 0;
+            border: none;
+            min-width: 200px;
+        }
+
+        .premium-dropdown .dropdown-item {
+            padding: 10px 18px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .premium-dropdown .dropdown-item:hover {
+            background: #f3f4f6;
+        }
+
+        /* Fix dropdown clipping issue */
+        .navbar {
+            overflow: visible !important;
+            z-index: 1000;
+        }
+
+        .navbar-collapse {
+            overflow: visible !important;
+        }
+
+        .navbar .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            z-index: 3000 !important;
+            margin-top: 10px;
+            border-radius: 14px;
+            padding: 10px 0;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border: none;
+            animation: dropdownFade 0.25s ease;
+        }
+
+        /* Smooth dropdown animation */
+        @@keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* ===== CLEAN RIGHT SIDE UI ===== */
+
+        .cart-icon {
+            font-size: 18px;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: 0.2s ease;
+        }
+
+            .cart-icon:hover {
+                background: #f3f4f6;
+            }
+
+        /* Remove old profile-circle if present */
+        .profile-circle {
+            display: none !important;
+        }
+
+        /* Slightly cleaner navbar spacing */
+        .navbar {
+            padding: 12px 0;
+        }
+
+        .navbar,
+        .navbar-collapse {
+            overflow: visible !important;
+        }
+
+
+        .dropdown-menu {
+            z-index: 5000 !important;
+            margin-top: 18px !important;
+            border-radius: 16px;
+            padding: 12px 0;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+            border: none;
+            animation: dropdownFade 0.25s ease;
+        }
+
+
     </style>
+
 
     <!-- Preconnect + preload important images for the homepage -->
     <link rel="preconnect" href="https://your-cdn.example.com" crossorigin />
@@ -32,29 +331,109 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
+
+                <!-- Logo -->
                 <a class="navbar-brand" href="/">NutriBite</a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav"
-                        aria-controls="publicNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#publicNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="publicNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/Menu">Menu</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/location">Location</a></li>
+
+                    <!-- Left Links -->
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Menu">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Location">Location</a>
+                        </li>
                     </ul>
 
-                    <div class="d-flex align-items-center">
-                        <a id="cartBtnPublic" class="btn btn-outline-secondary me-2 d-none" href="/Cart">Cart</a>
+                    <!-- Right Side -->
+                    <div class="d-flex align-items-center gap-3">
 
-                        <!-- Login & Sign Up -->
-                        <a id="loginBtnPublic" class="btn btn-sm btn-outline-secondary me-2" href="/login">Login</a>
-                        <a id="signupBtnPublic" class="btn btn-sm btn-success" href="/signup">Sign Up</a>
+                        <!-- Join Us always visible -->
+                        <a class="btn btn-outline-success btn-sm px-3 rounded-pill fw-semibold"
+                           asp-controller="Vendor"
+                           asp-action="Register">
+                            Join Us
+                        </a>
+
+                        @if (userId != null)
+                        {
+                            <!-- Cart -->
+                            <a asp-controller="Cart" asp-action="Index" class="cart-icon">
+                                🛒
+                            </a>
+
+
+                            <!-- Profile Dropdown -->
+                            <div class="dropdown">
+                                <button class="profile-btn"
+                                        type="button"
+                                        data-bs-toggle="dropdown">
+
+                                    <div class="profile-avatar">
+                                        @userName?.Substring(0, 1).ToUpper()
+                                    </div>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end premium-dropdown shadow">
+
+                                    <li>
+                                        <a class="dropdown-item" href="/Users/Account">
+                                            👤 My Profile
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="/Orders">
+                                            📦 My Orders
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="/Settings">
+                                            ⚙ Settings
+                                        </a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="/Auth/Logout">
+                                            🚪 Logout
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-secondary btn-sm px-3"
+                               href="/Auth/Login">
+                                Login
+                            </a>
+
+                            <a class="btn btn-success btn-sm px-3"
+                               href="/Auth/Register">
+                                Sign Up
+                            </a>
+                        }
+
                     </div>
                 </div>
             </div>
@@ -63,7 +442,7 @@
 
     <div class="page-container">
         <main role="main">
-            <div class="container my-4">
+            <div class="container-fluid px-0">
                 @RenderBody()
             </div>
         </main>
@@ -74,7 +453,7 @@
                     <div class="nb-col nb-col-1">
                         <a class="nb-logo" href="/">NutriBite</a>
                         <p class="nb-desc">We at NutriBite use smart nutrition technology to help you eat better every day.
-Our calorie-focused meals are thoughtfully crafted to match your health goals�without compromising on taste or flexibility.</p>
+Our calorie-focused meals are thoughtfully crafted to match your health goals—without compromising on taste or flexibility.</p>
                         <div class="nb-social">
                             <a href="#" class="nb-social-link" aria-label="Facebook">f</a>
                             <a href="#" class="nb-social-link" aria-label="Instagram">i</a>
@@ -126,19 +505,28 @@ Our calorie-focused meals are thoughtfully crafted to match your health goals�wi
             function updateAuthUI() {
                 $.getJSON('/Auth/IsAuthenticated')
                     .done(function (res) {
-                        var loginBtn = document.getElementById('loginBtnPublic');
-                        var signupBtn = document.getElementById('signupBtnPublic');
-                        var cart = document.getElementById('cartBtnPublic');
+var authItems = document.querySelectorAll('.auth-only');
+var guestItems = document.querySelectorAll('.guest-only');
+var circle = document.getElementById('profileCircle');
 
-                        if (res && res.authenticated) {
-                            if (loginBtn) loginBtn.style.display = 'none';
-                            if (signupBtn) signupBtn.style.display = 'none';
-                            if (cart) cart.classList.remove('d-none');
-                        } else {
-                            if (loginBtn) loginBtn.style.display = '';
-                            if (signupBtn) signupBtn.style.display = '';
-                            if (cart) cart.classList.add('d-none');
-                        }
+if (res && res.authenticated) {
+
+    authItems.forEach(x => x.classList.remove('d-none'));
+    guestItems.forEach(x => x.classList.add('d-none'));
+
+    if (res.profileImage && res.profileImage !== "") {
+        circle.innerHTML = '<img src="' + res.profileImage + '" />';
+    } else if (res.userName) {
+        circle.textContent = res.userName.charAt(0).toUpperCase();
+    }
+
+} else {
+
+    authItems.forEach(x => x.classList.add('d-none'));
+    guestItems.forEach(x => x.classList.remove('d-none'));
+
+    circle.textContent = "U";
+}
                     })
                     .fail(function () {
                         // keep default guest state
@@ -150,6 +538,120 @@ Our calorie-focused meals are thoughtfully crafted to match your health goals�wi
                 document.addEventListener('user:login', function () {
                     updateAuthUI();
                 });
+            });
+        })();
+    </script>
+
+    <script>
+    window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (!navbar) return;
+        if (window.scrollY > 20) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+    });
+    </script>
+
+    <!-- ADDED: Calorie Tracker auto-redirect handling -->
+    <script>
+        (function () {
+            // Helper: check auth endpoint
+            function isAuthenticated() {
+                return fetch('/Auth/IsAuthenticated', { credentials: 'same-origin' })
+                    .then(r => {
+                        if (!r.ok) return { authenticated: false };
+                        return r.json().catch(() => ({ authenticated: false }));
+                    })
+                    .catch(() => ({ authenticated: false }));
+            }
+
+            // When a calorie link is clicked, handle redirect:
+            // - if authenticated -> go to /Users/Calorie
+            // - if not -> store redirect target in sessionStorage then go to /login
+            function handleCalorieClick(e, targetHref) {
+                e.preventDefault();
+                // normalized destination we want after login or when authenticated
+                const destination = '/Users/Calorie';
+                isAuthenticated().then(res => {
+                    if (res && res.authenticated) {
+                        // user authenticated -> navigate to destination
+                        window.location.href = destination;
+                    } else {
+                        // not authenticated -> store redirect and go to login
+                        try {
+                            sessionStorage.setItem('postLoginRedirect', destination);
+                        } catch (ex) {
+                            console.warn('Unable to store redirect in sessionStorage', ex);
+                        }
+                        // navigate to the short-friendly login route
+                        window.location.href = '/login';
+                    }
+                });
+            }
+
+            // Attach delegated click handler for any anchor that targets user calorie pages:
+            // match hrefs starting with /Users/Calorie (covers /Users/CalorieAnalytics, /Users/Calorie etc.)
+            document.addEventListener('click', function (ev) {
+                const a = ev.target.closest && ev.target.closest('a');
+                if (!a) return;
+                const href = a.getAttribute('href') || '';
+                // ignore links that are full external URLs
+                if (/^https?:\/\//i.test(href)) return;
+                // match calorie-related user links (case-insensitive)
+                if (href && href.match(/^\/Users\/Calorie/i)) {
+                    handleCalorieClick(ev, href);
+                }
+            });
+
+            // After successful login, automatically redirect to stored URL then clear it.
+            // We poll the auth endpoint when we detect a stored redirect — this covers the login page
+            // redirect flow without changing controllers.
+            function tryPostLoginRedirect() {
+                let dest = null;
+                try {
+                    dest = sessionStorage.getItem('postLoginRedirect');
+                } catch (ex) {
+                    // ignore storage errors
+                }
+                if (!dest) return;
+
+                // If already on the destination, clear and return
+                if (location.pathname === dest || location.pathname === (new URL(dest, location.origin)).pathname) {
+                    try { sessionStorage.removeItem('postLoginRedirect'); } catch (ex) { }
+                    return;
+                }
+
+                // Poll auth status for up to ~12 seconds; once authenticated, redirect and clear storage.
+                const maxAttempts = 12;
+                let attempts = 0;
+                const interval = setInterval(function () {
+                    attempts++;
+                    isAuthenticated().then res => {
+                        if (res && res.authenticated) {
+                            clearInterval(interval);
+                            try { sessionStorage.removeItem('postLoginRedirect'); } catch (ex) { }
+                            // navigate to desired destination
+                            window.location.href = dest;
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(interval);
+                            // Give up; keep the stored redirect for next page load.
+                        }
+                    }).catch(() => {
+                        if (attempts >= maxAttempts) clearInterval(interval);
+                    });
+                }, 1000);
+            }
+
+            // Run on DOM ready
+            document.addEventListener('DOMContentLoaded', function () {
+                tryPostLoginRedirect();
+            });
+
+            // Also attempt redirect on "user:login" custom event used elsewhere in the app
+            document.addEventListener('user:login', function () {
+                tryPostLoginRedirect();
             });
         })();
     </script>

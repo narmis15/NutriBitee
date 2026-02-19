@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Vendor";
+    Layout = "~/Views/Shared/_VendorLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: #f3faef;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        h2 {
+            color: #63B34E;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #eaf6e7;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .completed {
+            background: #e6f5e1;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Orders</h2>
+
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Food</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>#1001</td>
+                <td>Healthy Veg Bowl</td>
+                <td>2</td>
+                <td>₹398</td>
+                <td><span class="status pending">Pending</span></td>
+            </tr>
+
+            <tr>
+                <td>#1002</td>
+                <td>Protein Salad</td>
+                <td>1</td>
+                <td>₹249</td>
+                <td><span class="status completed">Completed</span></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

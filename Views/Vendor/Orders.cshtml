@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Vendor";
+    Layout = "~/Views/Shared/_VendorLayout.cshtml";
+}
+
+<style>
+    .orders-wrap {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+    .order-card {
+        background:white;
+        padding:16px;
+        margin-bottom:12px;
+        border-radius:8px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.04);
+    }
+</style>
+
+<div class="orders-wrap">
+    <h2>Orders</h2>
+
+    <div class="order-card">
+        <strong>Order #1001</strong>
+        <div class="text-muted">3 items · ₹450 · Pending</div>
+    </div>
+
+    <div class="order-card">
+        <strong>Order #1000</strong>
+        <div class="text-muted">1 item · ₹199 · Delivered</div>
+    </div>
+
+    <p class="text-muted">Real data will appear here when connected to the backend.</p>
+</div>
