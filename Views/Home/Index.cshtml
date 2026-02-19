@@ -311,47 +311,72 @@
         </div>
     </section>
     <!-- End food categories -->
-
-    <!-- 1) SPECIALLY FOR YOU (Students, Elderly, Corporate) -->
-    <section class="specially-for-you py-5" aria-labelledby="specialForYouHeading">
-        <div class="container">
-            <div id="specialForYouHeading" class="special-header mb-4" role="heading" aria-level="2">
-                <span>SPECIALLY FOR YOU</span>
-            </div>
-
-            <div class="special-grid" role="list">
-                <!-- Student -->
-                <div class="category-card" role="listitem" aria-label="Students">
-                    <div class="category-imgwrap">
-                        <img src="~/images/categories/student.jpeg" alt="Students meal" class="category-img" loading="lazy" />
-                    </div>
-                    <div class="category-body">
-                        <button type="button" class="category-btn" aria-label="Students category">STUDENTS</button>
-                    </div>
-                </div>
-
-                <!-- Elderly -->
-                <div class="category-card" role="listitem" aria-label="Elderly">
-                    <div class="category-imgwrap">
-                        <img src="~/images/categories/elderly.jpeg" alt="Elderly meal" class="category-img" loading="lazy" />
-                    </div>
-                    <div class="category-body">
-                        <button type="button" class="category-btn" aria-label="Elderly category">ELDERLY</button>
-                    </div>
-                </div>
-
-                <!-- Corporate -->
-                <div class="category-card" role="listitem" aria-label="Corporate">
-                    <div class="category-imgwrap">
-                        <img src="~/images/categories/corporate.jpeg" alt="Corporate meal" class="category-img" loading="lazy" />
-                    </div>
-                    <div class="category-body">
-                        <button type="button" class="category-btn" aria-label="Corporate category">CORPORATE</button>
-                    </div>
-                </div>
-            </div>
+<!-- 1) SPECIALLY FOR YOU (Students, Elderly, Corporate) -->
+<section class="specially-for-you py-5" aria-labelledby="specialForYouHeading">
+    <div class="container">
+        <div id="specialForYouHeading" class="special-header mb-4" role="heading" aria-level="2">
+            <span>SPECIALLY FOR YOU</span>
         </div>
-    </section>
+
+        <div class="special-grid" role="list">
+
+            <!-- Student -->
+            <div class="category-card" role="listitem" aria-label="Students">
+                <div class="category-imgwrap">
+                    <img src="~/images/categories/student.jpeg"
+                         alt="Students meal"
+                         class="category-img"
+                         loading="lazy" />
+                </div>
+                <div class="category-body">
+                    <a asp-controller="Students"
+                       asp-action="Index"
+                       class="category-btn"
+                       aria-label="Students category">
+                        STUDENTS
+                    </a>
+                </div>
+            </div>
+
+            <!-- Elderly -->
+            <div class="category-card" role="listitem" aria-label="Elderly">
+                <div class="category-imgwrap">
+                    <img src="~/images/categories/elderly.jpeg"
+                         alt="Elderly meal"
+                         class="category-img"
+                         loading="lazy" />
+                </div>
+                <div class="category-body">
+                    <a asp-controller="Elderly"
+                       asp-action="Index"
+                       class="category-btn"
+                       aria-label="Elderly category">
+                        ELDERLY
+                    </a>
+                </div>
+            </div>
+
+            <!-- Corporate -->
+            <div class="category-card" role="listitem" aria-label="Corporate">
+                <div class="category-imgwrap">
+                    <img src="~/images/categories/corporate.jpeg"
+                         alt="Corporate meal"
+                         class="category-img"
+                         loading="lazy" />
+                </div>
+                <div class="category-body">
+                    <a asp-controller="Corporate"
+                       asp-action="Index"
+                       class="category-btn"
+                       aria-label="Corporate category">
+                        CORPORATE
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
 
     
 
