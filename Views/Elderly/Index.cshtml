@@ -1,5 +1,334 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "NutriBite — Elderly";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/elderly.css" />
+
+<section class="students-hero container my-4" role="region" aria-label="Students hero">
+    <div class="hero-card">
+        <div class="hero-left">
+            <h1>Smart Meals for Smart Students</h1>
+            <p class="lead">Fuel your brain without emptying your wallet.</p>
+            <a class="btn explore-combos" href="#featuredCombos">Explore Combos</a>
+        </div>
+        <div class="hero-right" aria-hidden="true">
+            <img src="~/images/categories/elderly.jpeg" alt="Elderly meals" loading="lazy" />
+        </div>
+    </div>
+</section>
+
+<!-- Sticky filter bar -->
+<section class="filter-bar-wrap" aria-label="Student filters">
+    <div class="filter-bar container" role="region" aria-label="Filters" id="studentsFilterBar">
+        <div class="filter-item">
+            <label for="priceRange">Budget: <span id="priceValue">₹75</span></label>
+            <input id="priceRange" type="range" min="50" max="150" value="100" />
+        </div>
+
+        <div class="filter-item toggle-item">
+            <label><input id="highProtein" type="checkbox" /> High Protein</label>
+        </div>
+
+        <div class="filter-item toggle-item">
+            <label><input id="under500" type="checkbox" /> Under 500 kcal</label>
+        </div>
+
+        <div class="filter-item toggle-item">
+            <label><input id="vegOnly" type="checkbox" /> Veg Only</label>
+        </div>
+
+        <div class="filter-item">
+            <button id="resetFilters" class="btn reset-btn">Reset</button>
+        </div>
+    </div>
+</section>
+
+<!-- Elderly Specials Menu -->
+<section id="elderlyMeals" class="container my-5" aria-labelledby="elderlyHeading">
+    <h2 id="elderlyHeading">Elderly Specials – Sukoon Meals</h2>
+
+    <div class="combos-grid" role="list">
+
+        <!-- Soft Moong Dal Khichdi -->
+        <article class="combo-card" role="listitem"
+                 data-calories="420"
+                 data-protein="18"
+                 data-price="85"
+                 data-veg="true">
+            <div class="combo-badge">420 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Soft Moong Dal Khichdi</h3>
+
+                <div class="combo-meta">Protein: <strong>18g</strong></div>
+                <div class="combo-price">₹<strong>85</strong></div>
+                <div class="combo-burn">Burns in <span>42</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/Dal khichdi.png"
+                     alt="Soft Moong Dal Khichdi"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Oats & Moong Dal Cheela -->
+        <article class="combo-card" role="listitem"
+                 data-calories="380"
+                 data-protein="16"
+                 data-price="80"
+                 data-veg="true">
+            <div class="combo-badge">380 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Oats & Moong Dal Cheela</h3>
+
+                <div class="combo-meta">Protein: <strong>16g</strong></div>
+                <div class="combo-price">₹<strong>80</strong></div>
+                <div class="combo-burn">Burns in <span>38</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/moong and oats chilla.png"
+                     alt="Oats and Moong Dal Cheela"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Lauki & Chana Dal with Phulka -->
+        <article class="combo-card" role="listitem"
+                 data-calories="450"
+                 data-protein="20"
+                 data-price="90"
+                 data-veg="true">
+            <div class="combo-badge">450 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Lauki & Chana Dal with Phulka</h3>
+
+                <div class="combo-meta">Protein: <strong>20g</strong></div>
+                <div class="combo-price">₹<strong>90</strong></div>
+                <div class="combo-burn">Burns in <span>45</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/chaana and lauki dal with phulka.png"
+                     alt="Lauki and Chana Dal with Phulka"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Vegetable Dalia -->
+        <article class="combo-card" role="listitem"
+                 data-calories="410"
+                 data-protein="15"
+                 data-price="75"
+                 data-veg="true">
+            <div class="combo-badge">410 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Vegetable Dalia</h3>
+
+                <div class="combo-meta">Protein: <strong>15g</strong></div>
+                <div class="combo-price">₹<strong>75</strong></div>
+                <div class="combo-burn">Burns in <span>41</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/vegetable daliya.png"
+                     alt="Vegetable Dalia"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Methi Soft Thepla with Dahi -->
+        <article class="combo-card" role="listitem"
+                 data-calories="390"
+                 data-protein="14"
+                 data-price="80"
+                 data-veg="true">
+            <div class="combo-badge">390 kcal</div>
+
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Methi Soft Thepla with Dahi</h3>
+
+                <div class="combo-meta">Protein: <strong>14g</strong></div>
+                <div class="combo-price">₹<strong>80</strong></div>
+                <div class="combo-burn">Burns in <span>39</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/methi thelpa with dahi.png"
+                     alt="Methi Soft Thepla with Dahi"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Curd Rice (Mild Tadka) -->
+        <article class="combo-card" role="listitem"
+                 data-calories="370"
+                 data-protein="12"
+                 data-price="70"
+                 data-veg="true">
+            <div class="combo-badge">370 kcal</div>
+
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Curd Rice (Mild Tadka)</h3>
+
+                <div class="combo-meta">Protein: <strong>12g</strong></div>
+                <div class="combo-price">₹<strong>70</strong></div>
+                <div class="combo-burn">Burns in <span>37</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/curd rice with pomegranate.png"
+                     alt="Curd Rice Mild Tadka"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Pumpkin Mash & Phulka -->
+        <article class="combo-card" role="listitem"
+                 data-calories="400"
+                 data-protein="13"
+                 data-price="75"
+                 data-veg="true">
+            <div class="combo-badge">400 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Pumpkin Mash & Phulka</h3>
+
+                <div class="combo-meta">Protein: <strong>13g</strong></div>
+                <div class="combo-price">₹<strong>75</strong></div>
+                <div class="combo-burn">Burns in <span>40</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/pumpkin mash with phulkas.png"
+                     alt="Pumpkin Mash and Phulka"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Steamed Idli -->
+        <article class="combo-card" role="listitem"
+                 data-calories="350"
+                 data-protein="11"
+                 data-price="85"
+                 data-veg="true">
+            <div class="combo-badge">350 kcal</div>
+
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Steamed Idli with Mild Sambar</h3>
+
+                <div class="combo-meta">Protein: <strong>11g</strong></div>
+                <div class="combo-price">₹<strong>85</strong></div>
+                <div class="combo-burn">Burns in <span>35</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/sambhar idli.png"
+                     alt="Steamed Idli with Mild Sambar"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Mashed Aloo Baingan -->
+        <article class="combo-card" role="listitem"
+                 data-calories="430"
+                 data-protein="12"
+                 data-price="80"
+                 data-veg="true">
+            <div class="combo-badge">430 kcal</div>
+
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Mashed Aloo-Baingan Bharta</h3>
+
+                <div class="combo-meta">Protein: <strong>12g</strong></div>
+                <div class="combo-price">₹<strong>80</strong></div>
+                <div class="combo-burn">Burns in <span>43</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/baigan bharta.png"
+                     alt="Mashed Aloo Baingan Bharta"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- Warm Apple Stew -->
+        <article class="combo-card" role="listitem"
+                 data-calories="240"
+                 data-protein="2"
+                 data-price="50"
+                 data-veg="true">
+            <div class="combo-badge">240 kcal</div>
+
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Warm Apple & Cinnamon Stew</h3>
+
+                <div class="combo-meta">Protein: <strong>2g</strong></div>
+                <div class="combo-price">₹<strong>50</strong></div>
+                <div class="combo-burn">Burns in <span>24</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/cinnamon apple stew.png"
+                     alt="Warm Apple and Cinnamon Stew"
+                     loading="lazy" />
+
+            </div>
+
+        </article>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/elderly.js"></script>
 }

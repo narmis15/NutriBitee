@@ -1,5 +1,375 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "NutriBite — Students";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
+
+<link rel="stylesheet" href="~/css/corporate.css" />
+
+<section class="students-hero container my-4" role="region" aria-label="Students hero">
+    <div class="hero-card">
+        <div class="hero-left">
+            <h1>Smart Meals for Smart Students</h1>
+            <p class="lead">Fuel your brain without emptying your wallet.</p>
+            <a class="btn explore-combos" href="#featuredCombos">Explore Combos</a>
+        </div>
+        <div class="hero-right" aria-hidden="true">
+            <img src="~/images/categories/corporate.jpeg" alt="Corporate meals" loading="lazy" />
+        </div>
+    </div>
+</section>
+
+<!-- Sticky filter bar -->
+<section class="filter-bar-wrap" aria-label="Student filters">
+    <div class="filter-bar container" role="region" aria-label="Filters" id="studentsFilterBar">
+        <div class="filter-item">
+            <label for="priceRange">Budget: <span id="priceValue">₹75</span></label>
+            <input id="priceRange" type="range" min="50" max="150" value="100" />
+        </div>
+
+        <div class="filter-item toggle-item">
+            <label><input id="highProtein" type="checkbox" /> High Protein</label>
+        </div>
+
+        <div class="filter-item toggle-item">
+            <label><input id="under500" type="checkbox" /> Under 500 kcal</label>
+        </div>
+
+        <div class="filter-item toggle-item">
+            <label><input id="vegOnly" type="checkbox" /> Veg Only</label>
+        </div>
+
+        <div class="filter-item">
+            <button id="resetFilters" class="btn reset-btn">Reset</button>
+        </div>
+    </div>
+</section>
+
+<!-- Corporate Productivity Menu -->
+<section id="corporateMeals" class="container my-5" aria-labelledby="corporateHeading">
+    <h2 id="corporateHeading">Corporate Specials – Productivity Menu</h2>
+
+    <div class="combos-grid" role="list">
+
+        <!-- ================= PREMIUM NO-NAP ================= -->
+
+        <article class="combo-card" role="listitem"
+                 data-calories="480"
+                 data-protein="28"
+                 data-price="149"
+                 data-veg="true">
+            <div class="combo-badge">480 kcal</div>
+
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Deep Work Grain Bowl</h3>
+
+                <div class="combo-meta">Protein: <strong>28g</strong></div>
+                <div class="combo-price">₹<strong>149</strong></div>
+                <div class="combo-burn">Burns in <span>48</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/deep grain bowl.png"
+                     alt="Deep Work Grain Bowl"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="420"
+                 data-protein="24"
+                 data-price="129"
+                 data-veg="true">
+            <div class="combo-badge">420 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Paneer Tikka Wrap (Whole Wheat)</h3>
+
+                <div class="combo-meta">Protein: <strong>24g</strong></div>
+                <div class="combo-price">₹<strong>129</strong></div>
+                <div class="combo-burn">Burns in <span>42</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/paneer tikka wrap.png"
+                     alt="Paneer Tikka Wrap"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="500"
+                 data-protein="30"
+                 data-price="159"
+                 data-veg="true">
+            <div class="combo-badge">500 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Executive Lean Thali</h3>
+
+                <div class="combo-meta">Protein: <strong>30g</strong></div>
+                <div class="combo-price">₹<strong>159</strong></div>
+                <div class="combo-burn">Burns in <span>50</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/executive lean thali.png"
+                     alt="Executive Lean Thali"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="350"
+                 data-protein="26"
+                 data-price="139"
+                 data-veg="true">
+            <div class="combo-badge">350 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Grilled Tofu & Sprout Salad</h3>
+
+                <div class="combo-meta">Protein: <strong>26g</strong></div>
+                <div class="combo-price">₹<strong>139</strong></div>
+                <div class="combo-burn">Burns in <span>35</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/Grilled tofu salad with sprouts.png"
+                     alt="Grilled Tofu & Sprout Salad"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="470"
+                 data-protein="22"
+                 data-price="149"
+                 data-veg="true">
+            <div class="combo-badge">470 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Methi-Matar Malai (Low Cream)</h3>
+
+                <div class="combo-meta">Protein: <strong>22g</strong></div>
+                <div class="combo-price">₹<strong>149</strong></div>
+                <div class="combo-burn">Burns in <span>47</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/Methi-Matar Malai.png"
+                     alt="Methi-Matar Malai"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- ================= EXECUTIVE EXPANSION ================= -->
+
+        <article class="combo-card" role="listitem"
+                 data-calories="430"
+                 data-protein="20"
+                 data-price="139"
+                 data-veg="true">
+            <div class="combo-badge">430 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Black Chana & Barley Salad</h3>
+
+                <div class="combo-meta">Protein: <strong>20g</strong></div>
+                <div class="combo-price">₹<strong>139</strong></div>
+                <div class="combo-burn">Burns in <span>43</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/Black Chana & Barley Salad.png"
+                     alt="Black Chana & Barley Salad"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="410"
+                 data-protein="23"
+                 data-price="135"
+                 data-veg="true">
+            <div class="combo-badge">410 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Whole Wheat Pesto Paneer Wrap</h3>
+
+                <div class="combo-meta">Protein: <strong>23g</strong></div>
+                <div class="combo-price">₹<strong>135</strong></div>
+                <div class="combo-burn">Burns in <span>41</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/pesto paneer wrap.png"
+                     alt="Whole Wheat Pesto Paneer Wrap"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="460"
+                 data-protein="27"
+                 data-price="149"
+                 data-veg="true">
+            <div class="combo-badge">460 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Tandoori Soya Chaap Bowl</h3>
+
+                <div class="combo-meta">Protein: <strong>27g</strong></div>
+                <div class="combo-price">₹<strong>149</strong></div>
+                <div class="combo-burn">Burns in <span>46</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/Tandoori Soya Chaap Bowl.png"
+                     alt="Tandoori Soya Chaap Bowl"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <!-- ================= VALUE MEALS ================= -->
+
+        <article class="combo-card" role="listitem"
+                 data-calories="480"
+                 data-protein="22"
+                 data-price="89"
+                 data-veg="true">
+            <div class="combo-badge">480 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Work-Day Dal Khichdi Bowl</h3>
+
+                <div class="combo-meta">Protein: <strong>22g</strong></div>
+                <div class="combo-price">₹<strong>89</strong></div>
+                <div class="combo-burn">Burns in <span>48</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/Dal khichdi.png"
+                     alt="Work-Day Dal Khichdi Bowl"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="520"
+                 data-protein="18"
+                 data-price="85"
+                 data-veg="true">
+            <div class="combo-badge">520 kcal</div>
+            <!-- LEFT SIDE (TEXT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Aloo-Matar Tehri</h3>
+
+                <div class="combo-meta">Protein: <strong>18g</strong></div>
+                <div class="combo-price">₹<strong>85</strong></div>
+                <div class="combo-burn">Burns in <span>52</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/Tehri.png"
+                     alt="Aloo-Matar Tehri"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="450"
+                 data-protein="25"
+                 data-price="95"
+                 data-veg="true">
+            <div class="combo-badge">450 kcal</div>
+            <!-- LEFT SIDE (TEXT CONTENT) -->
+            <div class="combo-content">
+                <h3 class="combo-title">Black Chana Curry & Rotis</h3>
+
+                <div class="combo-meta">Protein: <strong>25g</strong></div>
+                <div class="combo-price">₹<strong>95</strong></div>
+                <div class="combo-burn">Burns in <span>45</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+
+            <!-- RIGHT SIDE (IMAGE) -->
+            <div class="combo-image">
+                <img src="~/images/menu items/black channa with 2 rotis.png"
+                     alt="Black Chana Curry & Rotis"
+                     loading="lazy" />
+            </div>
+
+        </article>
+
+        <article class="combo-card" role="listitem"
+                 data-calories="390"
+                 data-protein="17"
+                 data-price="79"
+                 data-veg="true">
+            <div class="combo-badge">390 kcal</div>
+            <div class="combo-content">
+                <h3 class="combo-title">Mixed Veg Jowar Upma</h3>
+
+                <div class="combo-meta">Protein: <strong>17g</strong></div>
+                <div class="combo-price">₹<strong>79</strong></div>
+                <div class="combo-burn">Burns in <span>39</span> mins walking</div>
+
+                <button class="btn add-cart">Add to Cart</button>
+            </div>
+            <div class="combo-image">
+                <img src="~/images/menu items/jowar upma.png"
+                     alt="Mixed Veg Jowar Upma"
+                     loading="lazy" />   
+            </div>
+
+        </article>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/corporate.js"></script>
+}
+ 
