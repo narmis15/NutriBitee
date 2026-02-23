@@ -74,7 +74,7 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
-        public IActionResult Orders()
+        public IActionResult Order()
         {
             return View();
         }

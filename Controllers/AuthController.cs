@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
 namespace NUTRIBITE.Controllers
@@ -76,11 +76,20 @@ namespace NUTRIBITE.Controllers
             }
         }
 
-        // POST: /Auth/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(string email, string password)
         {
+            // 🔥 FIRST CHECK ADMIN HARDCODED
+            if (!string.IsNullOrWhiteSpace(email) &&
+                email.Trim().ToLowerInvariant() == "nutribite123@gmail.com" &&
+                password == "NutriBite//26")
+            {
+                HttpContext.Session.SetString("Admin", email.Trim());
+                return Json(new { success = true, isAdmin = true });
+            }
+
+            // 🔽 THEN CONTINUE NORMAL USER LOGIN
             string cs = _configuration.GetConnectionString("DBCS");
 
             using SqlConnection con = new SqlConnection(cs);
@@ -99,7 +108,7 @@ namespace NUTRIBITE.Controllers
                 HttpContext.Session.SetInt32("UserId", (int)reader["Id"]);
                 HttpContext.Session.SetString("UserName", reader["Name"].ToString());
 
-                return Json(new { success = true });
+                return Json(new { success = true, isAdmin = false });
             }
 
             return Json(new { success = false, message = "Invalid email or password." });

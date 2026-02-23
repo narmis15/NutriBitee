@@ -3,10 +3,6 @@
     var userId = Context.Session.GetInt32("UserId");
     var userName = Context.Session.GetString("UserName");
 }
-@*
-    Public layout for NutriBite — updated to include modern multi-column footer (nb-footer).
-    Kept styling, spacing and responsiveness unchanged for header/navigation.
-*@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,331 +10,227 @@
     <title>@ViewData["Title"] - NutriBite</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <!-- Public CSS (site + home) -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/students.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/elderly.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/corporate.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/students.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/elderly.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/corporate.css" asp-append-version="true" />
 
     @RenderSection("HeadExtras", required: false)
-    <style>
-        /* ===== Slim Premium Sticky Glass Navbar ===== */
+    @RenderSection("Styles", required: false)
 
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            padding: 8px 0;
-            backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.92) !important;
-            transition: all 0.3s ease;
-        }
-
-        /* Shadow on scroll */
-        .navbar.scrolled {
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-        }
-
-        /* ===== Logo Styling + Micro Animation ===== */
-
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 22px;
-            color: #16a34a !important;
-            letter-spacing: 0.6px;
-            margin-right: 28px;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-brand:hover {
-            transform: translateY(-2px) scale(1.05);
-            text-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
-        }
-
-        /* ===== Navigation Links ===== */
-
-        .navbar-nav {
-            gap: 20px;
-        }
-
-        .nav-link {
-            font-size: 15px;
-            font-weight: 600;
-            color: #2c2c2c !important;
-            position: relative;
-            padding: 4px 0;
-            transition: 0.3s ease;
-        }
-
-        /* Animated gradient underline */
-        .nav-link::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -4px;
-            width: 0%;
-            height: 2px;
-            background: linear-gradient(90deg, #16a34a, #22c55e);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-link:hover {
-            color: #16a34a !important;
-        }
-
-        /* Active page highlight */
-        .nav-link.active {
-            color: #16a34a !important;
-        }
-
-        .nav-link.active::after {
-            width: 100%;
-        }
-
-        /* Buttons refinement */
-        .btn-success,
-        .btn-outline-secondary {
-            padding: 6px 14px;
-            font-size: 14px;
-            border-radius: 8px;
-            transition: 0.3s ease;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(22, 163, 74, 0.25);
-        }
-
-        /* ------------------------------------------------------------------
-           Preserve the rest of existing styles below (footers, profile avatar, dropdown fixes, etc.)
-           ------------------------------------------------------------------ */
-
-        .page-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        main {
-            flex: 1;
-        }
-
-        .nb-footer {
-            background: #111;
-            color: #fff;
-            padding: 60px 0 40px;
-        }
-
-            .nb-footer a {
-                color: #ccc;
-                text-decoration: none;
-                transition: 0.2s ease;
-            }
-
-                .nb-footer a:hover {
-                    color: #16a34a;
-                }
-
-        .nb-logo {
-            font-size: 20px;
-            font-weight: 700;
-            color: #16a34a;
-            text-decoration: none;
-        }
-
-        .nb-heading {
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .profile-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #16a34a;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s ease;
-            padding: 0 10px;
-        }
-
-        .profile-circle:hover {
-            background-color: #15803d;
-        }
-
-        /* Premium Profile Avatar */
-
-        .profile-btn {
-            border: none;
-            background: transparent;
-            position: relative;
-            padding: 0;
-        }
-
-        .profile-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #16a34a, #15803d);
-            color: #fff;
-            font-weight: 600;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(22,163,74,0.3);
-            overflow: hidden;
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        .profile-avatar:hover {
-            transform: scale(1.07);
-            box-shadow: 0 6px 20px rgba(22,163,74,0.45);
-        }
-
-        .profile-badge {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            width: 10px;
-            height: 10px;
-            background: #ef4444;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        .premium-dropdown {
-            border-radius: 14px;
-            padding: 8px 0;
-            border: none;
-            min-width: 200px;
-        }
-
-        .premium-dropdown .dropdown-item {
-            padding: 10px 18px;
-            font-weight: 500;
-            transition: background 0.2s ease;
-        }
-
-        .premium-dropdown .dropdown-item:hover {
-            background: #f3f4f6;
-        }
-
-        /* Fix dropdown clipping issue */
-        .navbar {
-            overflow: visible !important;
-            z-index: 1000;
-        }
-
-        .navbar-collapse {
-            overflow: visible !important;
-        }
-
-        .navbar .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            z-index: 3000 !important;
-            margin-top: 10px;
-            border-radius: 14px;
-            padding: 10px 0;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-            border: none;
-            animation: dropdownFade 0.25s ease;
-        }
-
-        /* Smooth dropdown animation */
-        @@keyframes dropdownFade {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* ===== CLEAN RIGHT SIDE UI ===== */
-
-        .cart-icon {
-            font-size: 18px;
-            text-decoration: none;
-            padding: 6px 10px;
-            border-radius: 8px;
-            transition: 0.2s ease;
-        }
-
-            .cart-icon:hover {
-                background: #f3f4f6;
-            }
-
-        /* Remove old profile-circle if present */
-        .profile-circle {
-            display: none !important;
-        }
-
-        /* Slightly cleaner navbar spacing */
-        .navbar {
-            padding: 12px 0;
-        }
-
-        .navbar,
-        .navbar-collapse {
-            overflow: visible !important;
-        }
-
-
-        .dropdown-menu {
-            z-index: 5000 !important;
-            margin-top: 18px !important;
-            border-radius: 16px;
-            padding: 12px 0;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-            border: none;
-            animation: dropdownFade 0.25s ease;
-        }
-
-
-    </style>
-
-
-    <!-- Preconnect + preload important images for the homepage -->
     <link rel="preconnect" href="https://your-cdn.example.com" crossorigin />
     <link rel="preload" href="~/images/hero/hero-food.png" as="image" />
     <link rel="preload" href="~/images/hero/slide 1.png" as="image" />
     <link rel="preload" href="~/images/hero/slide 2.png" as="image" />
-    <!-- Add more preloads for top carousel slides as needed -->
+
+    <style>
+        /* ===== PROFESSIONAL NAVBAR ===== */
+        .navbar {
+            height: 64px;
+            padding: 0;
+            background: #ffffff !important;
+            border-bottom: 1px solid #e8f0e9;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: fixed;
+            width: 100%;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: box-shadow 0.3s ease;
+        }
+
+        main {
+            margin-top: 64px;
+        }
+
+        
+
+            .navbar.scrolled {
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            }
+
+        .navbar-brand {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1b5e20 !important;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+            .navbar-brand span {
+                color: #43a047;
+            }
+
+        .navbar-nav .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a5568 !important;
+            padding: 6px 14px !important;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+            .navbar-nav .nav-link:hover {
+                background: #f0f4f1;
+                color: #1b5e20 !important;
+            }
+
+            .navbar-nav .nav-link.active {
+                color: #1b5e20 !important;
+                font-weight: 600;
+            }
+
+        /* Join Us button */
+        .btn-join {
+            background: none;
+            border: 1.5px solid #1b5e20;
+            color: #1b5e20 !important;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 7px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+            .btn-join:hover {
+                background: #1b5e20;
+                color: white !important;
+            }
+
+        /* Cart */
+        .cart-icon {
+            font-size: 20px;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+            .cart-icon:hover {
+                background: #f0f4f1;
+            }
+
+        /* Profile button */
+        .profile-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #1b5e20, #43a047);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            transition: box-shadow 0.2s;
+        }
+
+            .profile-avatar:hover {
+                box-shadow: 0 0 0 3px #c8e6c9;
+            }
+
+        /* Dropdown */
+        .premium-dropdown {
+            border: 1px solid #e8f0e9;
+            border-radius: 12px;
+            padding: 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+        }
+
+            .premium-dropdown .dropdown-item {
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 9px 14px;
+                color: #2d3748;
+                transition: background 0.2s;
+            }
+
+                .premium-dropdown .dropdown-item:hover {
+                    background: #f0f4f1;
+                    color: #1b5e20;
+                }
+
+                .premium-dropdown .dropdown-item.text-danger:hover {
+                    background: #fff5f5;
+                    color: #e53e3e !important;
+                }
+
+        /* Login / Signup buttons */
+        .btn-login {
+            background: none;
+            border: 1.5px solid #e2e8f0;
+            color: #4a5568;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 7px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+            .btn-login:hover {
+                border-color: #1b5e20;
+                color: #1b5e20;
+            }
+
+        .btn-signup {
+            background: #1b5e20;
+            color: white !important;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 7px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            transition: all 0.2s;
+        }
+
+            .btn-signup:hover {
+                background: #2e7d32;
+                color: white !important;
+                transform: translateY(-1px);
+            }
+
+        .page-container {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+            .page-container main {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+
+        .container-fluid.px-0 {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid px-4">
 
                 <!-- Logo -->
-                <a class="navbar-brand" href="/">NutriBite</a>
+                <a class="navbar-brand" href="/">Nutri<span>Bite</span></a>
 
                 <button class="navbar-toggler" type="button"
                         data-bs-toggle="collapse"
@@ -349,13 +241,11 @@
                 <div class="collapse navbar-collapse" id="publicNav">
 
                     <!-- Left Links -->
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav me-auto align-items-center">
                         <li class="nav-item">
                             <a class="nav-link" href="/">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Menu">Menu</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
                         </li>
@@ -363,12 +253,19 @@
                             <a class="nav-link" href="/Location">Location</a>
                         </li>
                     </ul>
-
+                    <!-- CENTER BIG SEARCH -->
+                    <div class="nav-search-wrapper d-none d-lg-flex">
+                        <form class="nav-search" role="search">
+                            <input type="text"
+                                   placeholder="Search healthy meals, categories..."
+                                   aria-label="Search" />
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
                     <!-- Right Side -->
                     <div class="d-flex align-items-center gap-3">
 
-                        <!-- Join Us always visible -->
-                        <a class="btn btn-outline-success btn-sm px-3 rounded-pill fw-semibold"
+                        <a class="btn-join"
                            asp-controller="Vendor"
                            asp-action="Register">
                             Join Us
@@ -376,43 +273,35 @@
 
                         @if (userId != null)
                         {
-                            <!-- Cart -->
                             <a asp-controller="Cart" asp-action="Index" class="cart-icon">
                                 🛒
                             </a>
 
-
-                            <!-- Profile Dropdown -->
                             <div class="dropdown">
                                 <button class="profile-btn"
                                         type="button"
                                         data-bs-toggle="dropdown">
-
                                     <div class="profile-avatar">
                                         @userName?.Substring(0, 1).ToUpper()
                                     </div>
                                 </button>
 
                                 <ul class="dropdown-menu dropdown-menu-end premium-dropdown shadow">
-
                                     <li>
                                         <a class="dropdown-item" href="/Users/Account">
                                             👤 My Profile
                                         </a>
                                     </li>
-
                                     <li>
                                         <a class="dropdown-item" href="/Orders">
                                             📦 My Orders
                                         </a>
                                     </li>
-
                                     <li>
                                         <a class="dropdown-item" href="/Settings">
                                             ⚙ Settings
                                         </a>
                                     </li>
-
                                     <li><hr class="dropdown-divider"></li>
 
                                     <li>
@@ -420,21 +309,13 @@
                                             🚪 Logout
                                         </a>
                                     </li>
-
                                 </ul>
                             </div>
                         }
                         else
                         {
-                            <a class="btn btn-outline-secondary btn-sm px-3"
-                               href="/Auth/Login">
-                                Login
-                            </a>
-
-                            <a class="btn btn-success btn-sm px-3"
-                               href="/Auth/Register">
-                                Sign Up
-                            </a>
+                            <a class="btn-login" href="/Auth/Login">Login</a>
+                            <a class="btn-signup" href="/Auth/Register">Sign Up</a>
                         }
 
                     </div>
@@ -455,8 +336,10 @@
                 <div class="nb-footer-grid">
                     <div class="nb-col nb-col-1">
                         <a class="nb-logo" href="/">NutriBite</a>
-                        <p class="nb-desc">We at NutriBite use smart nutrition technology to help you eat better every day.
-Our calorie-focused meals are thoughtfully crafted to match your health goals—without compromising on taste or flexibility.</p>
+                        <p class="nb-desc">
+                            We at NutriBite use smart nutrition technology to help you eat better every day.
+                            Our calorie-focused meals are thoughtfully crafted to match your health goals—without compromising on taste or flexibility.
+                        </p>
                         <div class="nb-social">
                             <a href="#" class="nb-social-link" aria-label="Facebook">f</a>
                             <a href="#" class="nb-social-link" aria-label="Instagram">i</a>
@@ -495,168 +378,62 @@ Our calorie-focused meals are thoughtfully crafted to match your health goals—
         </footer>
     </div>
 
-    <!-- Core scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Auth modal partial (kept for modal flows elsewhere) -->
     @await Html.PartialAsync("_AuthModal")
 
     <script>
         (function () {
-            // update auth UI (public)
             function updateAuthUI() {
                 $.getJSON('/Auth/IsAuthenticated')
                     .done(function (res) {
-var authItems = document.querySelectorAll('.auth-only');
-var guestItems = document.querySelectorAll('.guest-only');
-var circle = document.getElementById('profileCircle');
+                        var authItems = document.querySelectorAll('.auth-only');
+                        var guestItems = document.querySelectorAll('.guest-only');
+                        var circle = document.getElementById('profileCircle');
 
-if (res && res.authenticated) {
-
-    authItems.forEach(x => x.classList.remove('d-none'));
-    guestItems.forEach(x => x.classList.add('d-none'));
-
-    if (res.profileImage && res.profileImage !== "") {
-        circle.innerHTML = '<img src="' + res.profileImage + '" />';
-    } else if (res.userName) {
-        circle.textContent = res.userName.charAt(0).toUpperCase();
-    }
-
-} else {
-
-    authItems.forEach(x => x.classList.add('d-none'));
-    guestItems.forEach(x => x.classList.remove('d-none'));
-
-    circle.textContent = "U";
-}
+                        if (res && res.authenticated) {
+                            authItems.forEach(x => x.classList.remove('d-none'));
+                            guestItems.forEach(x => x.classList.add('d-none'));
+                            if (res.profileImage && res.profileImage !== "") {
+                                circle.innerHTML = '<img src="' + res.profileImage + '" />';
+                            } else if (res.userName) {
+                                circle.textContent = res.userName.charAt(0).toUpperCase();
+                            }
+                        } else {
+                            authItems.forEach(x => x.classList.add('d-none'));
+                            guestItems.forEach(x => x.classList.remove('d-none'));
+                            circle.textContent = "U";
+                        }
                     })
-                    .fail(function () {
-                        // keep default guest state
-                    });
+                    .fail(function () { });
             }
 
             document.addEventListener('DOMContentLoaded', function () {
                 updateAuthUI();
-                document.addEventListener('user:login', function () {
-                    updateAuthUI();
-                });
+                document.addEventListener('user:login', function () { updateAuthUI(); });
             });
         })();
     </script>
 
     <script>
-    window.addEventListener("scroll", function () {
-        const navbar = document.querySelector(".navbar");
-        if (!navbar) return;
-        if (window.scrollY > 20) {
-            navbar.classList.add("scrolled");
-        } else {
-            navbar.classList.remove("scrolled");
-        }
-    });
-    </script>
-
-    <!-- ADDED: Calorie Tracker auto-redirect handling -->
-    <script>
-        (function () {
-            // Helper: check auth endpoint
-            function isAuthenticated() {
-                return fetch('/Auth/IsAuthenticated', { credentials: 'same-origin' })
-                    .then(r => {
-                        if (!r.ok) return { authenticated: false };
-                        return r.json().catch(() => ({ authenticated: false }));
-                    })
-                    .catch(() => ({ authenticated: false }));
+        window.addEventListener("scroll", function () {
+            const navbar = document.querySelector(".navbar");
+            if (!navbar) return;
+            if (window.scrollY > 20) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
             }
+        });
 
-            // When a calorie link is clicked, handle redirect:
-            // - if authenticated -> go to /Users/Calorie
-            // - if not -> store redirect target in sessionStorage then go to /login
-            function handleCalorieClick(e, targetHref) {
-                e.preventDefault();
-                // normalized destination we want after login or when authenticated
-                const destination = '/Users/Calorie';
-                isAuthenticated().then(res => {
-                    if (res && res.authenticated) {
-                        // user authenticated -> navigate to destination
-                        window.location.href = destination;
-                    } else {
-                        // not authenticated -> store redirect and go to login
-                        try {
-                            sessionStorage.setItem('postLoginRedirect', destination);
-                        } catch (ex) {
-                            console.warn('Unable to store redirect in sessionStorage', ex);
-                        }
-                        // navigate to the short-friendly login route
-                        window.location.href = '/login';
-                    }
-                });
+        // Highlight active nav link
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+        navLinks.forEach(link => {
+            if (window.location.pathname === new URL(link.href).pathname) {
+                link.classList.add('active');
             }
-
-            // Attach delegated click handler for any anchor that targets user calorie pages:
-            // match hrefs starting with /Users/Calorie (covers /Users/CalorieAnalytics, /Users/Calorie etc.)
-            document.addEventListener('click', function (ev) {
-                const a = ev.target.closest && ev.target.closest('a');
-                if (!a) return;
-                const href = a.getAttribute('href') || '';
-                // ignore links that are full external URLs
-                if (/^https?:\/\//i.test(href)) return;
-                // match calorie-related user links (case-insensitive)
-                if (href && href.match(/^\/Users\/Calorie/i)) {
-                    handleCalorieClick(ev, href);
-                }
-            });
-
-            // After successful login, automatically redirect to stored URL then clear it.
-            // We poll the auth endpoint when we detect a stored redirect — this covers the login page
-            // redirect flow without changing controllers.
-            function tryPostLoginRedirect() {
-                let dest = null;
-                try {
-                    dest = sessionStorage.getItem('postLoginRedirect');
-                } catch (ex) {
-                    // ignore storage errors
-                }
-                if (!dest) return;
-
-                // If already on the destination, clear and return
-                if (location.pathname === dest || location.pathname === (new URL(dest, location.origin)).pathname) {
-                    try { sessionStorage.removeItem('postLoginRedirect'); } catch (ex) { }
-                    return;
-                }
-
-                // Poll auth status for up to ~12 seconds; once authenticated, redirect and clear storage.
-                const maxAttempts = 12;
-                let attempts = 0;
-                const interval = setInterval(function () {
-                    attempts++;
-                    isAuthenticated().then res => {
-                        if (res && res.authenticated) {
-                            clearInterval(interval);
-                            try { sessionStorage.removeItem('postLoginRedirect'); } catch (ex) { }
-                            // navigate to desired destination
-                            window.location.href = dest;
-                        } else if (attempts >= maxAttempts) {
-                            clearInterval(interval);
-                            // Give up; keep the stored redirect for next page load.
-                        }
-                    }).catch(() => {
-                        if (attempts >= maxAttempts) clearInterval(interval);
-                    });
-                }, 1000);
-            }
-
-            // Run on DOM ready
-            document.addEventListener('DOMContentLoaded', function () {
-                tryPostLoginRedirect();
-            });
-
-            // Also attempt redirect on "user:login" custom event used elsewhere in the app
-            document.addEventListener('user:login', function () {
-                tryPostLoginRedirect();
-            });
-        })();
+        });
     </script>
 
     @RenderSection("Scripts", required: false)

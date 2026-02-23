@@ -2,20 +2,14 @@
     ViewData["Title"] = "NutriBite — Home";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
 
 <link rel="stylesheet" href="~/css/home.css" />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-<header class="nb-nav shadow-sm">
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container">
-      
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nbNavbar" aria-controls="nbNavbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </nav>
-</header>
+
 
 <main>
   <!-- New modern hero -->
@@ -24,25 +18,18 @@
     <div class="hero-inner">
       <div class="hero-copy fade-in">
         <div class="badge bg-success text-white px-3 py-1 mb-3" style="border-radius:999px; display:inline-block;">100% Homemade</div>
-        <h1>Healthy Homemade Meals, Delivered Daily</h1>
-        <p class="lead">Fresh, calorie-counted meals prepared by verified home chefs. Flexible subscriptions, daily deliveries and meals tailored to your needs.</p>
-        <div class="cta d-flex gap-2">
-          <a class="btn btn-success btn-lg" href="/Menu" role="button" aria-label="Order Now">Order Now</a>
-          <a class="btn btn-outline-dark btn-lg" href="/Menu" role="button" aria-label="Explore Menu">Explore Menu</a>
-        </div>
-                <!-- 🔍 SEARCH BAR START -->
-                <div class="hero-search mt-4">
-                    <div class="input-group input-group-lg shadow-sm">
-                        <input type="text" id="homeSearchInput"
-                               class="form-control"
-                               placeholder="Search meals, categories..."
-                               aria-label="Search food" />
-                        <button class="btn btn-success" id="homeSearchBtn">
-                            Search
-                        </button>
-                    </div>
+                <h1>Discover Balanced Homemade Meals for a Healthier Lifestyle</h1>
+                <p class="lead">Fresh, calorie-counted meals prepared by verified home chefs. Flexible subscriptions, daily deliveries and meals tailored to your needs.</p>
+                <div class="cta-buttons">
+                    <a href="/Menu" class="btn-primary-hero">
+                        🍽 Start Ordering
+                    </a>
+
+                    <a href="/Menu" class="btn-secondary-hero">
+                        Browse Meals →
+                    </a>
                 </div>
-                <!-- 🔍 SEARCH BAR END -->
+                
 
         <div class="mt-3 d-flex gap-3 align-items-center">
           
@@ -450,62 +437,10 @@
             </div>
         </div>
     </section>
-
-    <section class="mt-4">
-        <h4>Categories</h4>
-        <div id="categories" class="categories" aria-label="Food categories"></div>
-    </section>
-
-    <section class="mt-3" id="foodsSection">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-            <h4 id="foodsHeading" class="m-0">Foods</h4>
-
-            <!-- Meal slot selector -->
-            <div class="slot-selector" role="tablist" aria-label="Select meal slot">
-                <button type="button" class="slot-btn active" data-slot="Breakfast">Breakfast</button>
-                <button type="button" class="slot-btn" data-slot="Lunch">Lunch</button>
-                <button type="button" class="slot-btn" data-slot="Dinner">Dinner</button>
-                <button type="button" class="slot-btn" data-slot="Snacks">Snacks</button>
-            </div>
-        </div>
-
-        <div id="loading" class="mt-2" style="display:none;">Loading…</div>
-        <div id="noResults" class="mt-2 text-muted" style="display:none;">No foods found for this category.</div>
-
-        <div class="d-lg-flex gap-3">
-            <div id="foodGrid" class="food-grid mt-3 flex-grow-1" aria-live="polite"></div>
-
-            <!-- Daily calorie summary panel (hidden on small screens) -->
-            <aside id="dailyPanel" class="daily-panel d-none d-lg-block">
-                <div class="panel-header">
-                    <strong>Today's Meals</strong>
-                    <small class="text-muted ms-1" id="panelDate"></small>
-                </div>
-                <div class="panel-body">
-                    <div class="panel-empty text-center text-muted">
-                        <div>Sign in to save & track your meals.</div>
-                        <div class="mt-2">
-                            <button id="panelLoginBtn" class="btn btn-cta btn-sm">Login</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel-footer">
-                    <div class="totals">
-                        <div>Total: <span class="totalCalories">0</span> kcal</div>
-                        <div>Goal: <span class="calorieGoal">—</span></div>
-                        <div>Remaining: <span class="remainingCalories">—</span></div>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </section>
-</div>
-
 <!-- snackbar / toast -->
 <div id="snackbar" class="snackbar" aria-live="polite" aria-atomic="true" hidden></div>
 
-@@section Scripts {
+@section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
         /**
@@ -780,3 +715,4 @@
             loadDailyPanel();
         })();
     </script>
+    }
