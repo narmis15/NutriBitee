@@ -11,6 +11,10 @@ namespace NUTRIBITE.Controllers
         private readonly IConfiguration _configuration;
         public AuthController(IConfiguration configuration) => _configuration = configuration;
 
+        // Hardcoded admin for dev/testing (replace with proper auth in production)
+        private const string DevAdminEmail = "Nutribite123@gmail.com";
+        private const string DevAdminPassword = "NutriBite//26";
+
         // GET /Auth/Login  (renders login page)
         [HttpGet]
         public IActionResult Login()
@@ -29,8 +33,11 @@ namespace NUTRIBITE.Controllers
         [HttpGet]
         public IActionResult IsAuthenticated()
         {
-            return Json(new { authenticated = HttpContext.Session.GetInt32("UserId").HasValue,
-                              userName = HttpContext.Session.GetString("UserName") ?? "" });
+            return Json(new
+            {
+                authenticated = HttpContext.Session.GetInt32("UserId").HasValue,
+                userName = HttpContext.Session.GetString("UserName") ?? ""
+            });
         }
 
         // POST /Auth/Login
@@ -41,13 +48,27 @@ namespace NUTRIBITE.Controllers
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 return Json(new { success = false, message = "Email and password are required." });
 
+            // Trim for consistent comparison
+            var trimmedEmail = email.Trim();
+
+            // 1) Quick dev/admin bypass: if matches hardcoded admin credentials, skip DB
+            if (string.Equals(trimmedEmail, DevAdminEmail, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(password ?? string.Empty, DevAdminPassword, StringComparison.Ordinal))
+            {
+                // minimal session for admin user (use a negative id to indicate special/dev account)
+                HttpContext.Session.SetInt32("UserId", -1);
+                HttpContext.Session.SetString("UserName", "Administrator");
+                return Json(new { success = true, userName = "Administrator" });
+            }
+
+            // 2) Normal DB-backed authentication (unchanged)
             string cs = _configuration.GetConnectionString("DBCS") ?? throw new Exception("DBCS not found");
             using var con = new SqlConnection(cs);
             con.Open();
 
             // try to find user by email
             using var cmd = new SqlCommand("SELECT TOP(1) * FROM [Users] WHERE Email = @e", con);
-            cmd.Parameters.AddWithValue("@e", email.Trim());
+            cmd.Parameters.AddWithValue("@e", trimmedEmail);
             using var r = cmd.ExecuteReader();
             if (!r.Read())
                 return Json(new { success = false, message = "Invalid credentials." });
@@ -58,10 +79,18 @@ namespace NUTRIBITE.Controllers
             var name = r["Name"] as string ?? r["FullName"] as string ?? r["UserName"] as string ?? (r["Email"] as string ?? "");
             string dbPassword = r["Password"] as string ?? r["PasswordHash"] as string;
             string dbSalt = null;
-            if (r.GetSchemaTable().Columns.Contains("PasswordSalt"))
-                dbSalt = r["PasswordSalt"] as string;
-            else if (r.GetSchemaTable().Columns.Contains("Salt"))
-                dbSalt = r["Salt"] as string;
+            try
+            {
+                var schema = r.GetSchemaTable();
+                if (schema != null && schema.Columns.Contains("PasswordSalt"))
+                    dbSalt = r["PasswordSalt"] as string;
+                else if (schema != null && schema.Columns.Contains("Salt"))
+                    dbSalt = r["Salt"] as string;
+            }
+            catch
+            {
+                // ignore schema read issues and fall back to plain columns
+            }
 
             // Prefer PBKDF2 if salt is present
             if (!string.IsNullOrEmpty(dbSalt) && !string.IsNullOrEmpty(dbPassword))
@@ -182,3 +211,4 @@ END", con);
         }
     }
 }
+
