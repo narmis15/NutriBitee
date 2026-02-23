@@ -1,93 +1,76 @@
 ﻿@{
-    ViewData["Title"] = "Vendor";
+    ViewData["Title"] = "Orders";
     Layout = "~/Views/Shared/_VendorLayout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body {
-            background: #f3faef;
-            font-family: 'Segoe UI', sans-serif;
-        }
+<div class="vendor-card">
 
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-        }
+    <!-- HEADER -->
+    <div class="orders-header">
+        <div>
+            <h2>Orders</h2>
+            <p>Manage and track your customer orders.</p>
+        </div>
 
-        h2 {
-            color: #63B34E;
-            margin-bottom: 20px;
-        }
+        <div class="orders-filter">
+            <select class="form-control">
+                <option>All Orders</option>
+                <option>Pending</option>
+                <option>Accepted</option>
+                <option>Completed</option>
+                <option>Cancelled</option>
+            </select>
+        </div>
+    </div>
 
-        table {
-            width: 100%;
-            background: white;
-            border-collapse: collapse;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
+    <!-- TABLE -->
+    <div class="table-responsive mt-4">
+        <table class="table vendor-orders-table align-middle">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Food Item</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        th, td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
+                <!-- SAMPLE ROW -->
+                <tr>
+                    <td>#1023</td>
+                    <td>Rahul Sharma</td>
+                    <td>Paneer Thali</td>
+                    <td>₹199</td>
+                    <td>
+                        <span class="status-badge pending">Pending</span>
+                    </td>
+                    <td>18 Jun 2026</td>
+                    <td class="text-end">
+                        <button class="btn-action accept">Accept</button>
+                        <button class="btn-action reject">Reject</button>
+                    </td>
+                </tr>
 
-        th {
-            background: #eaf6e7;
-        }
+                <tr>
+                    <td>#1022</td>
+                    <td>Anjali Singh</td>
+                    <td>High Protein Meal</td>
+                    <td>₹249</td>
+                    <td>
+                        <span class="status-badge completed">Completed</span>
+                    </td>
+                    <td>17 Jun 2026</td>
+                    <td class="text-end">
+                        <button class="btn-action view">View</button>
+                    </td>
+                </tr>
 
-        .status {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-
-        .pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .completed {
-            background: #e6f5e1;
-            color: #2e7d32;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h2>Orders</h2>
-
-        <table>
-            <tr>
-                <th>Order ID</th>
-                <th>Food</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Status</th>
-            </tr>
-
-            <tr>
-                <td>#1001</td>
-                <td>Healthy Veg Bowl</td>
-                <td>2</td>
-                <td>₹398</td>
-                <td><span class="status pending">Pending</span></td>
-            </tr>
-
-            <tr>
-                <td>#1002</td>
-                <td>Protein Salad</td>
-                <td>1</td>
-                <td>₹249</td>
-                <td><span class="status completed">Completed</span></td>
-            </tr>
+            </tbody>
         </table>
     </div>
-</body>
-</html>
+
+</div>
