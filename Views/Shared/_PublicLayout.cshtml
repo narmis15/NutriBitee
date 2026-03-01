@@ -300,8 +300,10 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid px-4">
 
-                <!-- Logo -->
-                <a class="navbar-brand" href="/">Nutri<span>Bite</span></a>
+                <!-- Logo -> goes to Users/Index (user home) -->
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Users" asp-action="Index">
+                    Nutri<span>Bite</span>
+                </a>
 
                 <button class="navbar-toggler" type="button"
                         data-bs-toggle="collapse"
@@ -311,78 +313,65 @@
 
                 <div class="collapse navbar-collapse" id="publicNav">
 
-                    <!-- Left Links -->
+                    <!-- Left Links: use Users controller routes -->
                     <ul class="navbar-nav me-auto align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
+                            <a class="nav-link" asp-controller="Users" asp-action="Index">Home</a>
                         </li>
-                        
+
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                            <a class="nav-link" asp-controller="Users" asp-action="About">About</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="/Location">Location</a>
+                            <a class="nav-link" asp-controller="Users" asp-action="Location">Location</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Users" asp-action="MyProfile">My Profile</a>
                         </li>
                     </ul>
-                    <!-- CENTER BIG SEARCH -->
+
+                    <!-- Right side (search / auth) remain unchanged -->
                     @if (userId != null)
                     {
                         <div class="nav-search-wrapper d-none d-lg-flex">
                             <form class="premium-search" asp-controller="Home" asp-action="Search" method="get">
                                 <input type="text" name="query" placeholder="Search healthy meals..." />
-                                <button type="submit">
-                                    🔍
-                                </button>
+                                <button type="submit">🔍</button>
                             </form>
                         </div>
-                       
                     }
-                    <!-- Right Side -->
-                    <div class="d-flex align-items-center gap-3">
 
-                        <a class="btn-join"
-                           asp-controller="Vendor"
-                           asp-action="Register">
-                            Join Us
-                        </a>
+                    <div class="d-flex align-items-center gap-3">
+                        <a class="btn-join" asp-controller="Vendor" asp-action="Register">Join Us</a>
 
                         @if (userId != null)
                         {
-                            <a asp-controller="Cart" asp-action="Index" class="cart-icon">
-                                🛒
-                            </a>
+                            <a asp-controller="Cart" asp-action="Index" class="cart-icon">🛒</a>
 
                             <div class="dropdown">
-                                <button class="profile-btn"
-                                        type="button"
-                                        data-bs-toggle="dropdown">
-                                    <div class="profile-avatar">
-                                        @userName?.Substring(0, 1).ToUpper()
-                                    </div>
+                                <button class="profile-btn" type="button" data-bs-toggle="dropdown">
+                                    <div class="profile-avatar">@userName?.Substring(0,1).ToUpper()</div>
                                 </button>
 
                                 <ul class="dropdown-menu dropdown-menu-end premium-dropdown shadow">
                                     <li>
-                                        <a class="dropdown-item" asp-controller="Users" asp-action="Account" id="navMyProfile">
+                                        <!-- Make sure this points to Users/MyProfile (not admin) -->
+                                        <a class="dropdown-item" asp-controller="Users" asp-action="MyProfile" id="navMyProfile">
                                             👤 My Profile
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" asp-controller="Users" asp-action="MyOrders">
-                                            📦 My Orders
-                                        </a>
+                                        <a class="dropdown-item" asp-controller="Users" asp-action="MyOrders">📦 My Orders</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" asp-controller="Users" asp-action="Settings">
-                                            ⚙ Settings
-                                        </a>
+                                        <a class="dropdown-item" asp-controller="Users" asp-action="Settings">⚙ Settings</a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
 
                                     <li>
-                                        <a class="dropdown-item text-danger" href="/Auth/Logout">
-                                            🚪 Logout
-                                        </a>
+                                        <a class="dropdown-item text-danger" href="/Auth/Logout">🚪 Logout</a>
                                     </li>
                                 </ul>
                             </div>
@@ -392,7 +381,6 @@
                             <a class="btn-login" href="/Auth/Login">Login</a>
                             <a class="btn-signup" href="/Auth/Register">Sign Up</a>
                         }
-
                     </div>
                 </div>
             </div>
@@ -411,10 +399,8 @@
                 <div class="nb-footer-grid">
                     <div class="nb-col nb-col-1">
                         <a class="nb-logo" href="/">NutriBite</a>
-                        <p class="nb-desc">
-                            We at NutriBite use smart nutrition technology to help you eat better every day.
-                            Our calorie-focused meals are thoughtfully crafted to match your health goals—without compromising on taste or flexibility.
-                        </p>
+                        <p class="nb-desc">We at NutriBite use smart nutrition technology to help you eat better every day.
+Our calorie-focused meals are thoughtfully crafted to match your health goals—without compromising on taste or flexibility.</p>
                         <div class="nb-social">
                             <a href="#" class="nb-social-link" aria-label="Facebook">f</a>
                             <a href="#" class="nb-social-link" aria-label="Instagram">i</a>
@@ -457,59 +443,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @await Html.PartialAsync("_AuthModal")
-
-    <script>
-        (function () {
-            function updateAuthUI() {
-                $.getJSON('/Auth/IsAuthenticated')
-                    .done(function (res) {
-                        var authItems = document.querySelectorAll('.auth-only');
-                        var guestItems = document.querySelectorAll('.guest-only');
-                        var circle = document.getElementById('profileCircle');
-
-                        if (res && res.authenticated) {
-                            authItems.forEach(x => x.classList.remove('d-none'));
-                            guestItems.forEach(x => x.classList.add('d-none'));
-                            if (res.profileImage && res.profileImage !== "") {
-                                circle.innerHTML = '<img src="' + res.profileImage + '" />';
-                            } else if (res.userName) {
-                                circle.textContent = res.userName.charAt(0).toUpperCase();
-                            }
-                        } else {
-                            authItems.forEach(x => x.classList.add('d-none'));
-                            guestItems.forEach(x => x.classList.remove('d-none'));
-                            circle.textContent = "U";
-                        }
-                    })
-                    .fail(function () { });
-            }
-
-            document.addEventListener('DOMContentLoaded', function () {
-                updateAuthUI();
-                document.addEventListener('user:login', function () { updateAuthUI(); });
-            });
-        })();
-    </script>
-
-    <script>
-        window.addEventListener("scroll", function () {
-            const navbar = document.querySelector(".navbar");
-            if (!navbar) return;
-            if (window.scrollY > 20) {
-                navbar.classList.add("scrolled");
-            } else {
-                navbar.classList.remove("scrolled");
-            }
-        });
-
-        // Highlight active nav link
-        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-        navLinks.forEach(link => {
-            if (window.location.pathname === new URL(link.href).pathname) {
-                link.classList.add('active');
-            }
-        });
-    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
