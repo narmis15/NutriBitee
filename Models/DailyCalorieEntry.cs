@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 
-namespace NUTRIBITE.Models;
-
-public partial class DailyCalorieEntry
+namespace NUTRIBITE.Models
 {
-    public int Id { get; set; }
-
-    public int UserId { get; set; }
-
-    public DateTime Date { get; set; }
-
-    public string FoodName { get; set; } = null!;
-
-    public int Calories { get; set; }
-
-    public decimal? Protein { get; set; }
-
-    public decimal? Carbs { get; set; }
-
-    public decimal? Fats { get; set; }
+    public class DailyCalorieEntry
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public DateTime Date { get; set; }
+        public string FoodName { get; set; }
+        public int Calories { get; set; }
+        public decimal? Protein { get; set; }
+        public decimal? Carbs { get; set; }
+        public decimal? Fats { get; set; }
+    }
 }
