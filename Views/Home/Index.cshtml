@@ -10,28 +10,96 @@
 
     <!-- NAVBAR -->
     <div class="public-navbar">
+
+        <!-- LEFT LOGO -->
         <div class="brand">
             <a asp-controller="User" asp-action="Index">
                 <img src="~/images/hero/Nutribitelogo.png" class="logo-img" />
             </a>
         </div>
 
+        <!-- CENTER LINKS -->
         <div class="nav-center">
             <a asp-controller="User" asp-action="Index">Home</a>
             <a asp-controller="User" asp-action="Location">Location</a>
             <a asp-controller="User" asp-action="About">About</a>
-            <a asp-controller="User" asp-action="MyProfile">My Profile</a>
         </div>
 
-        <div class="nav-actions">
-            <span class="welcome-text">
-                Welcome, @ViewBag.UserName
-            </span>
+        <!-- RIGHT SIDE -->
+        @if (ViewBag.UserName != null)
+        {
+            <div class="nav-actions d-flex align-items-center gap-3">
 
-            <a asp-controller="Auth" asp-action="Logout" class="login-btn">
-                Logout
-            </a>
-        </div>
+                <!-- 🛒 CART (Before Profile Circle) -->
+                <a asp-controller="Cart"
+                   asp-action="Index"
+                   class="cart-icon">
+                    🛒
+                </a>
+
+                <!-- 👤 PROFILE DROPDOWN -->
+                <div class="dropdown">
+                    <div class="profile-circle dropdown-toggle"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                        @ViewBag.UserName.Substring(0, 1).ToUpper()
+                    </div>
+
+                    <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
+
+                        <li>
+                            <h6 class="dropdown-header">
+                                Hello, @ViewBag.UserName
+                            </h6>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="User"
+                               asp-action="MyProfile">
+                                My Profile
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="User"
+                               asp-action="HealthSurveyDetails">
+                                Health Survey
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="User"
+                               asp-action="CalorieTracking">
+                                Calorie Tracking
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Orders"
+                               asp-action="MyOrders">
+                                My Orders
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item text-danger"
+                               asp-controller="Auth"
+                               asp-action="Logout">
+                                Logout
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        }
     </div>
 
     <!-- HERO -->
@@ -189,4 +257,5 @@
 
    
 
-</div
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
