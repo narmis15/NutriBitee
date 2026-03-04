@@ -8,7 +8,7 @@
    HERO SECTION
 ========================= */
 .hero-section {
-    padding: 70px 60px;
+    padding: 80px 60px;
 }
 
 .hero-top {
@@ -45,14 +45,15 @@
     border-radius: 8px;
     text-decoration: none;
     font-weight: 700;
-    transition: 0.3s;
+    transition: background-color 0.3s ease;
 }
 
     .cta-btn:hover {
         background: #1b4332;
+        color: white;
     }
 
-/* HERO IMAGE GLOW */
+/* HERO IMAGE */
 .hero-right {
     position: relative;
 }
@@ -103,7 +104,7 @@
 }
 
 /* =========================
-   FEATURE CARDS
+   FEATURES
 ========================= */
 .features {
     display: flex;
@@ -119,18 +120,105 @@
     border-radius: 20px;
     width: 280px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-    transition: 0.3s;
     text-align: center;
+    transition: 0.3s ease;
 }
 
     .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 25px 50px rgba(34,197,94,0.25);
+        transform: translateY(-8px);
     }
 
 /* =========================
-   MEAL SECTION
+   SPECIALLY FOR YOU SECTION
 ========================= */
+
+#studentMeals {
+    padding: 100px 0 80px 0;
+}
+
+.audience-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+    .audience-title h4 {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #2d6a4f;
+    }
+
+    .audience-title span {
+        display: inline-block;
+        width: 60px;
+        height: 2px;
+        background-color: #2d6a4f;
+        margin: 0 15px;
+        vertical-align: middle;
+    }
+
+/* CARDS GRID */
+
+#studentMeals .combos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    justify-items: center;
+}
+
+#studentMeals .combo-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s ease;
+    width: 100%;
+    max-width: 320px;
+}
+
+    #studentMeals .combo-card:hover {
+        transform: translateY(-5px);
+    }
+
+/* IMAGE */
+
+#studentMeals .combo-image {
+    margin-bottom: 25px;
+}
+
+    #studentMeals .combo-image img {
+        width: 190px;
+        height: 190px;
+        object-fit: contain;
+    }
+
+/* CLEAN BUTTON */
+
+#studentMeals .btn.add-cart {
+    background-color: #2d6a4f;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 32px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-top: 18px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+    #studentMeals .btn.add-cart:hover {
+        background-color: #1b4332;
+        color: #ffffff;
+    }
+
+/* =========================
+   MEAL CATEGORIES
+========================= */
+
 .soft-section {
     padding: 90px 60px;
 }
@@ -155,12 +243,11 @@
     text-decoration: none;
     color: #1b4332;
     box-shadow: 0 18px 40px rgba(0,0,0,0.08);
-    transition: 0.35s ease;
+    transition: 0.3s ease;
 }
 
     .meal-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 28px 60px rgba(34,197,94,0.25);
+        transform: translateY(-8px);
     }
 
 .meal-img-wrap {
@@ -171,11 +258,11 @@
     .meal-img-wrap img {
         width: 100%;
         border-radius: 18px;
-        transition: 0.4s;
+        transition: 0.3s ease;
     }
 
 .meal-card:hover img {
-    transform: scale(1.07);
+    transform: scale(1.05);
 }
 
 .meal-label {
@@ -183,151 +270,22 @@
     font-weight: 600;
     font-size: 1.05rem;
 }
-<<<<<<< HEAD
-.profile-circle {
-    width: 45px;
-    height: 45px;
-    background: #2e7d32;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
 
-    .profile-circle:hover {
-        transform: scale(1.05);
-        background: #256b2a;
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 992px) {
+    .hero-top {
+        flex-direction: column;
+        text-align: center;
     }
 
-.profile-dropdown {
-    border-radius: 12px;
-    padding: 10px 0;
-    min-width: 220px;
-}
-
-    .profile-dropdown .dropdown-item {
-        padding: 10px 20px;
-        transition: 0.2s;
+    .food-circle {
+        margin-top: 40px;
     }
-
-        .profile-dropdown .dropdown-item:hover {
-            background-color: #f1f8f4;
-        }
-.cart-icon {
-    font-size: 22px;
-    margin-right: 20px;
-    text-decoration: none;
-    color: #16a34a;
-}
-.public-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-}
-
-.cart-icon {
-    font-size: 22px;
-    text-decoration: none;
-    color: #16a34a;
-    transition: 0.3s;
-}
-
-    .cart-icon:hover {
-        transform: scale(1.1);
-    }
-
-.profile-circle {
-    width: 45px;
-    height: 45px;
-    background: #16a34a;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-/* ===============================
-   HOMEPAGE STUDENT / ELDERLY / CORPORATE SECTION
-================================= */
-
-#studentMeals .combos-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-top: 20px;
-}
-
-/* CARD */
-
-#studentMeals .combo-card {
-    background: #ffffff;
-    border-radius: var(--card-radius);
-    padding: 30px 20px;
-    box-shadow: 0 8px 22px rgba(6,95,70,0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* IMAGE WRAPPER */
-
-#studentMeals .combo-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-    /* IMAGE SIZE */
-
-    #studentMeals .combo-image img {
-        width: 190px;
-        height: 190px;
-        object-fit: contain;
-    }
-#studentMeals .btn.add-cart {
-    background-color: var(--nb-student-green) !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 30px !important;
-    padding: 12px 36px !important;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-top: 18px;
-    display: inline-block;
-    text-align: center;
-    transition: all 0.25s ease;
-}
-    #studentMeals .btn.add-cart:hover {
-        background-color: #3f9c44 !important;
-        color: #ffffff !important;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(76,175,80,0.25);
-    }
-
-
-/* RESPONSIVE */
-
-@media (max-width: 768px) {
 
     #studentMeals .combos-grid {
         grid-template-columns: 1fr;
     }
 }
-=======
->>>>>>> 74f2ed7 (dropdown)
