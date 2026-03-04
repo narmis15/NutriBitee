@@ -5,6 +5,8 @@ using NutriBite.Filters;
 using NUTRIBITE.Models;
 using NUTRIBITE.Services;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace NUTRIBITE.Controllers
 {
@@ -13,10 +15,14 @@ namespace NUTRIBITE.Controllers
         private readonly IConfiguration _configuration;
         private readonly IOrderService _orderService;
 
-        public AdminController(IConfiguration configuration, IOrderService orderService)
+        // ApplicationDbContext injected
+        private readonly ApplicationDbContext _context;
+
+        public AdminController(IConfiguration configuration, IOrderService orderService, ApplicationDbContext context)
         {
             _configuration = configuration;
             _orderService = orderService;
+            _context = context;
         }
 
         // 🔓 PUBLIC
@@ -27,13 +33,18 @@ namespace NUTRIBITE.Controllers
         }
 
         // 🔓 PUBLIC
+        // POST: /Admin/Login
         [HttpPost]
-        public IActionResult Login(string email, string Password)
+        public IActionResult Login(string UserId, string email, string Password)
         {
-            if (email== "Nutribite123@gmail.com" &&
+            // Accept either form field "UserId" (Admin view) or "email" (other forms)
+            var id = !string.IsNullOrWhiteSpace(UserId) ? UserId.Trim() : (email ?? "").Trim();
+
+            if (!string.IsNullOrEmpty(id) &&
+                id.Equals("Nutribite123@gmail.com", System.StringComparison.OrdinalIgnoreCase) &&
                 Password == "NutriBite//26")
             {
-                HttpContext.Session.SetString("Admin", email);
+                HttpContext.Session.SetString("Admin", id);
                 return RedirectToAction("Dashboard");
             }
 
@@ -54,29 +65,9 @@ namespace NUTRIBITE.Controllers
         [AdminAuthorize]
         public IActionResult ManageVendor()
         {
-            List<Vendor> vendors = new List<Vendor>();
-
-            using (SqlConnection con = new SqlConnection(_configuration.GetConnectionString("DBCS")))
-            {
-                string query = "SELECT * FROM VendorSignup";
-
-                SqlCommand cmd = new SqlCommand(query, con);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    vendors.Add(new Vendor
-                    {
-                        VendorId = Convert.ToInt32(reader["VendorId"]),
-                        VendorName = reader["VendorName"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        IsApproved = Convert.ToBoolean(reader["IsApproved"]),
-                        IsRejected = Convert.ToBoolean(reader["IsRejected"]),
-                        CreatedAt = Convert.ToDateTime(reader["CreatedAt"])
-                    });
-                }
-            }
+            var vendors = _context.VendorSignups
+                .OrderByDescending(v => v.CreatedAt)
+                .ToList();
 
             return View(vendors);
         }
@@ -84,32 +75,10 @@ namespace NUTRIBITE.Controllers
         [HttpGet]
         public IActionResult NewVendorRequest()
         {
-            List<object> vendors = new List<object>();
-
-            string cs = _configuration.GetConnectionString("DBCS");
-
-            using (SqlConnection con = new SqlConnection(cs))
-            {
-                con.Open();
-
-                string query = @"SELECT VendorId, VendorName, Email, CreatedAt 
-                         FROM VendorSignup 
-                         WHERE IsApproved = 0 AND IsRejected = 0";
-
-                SqlCommand cmd = new SqlCommand(query, con);
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
-                {
-                    vendors.Add(new
-                    {
-                        VendorId = Convert.ToInt32(dr["VendorId"]),
-                        VendorName = dr["VendorName"].ToString(),
-                        Email = dr["Email"].ToString(),
-                        CreatedAt = Convert.ToDateTime(dr["CreatedAt"])
-                    });
-                }
-            }
+            var vendors = _context.VendorSignups
+                .Where(v => v.IsApproved == false && v.IsRejected == false)
+                .OrderBy(v => v.CreatedAt)
+                .ToList();
 
             return View(vendors);
         }
@@ -122,7 +91,7 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
-        // 🔒 Admin only
+        // 🔒 Admin only - Add Food Category (POST) - uses EF Core
         [AdminAuthorize]
         [HttpPost]
         public IActionResult AddFoodCategory(
@@ -139,7 +108,7 @@ namespace NUTRIBITE.Controllers
                 MealCategory == "Other" ? CustomMealCategory : MealCategory;
 
             // IMAGE UPLOAD
-            string imagePath = "";
+            string imagePath = null;
             if (CategoryImage != null)
             {
                 string folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
@@ -154,25 +123,27 @@ namespace NUTRIBITE.Controllers
                 imagePath = "/images/" + fileName;
             }
 
-            string cs = _configuration.GetConnectionString("DBCS")
-                        ?? throw new Exception("DBCS not found");
-            using SqlConnection con = new SqlConnection(cs);
-            con.Open();
+            try
+            {
+                var cat = new AddCategory
+                {
+                    ProductCategory = finalProductCategory ?? "",
+                    ProductPic = "", // optional - keep blank unless you set ProductPic
+                    MealCategory = finalMealCategory,
+                    ImagePath = imagePath,
+                    CreatedAt = DateTime.Now
+                };
 
-            string query = @"
-        INSERT INTO FoodCategory
-        (ProductCategory, MealCategory, ImagePath)
-        VALUES (@pc, @mc, @img)";
+                _context.AddCategories.Add(cat);
+                _context.SaveChanges();
 
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@pc", finalProductCategory);
-            cmd.Parameters.AddWithValue("@mc", finalMealCategory);
-            cmd.Parameters.AddWithValue("@img", imagePath);
+                ViewBag.Success = "Food category added successfully";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "An error occurred while adding the category: " + ex.Message;
+            }
 
-            con.Open();
-            cmd.ExecuteNonQuery();
-
-            ViewBag.Success = "Food category added successfully";
             return View();
         }
 
@@ -184,7 +155,7 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
-        // 🔒 Admin only - Add Coupon (POST)
+        // 🔒 Admin only - Add Coupon (POST) - uses EF Core
         [AdminAuthorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -209,37 +180,24 @@ namespace NUTRIBITE.Controllers
 
             try
             {
-                string cs = _configuration.GetConnectionString("DBCS")
-                            ?? throw new Exception("DBCS not found");
-
-                using SqlConnection con = new SqlConnection(cs);
-                con.Open();
-
-                // Optional: prevent duplicate coupon codes
-                string existsQuery = "SELECT COUNT(1) FROM Coupons WHERE CouponCode = @code";
-                using (SqlCommand exCmd = new SqlCommand(existsQuery, con))
+                // prevent duplicate coupon codes
+                bool exists = _context.Coupons.Any(c => c.Code == CouponCode);
+                if (exists)
                 {
-                    exCmd.Parameters.AddWithValue("@code", CouponCode);
-                    int exists = Convert.ToInt32(exCmd.ExecuteScalar() ?? 0);
-                    if (exists > 0)
-                    {
-                        ModelState.AddModelError(nameof(CouponCode), "A coupon with this code already exists.");
-                        return View();
-                    }
+                    ModelState.AddModelError(nameof(CouponCode), "A coupon with this code already exists.");
+                    return View();
                 }
 
-                string insertQuery = @"
-                    INSERT INTO Coupons (CouponCode, Discount, StartDate, EndDate, CreatedAt)
-                    VALUES (@code, @discount, @start, @end, @created)";
+                var coupon = new Coupon
+                {
+                    Code = CouponCode,
+                    Discount = (int)Math.Round(Discount),
+                    Startdate = StartDate,
+                    Validtill = EndDate
+                };
 
-                using SqlCommand cmd = new SqlCommand(insertQuery, con);
-                cmd.Parameters.AddWithValue("@code", CouponCode);
-                cmd.Parameters.AddWithValue("@discount", Discount);
-                cmd.Parameters.AddWithValue("@start", StartDate);
-                cmd.Parameters.AddWithValue("@end", EndDate);
-                cmd.Parameters.AddWithValue("@created", DateTime.Now);
-
-                cmd.ExecuteNonQuery();
+                _context.Coupons.Add(coupon);
+                _context.SaveChanges();
 
                 ViewBag.Success = "Coupon added successfully";
             }
@@ -251,87 +209,51 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
+        // View categories using EF Core
         public IActionResult ViewCategory(string sortOrder)
         {
             ViewBag.IdSort = sortOrder == "id" ? "id_desc" : "id";
             ViewBag.CategorySort = sortOrder == "cat" ? "cat_desc" : "cat";
 
-            List<FoodCategory> list = new List<FoodCategory>();
+            var query = _context.AddCategories.AsQueryable();
 
-            string query = "SELECT cid, ProductCategory, ProductPic, MealCategory, ImagePath, CreatedAt FROM AddCategory WHERE ProductCategory IS NOT NULL\r\n  AND ProductCategory <> 'NA'";
+            // Exclude null/NA product categories (match previous behavior)
+            query = query.Where(a => a.ProductCategory != null && a.ProductCategory != "NA");
 
             if (sortOrder == "id")
-                query += " ORDER BY cid";
+                query = query.OrderBy(a => a.Cid);
             else if (sortOrder == "id_desc")
-                query += " ORDER BY cid DESC";
+                query = query.OrderByDescending(a => a.Cid);
             else if (sortOrder == "cat")
-                query += " ORDER BY ProductCategory";
+                query = query.OrderBy(a => a.ProductCategory);
             else if (sortOrder == "cat_desc")
-                query += " ORDER BY ProductCategory DESC";
+                query = query.OrderByDescending(a => a.ProductCategory);
+            else
+                query = query.OrderBy(a => a.Cid);
 
-            using (SqlConnection con =
-                new SqlConnection(_configuration.GetConnectionString("DBCS")))
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                con.Open();
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    list.Add(new FoodCategory
-                    {
-                        cid = Convert.ToInt32(dr["cid"]),
-                        ProductCategory = dr["ProductCategory"].ToString(),
-                        ProductPic = dr["ProductPic"].ToString(),
-                        MealCategory = dr["MealCategory"].ToString(),
-                        ImagePath = dr["ImagePath"].ToString(),
-                        CreatedAt = Convert.ToDateTime(dr["CreatedAt"])
-                    });
-                }
-            }
-
+            var list = query.ToList();
             return View(list);
         }
+
+        // View meal categories using EF Core
         public IActionResult ViewMealCategory(string sortOrder)
         {
             ViewBag.IdSort = sortOrder == "id" ? "id_desc" : "id";
             ViewBag.MealSort = sortOrder == "meal" ? "meal_desc" : "meal";
 
-            List<FoodCategory> list = new List<FoodCategory>();
-
-            string query = @"SELECT cid, MealCategory, MealPic 
-                     FROM dbo.AddCategory 
-                     WHERE MealCategory IS NOT NULL";
+            var query = _context.AddCategories
+                        .Where(a => a.MealCategory != null);
 
             if (sortOrder == "id")
-                query += " ORDER BY cid";
+                query = query.OrderBy(a => a.Cid);
             else if (sortOrder == "id_desc")
-                query += " ORDER BY cid DESC";
+                query = query.OrderByDescending(a => a.Cid);
             else if (sortOrder == "meal")
-                query += " ORDER BY MealCategory";
+                query = query.OrderBy(a => a.MealCategory);
             else if (sortOrder == "meal_desc")
-                query += " ORDER BY MealCategory DESC";
+                query = query.OrderByDescending(a => a.MealCategory);
 
-            using (SqlConnection con =
-                new SqlConnection(_configuration.GetConnectionString("DBCS")))
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                con.Open();
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    list.Add(new FoodCategory
-                    {
-                        cid = Convert.ToInt32(dr["cid"]),
-                        MealCategory = dr["MealCategory"].ToString(),
-                        MealPic = dr["MealPic"] == DBNull.Value
-                                     ? "default.jpg"
-                                     : dr["MealPic"].ToString()
-                    });
-                }
-            }
-
+            var list = query.ToList();
             return View(list);
         }
 
@@ -344,20 +266,34 @@ namespace NUTRIBITE.Controllers
             return RedirectToAction("Login");
         }
 
+        // Updated: LoadDashboardCounts now uses EF Core (falls back to SQL helper on error)
         private void LoadDashboardCounts()
         {
-            string cs = _configuration.GetConnectionString("DBCS")
-                        ?? throw new Exception("DBCS not found");
+            try
+            {
+                ViewBag.Users = _context.UserSignups.Count();
+                ViewBag.Vendors = _context.VendorSignups.Count();
+                ViewBag.Orders = _context.OrderTables.Count();
+                ViewBag.Products = _context.OrderTables.Sum(o => (int?)o.TotalItems) ?? 0;
+                ViewBag.TotalAmount = _context.Payments.Sum(p => (decimal?)p.Amount) ?? 0m;
+                ViewBag.Profit = Math.Round((double)((_context.Payments.Sum(p => (decimal?)p.Amount) ?? 0m) * 0.10m), 2);
+            }
+            catch
+            {
+                // Safe fallback to original raw-SQL approach if EF fails for any reason
+                string cs = _configuration.GetConnectionString("DBCS")
+                            ?? throw new Exception("DBCS not found");
 
-            using SqlConnection con = new SqlConnection(cs);
-            con.Open();
+                using SqlConnection con = new SqlConnection(cs);
+                con.Open();
 
-            ViewBag.Users = GetValue(con, "SELECT COUNT(*) FROM UserSignup");
-            ViewBag.Vendors = GetValue(con, "SELECT COUNT(*) FROM VendorSignup");
-            ViewBag.Orders = GetValue(con, "SELECT COUNT(*) FROM OrderTable");
-            ViewBag.Products = GetValue(con, "SELECT ISNULL(SUM(TotalItems),0) FROM OrderTable");
-            ViewBag.TotalAmount = GetValue(con, "SELECT ISNULL(SUM(Amount),0) FROM Payment");
-            ViewBag.Profit = GetValue(con, "SELECT ISNULL(SUM(Amount),0) * 0.10 FROM Payment");
+                ViewBag.Users = GetValue(con, "SELECT COUNT(*) FROM UserSignup");
+                ViewBag.Vendors = GetValue(con, "SELECT COUNT(*) FROM VendorSignup");
+                ViewBag.Orders = GetValue(con, "SELECT COUNT(*) FROM OrderTable");
+                ViewBag.Products = GetValue(con, "SELECT ISNULL(SUM(TotalItems),0) FROM OrderTable");
+                ViewBag.TotalAmount = GetValue(con, "SELECT ISNULL(SUM(Amount),0) FROM Payment");
+                ViewBag.Profit = GetValue(con, "SELECT ISNULL(SUM(Amount),0) * 0.10 FROM Payment");
+            }
         }
 
         private string GetValue(SqlConnection con, string query)
@@ -441,15 +377,6 @@ namespace NUTRIBITE.Controllers
         }
 
         [AdminAuthorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyFlag(int orderId)
-        {
-            var ok = await _orderService.VerifyFlagAsync(orderId);
-            return Json(new { success = ok });
-        }
-
-        [AdminAuthorize]
         [HttpGet]
         public async Task<IActionResult> PickupSlots()
         {
@@ -514,12 +441,44 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
+        // Fixed GetCancelledOrders: EF-translatable filter, async, null-safe fields, error handling and route attribute.
         [AdminAuthorize]
         [HttpGet]
+        [Route("Admin/GetCancelledOrders")]
         public async Task<IActionResult> GetCancelledOrders()
         {
-            var list = await _orderService.GetCancelledOrdersAsync();
-            return Json(list);
+            try
+            {
+                var list = await _context.OrderTables
+                    // Use a simple-to-translate comparison to avoid EF translation errors
+                    .Where(o => (o.Status ?? "").ToLower() == "cancelled")
+                    .OrderByDescending(o => o.CancelledAt ?? o.CreatedAt)
+                    .Select(o => new
+                    {
+                        OrderId = o.OrderId,
+                        OrderCreatedAt = o.CreatedAt,
+                        // Ensure CancelledAt is not null for the frontend (Step 4)
+                        CancelledAt = o.CancelledAt ?? o.CreatedAt ?? System.DateTime.Now,
+                        CancelReason = o.CancelReason ?? "",
+                        CancelledBy = o.CancelledBy ?? "",
+                        CustomerName = o.CustomerName ?? "",
+                        // CustomerPhone may be null in schema; return empty string to be safe
+                        CustomerPhone = o.CustomerPhone ?? "",
+                        // Payment-related fields: use subqueries; they will return null if not present
+                        Amount = _context.Payments.Where(p => p.OrderId == o.OrderId).Select(p => p.Amount).FirstOrDefault(),
+                        RefundMethod = _context.Payments.Where(p => p.OrderId == o.OrderId).Select(p => p.RefundMethod).FirstOrDefault() ?? "",
+                        RefundStatus = _context.Payments.Where(p => p.OrderId == o.OrderId).Select(p => p.RefundStatus).FirstOrDefault() ?? "",
+                        AdminNotes = o.AdminNotes ?? ""
+                    })
+                    .ToListAsync();
+
+                return Json(list);
+            }
+            catch (Exception ex)
+            {
+                // Return JSON error so frontend can display a message and we avoid a 500 HTML page
+                return Json(new { error = ex.Message });
+            }
         }
 
         [AdminAuthorize]
@@ -616,8 +575,76 @@ namespace NUTRIBITE.Controllers
             ViewBag.OrderId = id;
             return View();
         }
+
+        // Approve / Reject vendor actions
+        [AdminAuthorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ApproveVendor(int id)
+        {
+            if (id <= 0) return BadRequest();
+
+            var vendor = _context.VendorSignups.FirstOrDefault(v => v.VendorId == id);
+            if (vendor == null) return NotFound();
+
+            vendor.IsApproved = true;
+            vendor.IsRejected = false;
+            // optionally set approval timestamp (if you have a column)
+            _context.SaveChanges();
+
+            TempData["Success"] = "Vendor approved successfully.";
+            return RedirectToAction("NewVendorRequest");
+        }
+
+        [AdminAuthorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RejectVendor(int id)
+        {
+            if (id <= 0) return BadRequest();
+
+            var vendor = _context.VendorSignups.FirstOrDefault(v => v.VendorId == id);
+            if (vendor == null) return NotFound();
+
+            vendor.IsRejected = true;
+            vendor.IsApproved = false;
+            _context.SaveChanges();
+
+            TempData["Success"] = "Vendor rejected.";
+            return RedirectToAction("NewVendorRequest");
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

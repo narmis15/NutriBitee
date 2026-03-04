@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<NUTRIBITE.Models.VendorSignup>
+
+@{
     ViewData["Title"] = "Manage Vendors";
 }
 
@@ -42,7 +44,7 @@
 
                         <td>@vendor.Email</td>
 
-                        <td>@vendor.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td>@(vendor.CreatedAt.HasValue ? vendor.CreatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
 
                         <td>
                             @if (vendor.IsApproved)

@@ -8,8 +8,11 @@ using NUTRIBITE.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Use the configured connection string key "DBCS" (points to FoodDeliveryDB in appsettings.json)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DBCS")));
+
 // MVC
 builder.Services.AddControllersWithViews();
 
@@ -29,7 +32,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 
 // Register Health calculation service (service layer)
 builder.Services.AddScoped<NUTRIBITE.Services.IHealthCalculationService, NUTRIBITE.Services.HealthCalculationService>();
-builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

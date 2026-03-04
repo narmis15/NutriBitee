@@ -1,0 +1,42 @@
+@model NUTRIBITE.Models.UserSignup
+
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/users.css" />
+
+<div class="card p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3>User Details</h3>
+            <small class="text-muted">Full information for user #@Model.Id</small>
+        </div>
+        <div>
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Back</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-approve ms-2">Edit</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-4">Name</dt>
+                <dd class="col-8">@Model.Name</dd>
+
+                <dt class="col-4">Email</dt>
+                <dd class="col-8">@Model.Email</dd>
+
+                <dt class="col-4">Phone</dt>
+                <dd class="col-8">@Model.Phone ?? "-"</dd>
+
+                <dt class="col-4">Status</dt>
+                <dd class="col-8">@((Model.Status ?? "Active"))</dd>
+
+                <dt class="col-4">Registered</dt>
+                <dd class="col-8">@((Model.CreatedAt.HasValue) ? Model.CreatedAt.Value.ToString("dd MMM yyyy hh:mm tt") : "-")</dd>
+            </dl>
+        </div>
+    </div>
+</div>

@@ -1,12 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NUTRIBITE.Models.Reports;
 using NutriBite.Filters;
+using NUTRIBITE.Models;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace NUTRIBITE.Controllers
 {
     [AdminAuthorize]
     public class ReportsController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public ReportsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         // Main entry for Reports & Analytics
         [HttpGet]
         public IActionResult Dashboard()
@@ -60,32 +70,106 @@ namespace NUTRIBITE.Controllers
         [HttpGet]
         public IActionResult GetDashboardData()
         {
-            // TODO: replace these sample values with real queries against your DB.
-            var now = DateTime.Today;
-            var trend = Enumerable.Range(0, 14)
-                .Select(i => new TrendPoint
+            // Use real DB data while keeping the same JSON shape expected by the UI.
+            var today = DateTime.Today;
+            var todayStart = today;
+            var tomorrowStart = today.AddDays(1);
+            var start14 = todayStart.AddDays(-13);
+
+            // 1) Summary cards
+            int todaysOrders = _context.OrderTables
+                .Count(o => o.CreatedAt >= todayStart && o.CreatedAt < tomorrowStart);
+
+            decimal todaysRevenue = _context.Payments
+                .Where(p => p.CreatedAt >= todayStart && p.CreatedAt < tomorrowStart)
+                .Select(p => p.Amount ?? 0m)
+                .Sum();
+
+            // Top vendor heuristic: vendor with most food items listed (safe, non-invasive)
+            var topVendor = _context.VendorSignups
+                .Select(v => new { v.VendorName, Count = _context.Foods.Count(f => f.VendorId == v.VendorId) })
+                .OrderByDescending(x => x.Count)
+                .FirstOrDefault()?.VendorName ?? "—";
+
+            // Top location heuristic: most frequent PickupSlot (fallback to "—")
+            var topLocation = _context.OrderTables
+                .Where(o => !string.IsNullOrEmpty(o.PickupSlot))
+                .GroupBy(o => o.PickupSlot)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefault() ?? "—";
+
+            var summary = new[]
+            {
+                new SummaryCard { Title = "Today's Orders", Value = todaysOrders.ToString(), SubText = "New orders today", Icon = "🧾" },
+                new SummaryCard { Title = "Today's Revenue", Value = "₹" + todaysRevenue.ToString("N2"), SubText = "Gross sales today", Icon = "💰" },
+                new SummaryCard { Title = "Top Vendor", Value = topVendor, SubText = "Most listed items", Icon = "⭐" },
+                new SummaryCard { Title = "Top Location", Value = topLocation, SubText = "Most pickups", Icon = "📍" }
+            };
+
+            // 2) Trend (last 14 days)
+            var trendList = new List<TrendPoint>();
+            for (int i = 0; i < 14; i++)
+            {
+                var d = start14.AddDays(i);
+                var dNext = d.AddDays(1);
+
+                int ordersCount = _context.OrderTables
+                    .Count(o => o.CreatedAt >= d && o.CreatedAt < dNext);
+
+                decimal revenue = _context.Payments
+                    .Where(p => p.CreatedAt >= d && p.CreatedAt < dNext)
+                    .Select(p => p.Amount ?? 0m)
+                    .Sum();
+
+                trendList.Add(new TrendPoint
                 {
-                    Label = now.AddDays(-13 + i).ToString("MM-dd"),
-                    Orders = 50 + (i * 3) + (i % 3 == 0 ? 10 : 0),
-                    Revenue = 1200 + (i * 45)
-                }).ToArray();
+                    Label = d.ToString("MM-dd"),
+                    Orders = ordersCount,
+                    Revenue = revenue
+                });
+            }
+
+            // 3) Alerts: recent flagged orders and recent refunds (combine)
+            var flaggedAlerts = _context.OrderTables
+                .Where(o => o.IsFlagged == true)
+                .OrderByDescending(o => o.CreatedAt)
+                .Take(5)
+                .Select(o => new AlertModel
+                {
+                    OrderId = o.OrderId,
+                    Type = "Flagged",
+                    Message = string.IsNullOrEmpty(o.FlagReason) ? "Order flagged for review" : o.FlagReason,
+                    Time = o.CreatedAt ?? DateTime.Now,
+                    Severity = "medium"
+                })
+                .ToList();
+
+            var refundAlerts = _context.Payments
+                .Where(p => (p.IsRefunded == true) || (!string.IsNullOrEmpty(p.RefundStatus) && p.RefundStatus.ToLower().Contains("refund")))
+                .OrderByDescending(p => p.UpdatedAt ?? p.CreatedAt)
+                .Take(5)
+                .Select(p => new AlertModel
+                {
+                    OrderId = p.OrderId ?? 0,
+                    Type = "Refund",
+                    Message = string.IsNullOrEmpty(p.RefundStatus) ? "Refund processed" : p.RefundStatus,
+                    Time = p.UpdatedAt ?? p.CreatedAt ?? DateTime.Now,
+                    Severity = "high"
+                })
+                .ToList();
+
+            var alerts = flaggedAlerts
+                .Concat(refundAlerts)
+                .OrderByDescending(a => a.Time)
+                .Take(6)
+                .ToArray();
 
             var model = new DashboardModel
             {
-                Summary = new[]
-                {
-                    new SummaryCard { Title = "Today's Orders", Value = "124", SubText = "New orders today", Icon = "🧾" },
-                    new SummaryCard { Title = "Today's Revenue", Value = "₹15,340.50", SubText = "Gross sales today", Icon = "💰" },
-                    new SummaryCard { Title = "Top Vendor", Value = "NutriBite Central", SubText = "Most sales today", Icon = "⭐" },
-                    new SummaryCard { Title = "Top Location", Value = "Downtown", SubText = "Highest demand", Icon = "📍" }
-                },
-                Trend = trend,
-                Alerts = new[]
-                {
-                    new AlertModel { OrderId = 1051, Type = "FailedPayment", Message = "Payment failed (card decline)", Time = DateTime.Now.AddMinutes(-18), Severity = "high" },
-                    new AlertModel { OrderId = 1073, Type = "Flagged", Message = "Suspicious duplicate order", Time = DateTime.Now.AddHours(-1), Severity = "medium" },
-                    new AlertModel { OrderId = 1032, Type = "FailedPayment", Message = "Payment gateway timeout", Time = DateTime.Now.AddHours(-3), Severity = "low" }
-                }
+                Summary = summary,
+                Trend = trendList.ToArray(),
+                Alerts = alerts
             };
 
             return Json(model);
@@ -97,46 +181,41 @@ namespace NUTRIBITE.Controllers
         {
             DateTime start = from?.Date ?? DateTime.Today.AddDays(-13);
             DateTime end = to?.Date ?? DateTime.Today;
-            // normalize
             if (start > end) (start, end) = (end, start);
+            DateTime endExclusive = end.AddDays(1);
 
-            // sample statuses used in table
-            var possibleStatuses = new[] { "New", "Accepted", "Ready for Pickup", "Picked", "Cancelled" };
+            var query = _context.OrderTables
+                .Include(o => o.OrderItems)
+                .Include(o => o.Payments)
+                .Where(o => o.CreatedAt >= start && o.CreatedAt < endExclusive);
 
-            var rnd = new Random(123);
-            var orders = new List<OrderRow>();
-            int id = 1000;
-            // create mocked orders within date range
-            for (DateTime d = start; d <= end; d = d.AddDays(1))
+            if (!string.IsNullOrWhiteSpace(status) && status != "All")
             {
-                int dayCount = 3 + rnd.Next(5); // small sample per day
-                for (int i = 0; i < dayCount; i++)
-                {
-                    var st = possibleStatuses[rnd.Next(possibleStatuses.Length)];
-                    if (!string.IsNullOrEmpty(status) && status != "All" && !st.Equals(status, StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    orders.Add(new OrderRow
-                    {
-                        OrderId = id++,
-                        OrderDate = d.AddHours(8 + rnd.Next(8)),
-                        CustomerName = "Customer " + rnd.Next(1, 200),
-                        ItemsCount = 1 + rnd.Next(4),
-                        PickupSlot = (9 + rnd.Next(8)) + ":00 - " + (10 + rnd.Next(8)) + ":00",
-                        Amount = Math.Round((decimal)(100 + rnd.Next(900)), 2),
-                        TotalCalories = 200 + rnd.Next(800),
-                        PaymentStatus = rnd.Next(10) > 1 ? "Paid" : "Failed",
-                        Status = st,
-                        IsFlagged = rnd.Next(20) == 0
-                    });
-                }
+                query = query.Where(o => o.Status == status);
             }
 
-            // summary cards
+            var orders = query
+                .AsEnumerable() // switch to in-memory for composed projection using navigation collections
+                .Select(o => new
+                {
+                    OrderId = o.OrderId,
+                    OrderDate = o.CreatedAt,
+                    CustomerName = o.CustomerName ?? "",
+                    ItemsCount = o.TotalItems ?? o.OrderItems?.Count ?? 0,
+                    PickupSlot = o.PickupSlot ?? "",
+                    Amount = (o.Payments?.Sum(p => p.Amount) ?? 0m),
+                    TotalCalories = o.TotalCalories ?? 0,
+                    PaymentStatus = o.PaymentStatus ?? "",
+                    Status = o.Status ?? ""
+                })
+                .OrderByDescending(x => x.OrderDate)
+                .ToList();
+
+            // Summary
             var total = orders.Count;
-            var completed = orders.Count(o => o.Status == "Picked");
-            var pending = orders.Count(o => o.Status == "New" || o.Status == "Accepted" || o.Status == "Ready for Pickup");
-            var cancelled = orders.Count(o => o.Status == "Cancelled");
+            var completed = orders.Count(o => string.Equals(o.Status, "Picked", StringComparison.OrdinalIgnoreCase));
+            var pending = orders.Count(o => new[] { "New", "Accepted", "Ready for Pickup" }.Contains((o.Status ?? ""), StringComparer.OrdinalIgnoreCase));
+            var cancelled = orders.Count(o => string.Equals(o.Status, "Cancelled", StringComparison.OrdinalIgnoreCase));
 
             var summary = new[]
             {
@@ -146,75 +225,95 @@ namespace NUTRIBITE.Controllers
                 new SummaryCard { Title = "Cancelled", Value = cancelled.ToString(), SubText = "Cancelled orders" }
             };
 
-            // trend by day
-            var trend = new List<TrendPoint>();
-            for (DateTime d = start; d <= end; d = d.AddDays(1))
-            {
-                trend.Add(new TrendPoint
+            // Trend: orders per day
+            var trend = Enumerable.Range(0, (end - start).Days + 1)
+                .Select(i =>
                 {
-                    Label = d.ToString("MM-dd"),
-                    Orders = orders.Count(o => o.OrderDate.Date == d.Date)
-                });
-            }
+                    var d = start.AddDays(i);
+                    var next = d.AddDays(1);
+                    var cnt = _context.OrderTables.Count(o => o.CreatedAt >= d && o.CreatedAt < next);
+                    return new TrendPoint { Label = d.ToString("MM-dd"), Orders = cnt };
+                }).ToArray();
 
-            // return paged-ish sample (client can implement paging)
-            var result = new
-            {
-                Summary = summary,
-                Orders = orders.OrderByDescending(o => o.OrderDate).ToArray(),
-                Trend = trend.ToArray()
-            };
-
-            return Json(result);
+            return Json(new { summary, orders, trend });
         }
 
-        /// <summary>
-        /// JSON endpoint used by SalesAnalytics view. Currently returns sample data.
-        /// Replace with real DB queries and aggregation logic.
-        /// </summary>
         [HttpGet]
         public IActionResult GetSalesAnalyticsData(DateTime? from, DateTime? to, string period = "daily")
         {
             DateTime end = to?.Date ?? DateTime.Today;
-            DateTime start = from?.Date ?? end.AddDays(-13); // default last 14 days
+            DateTime start = from?.Date ?? end.AddDays(-13);
             if (start > end) (start, end) = (end, start);
+            DateTime endExclusive = end.AddDays(1);
 
-            // sample generation (replace with your SQL/EF)
-            var rnd = new Random(42);
-            var days = (end - start).Days + 1;
-            var trend = new List<NUTRIBITE.Models.Reports.TrendPoint>();
+            // Payments in range
+            var paymentsInRange = _context.Payments
+                .Where(p => p.CreatedAt >= start && p.CreatedAt < endExclusive);
+
+            decimal totalRevenue = paymentsInRange.Select(p => p.Amount ?? 0m).Sum();
+            int totalOrders = _context.OrderTables.Count(o => o.CreatedAt >= start && o.CreatedAt < endExclusive);
+            decimal avgOrder = totalOrders > 0 ? Math.Round(totalRevenue / totalOrders, 2) : 0m;
+            decimal profit = Math.Round(totalRevenue * 0.12m, 2);
+
+            // Trend and breakdown
             var breakdown = new List<NUTRIBITE.Models.Reports.BreakdownRow>();
+            var trend = new List<NUTRIBITE.Models.Reports.TrendPoint>();
 
-            decimal totalRev = 0m;
-            int totalOrders = 0;
-
-            for (int i = 0; i < days; i++)
+            if (period?.ToLowerInvariant() == "monthly")
             {
-                var d = start.AddDays(i);
-                var orders = 40 + rnd.Next(60);
-                var revenue = Math.Round((decimal)(orders * (100 + rnd.NextDouble() * 200)), 2);
-                var avg = orders > 0 ? Math.Round(revenue / orders, 2) : 0m;
-                var profit = Math.Round(revenue * 0.12m, 2); // sample 12% margin
+                var monthly = paymentsInRange
+                    .Where(p => p.CreatedAt.HasValue)
+                    .GroupBy(p => new { p.CreatedAt.Value.Year, p.CreatedAt.Value.Month })
+                    .Select(g => new
+                    {
+                        Year = g.Key.Year,
+                        Month = g.Key.Month,
+                        Revenue = g.Sum(x => x.Amount ?? 0m),
+                        Orders = _context.OrderTables.Count(o => o.CreatedAt.HasValue && o.CreatedAt.Value.Year == g.Key.Year && o.CreatedAt.Value.Month == g.Key.Month)
+                    })
+                    .OrderBy(x => x.Year).ThenBy(x => x.Month)
+                    .ToList();
 
-                trend.Add(new NUTRIBITE.Models.Reports.TrendPoint { Label = d.ToString("MM-dd"), Revenue = revenue });
-                breakdown.Add(new NUTRIBITE.Models.Reports.BreakdownRow
+                foreach (var m in monthly)
                 {
-                    PeriodLabel = d.ToString("yyyy-MM-dd"),
-                    Orders = orders,
-                    Revenue = revenue,
-                    AvgOrderValue = avg,
-                    Profit = profit
-                });
+                    var label = $"{m.Year}-{m.Month:00}";
+                    trend.Add(new NUTRIBITE.Models.Reports.TrendPoint { Label = label, Revenue = m.Revenue });
+                    breakdown.Add(new NUTRIBITE.Models.Reports.BreakdownRow
+                    {
+                        PeriodLabel = label,
+                        Orders = m.Orders,
+                        Revenue = m.Revenue,
+                        AvgOrderValue = m.Orders > 0 ? Math.Round(m.Revenue / m.Orders, 2) : 0m,
+                        Profit = Math.Round(m.Revenue * 0.12m, 2)
+                    });
+                }
+            }
+            else
+            {
+                // daily
+                for (DateTime d = start; d <= end; d = d.AddDays(1))
+                {
+                    var next = d.AddDays(1);
+                    var rev = paymentsInRange.Where(p => p.CreatedAt >= d && p.CreatedAt < next).Select(p => p.Amount ?? 0m).Sum();
+                    var ord = _context.OrderTables.Count(o => o.CreatedAt >= d && o.CreatedAt < next);
 
-                totalRev += revenue;
-                totalOrders += orders;
+                    trend.Add(new NUTRIBITE.Models.Reports.TrendPoint { Label = d.ToString("MM-dd"), Revenue = rev });
+                    breakdown.Add(new NUTRIBITE.Models.Reports.BreakdownRow
+                    {
+                        PeriodLabel = d.ToString("yyyy-MM-dd"),
+                        Orders = ord,
+                        Revenue = rev,
+                        AvgOrderValue = ord > 0 ? Math.Round(rev / ord, 2) : 0m,
+                        Profit = Math.Round(rev * 0.12m, 2)
+                    });
+                }
             }
 
             var model = new NUTRIBITE.Models.Reports.SalesReportModel
             {
-                TotalRevenue = Math.Round(totalRev, 2),
-                AverageOrderValue = totalOrders > 0 ? Math.Round(totalRev / totalOrders, 2) : 0m,
-                Profit = Math.Round(totalRev * 0.12m, 2),
+                TotalRevenue = Math.Round(totalRevenue, 2),
+                AverageOrderValue = Math.Round(avgOrder, 2),
+                Profit = profit,
                 Trend = trend.ToArray(),
                 Breakdown = breakdown.ToArray()
             };
@@ -225,51 +324,78 @@ namespace NUTRIBITE.Controllers
         [HttpGet]
         public IActionResult GetVendorPerformanceData(DateTime? from, DateTime? to, int top = 10)
         {
-            // NOTE: This returns sample/mock data. Replace SQL/EF queries to pull real metrics.
             DateTime end = to?.Date ?? DateTime.Today;
-            DateTime start = from?.Date ?? end.AddDays(-29); // default last 30 days
+            DateTime start = from?.Date ?? end.AddDays(-29);
             if (start > end) (start, end) = (end, start);
+            DateTime endExclusive = end.AddDays(1);
 
-            var rnd = new Random(42);
+            // For each vendor, attempt to compute orders & revenue by matching OrderItems.ItemName to Foods.Name.
+            var vendors = _context.VendorSignups.ToList();
 
-            // build mock vendor list
-            var vendors = new List<Models.Reports.VendorRow>();
-            for (int i = 1; i <= 20; i++)
+            var vendorRows = new List<Models.Reports.VendorRow>();
+            foreach (var v in vendors)
             {
-                int orders = rnd.Next(20, 600);
-                decimal revenue = Math.Round((decimal)(orders * (80 + rnd.NextDouble() * 250)), 2);
-                int cancelled = (int)(orders * (rnd.NextDouble() * 0.12)); // up to 12% cancel
-                decimal cancelRate = orders == 0 ? 0m : Math.Round((decimal)cancelled / orders * 100m, 2);
+                var foodNames = _context.Foods
+                    .Where(f => f.VendorId == v.VendorId && !string.IsNullOrEmpty(f.Name))
+                    .Select(f => f.Name)
+                    .ToList();
 
-                string perf = "Average";
-                if (revenue > 50000 && cancelRate < 4) perf = "Good";
-                else if (cancelRate > 8 || revenue < 8000) perf = "Poor";
-
-                vendors.Add(new Models.Reports.VendorRow
+                if (foodNames.Count == 0)
                 {
-                    VendorId = i,
-                    VendorName = $"Vendor {i}",
-                    Orders = orders,
-                    Revenue = revenue,
+                    vendorRows.Add(new Models.Reports.VendorRow
+                    {
+                        VendorId = v.VendorId,
+                        VendorName = v.VendorName,
+                        Orders = 0,
+                        Revenue = 0m,
+                        CancellationRate = 0m,
+                        Performance = "No Data"
+                    });
+                    continue;
+                }
+
+                var orderIds = _context.OrderItems
+                    .Where(oi => foodNames.Contains(oi.ItemName))
+                    .Select(oi => oi.OrderId)
+                    .Distinct()
+                    .ToList();
+
+                var ordersCount = _context.OrderTables
+                    .Count(o => orderIds.Contains(o.OrderId) && o.CreatedAt >= start && o.CreatedAt < endExclusive);
+
+                var revenue = _context.Payments
+                    .Where(p => p.CreatedAt >= start && p.CreatedAt < endExclusive && p.OrderId != null && orderIds.Contains(p.OrderId.Value))
+                    .Select(p => p.Amount ?? 0m)
+                    .Sum();
+
+                var cancelled = _context.OrderTables
+                    .Count(o => orderIds.Contains(o.OrderId) && o.Status == "Cancelled");
+
+                decimal cancelRate = (ordersCount > 0) ? Math.Round((decimal)cancelled / ordersCount * 100m, 2) : 0m;
+
+                vendorRows.Add(new Models.Reports.VendorRow
+                {
+                    VendorId = v.VendorId,
+                    VendorName = v.VendorName,
+                    Orders = ordersCount,
+                    Revenue = Math.Round(revenue, 2),
                     CancellationRate = cancelRate,
-                    Performance = perf
+                    Performance = (revenue > 50000 && cancelRate < 4) ? "Good" : (cancelRate > 8 || revenue < 8000 ? "Poor" : "Average")
                 });
             }
 
-            // rank by revenue desc and take top N
-            var ranked = vendors.OrderByDescending(v => v.Revenue).ToArray();
+            var ranked = vendorRows.OrderByDescending(v => v.Revenue).ToArray();
             var topVendors = ranked.Take(top).ToArray();
 
-            // chart data - simple revenue bars for top vendors
             var chartLabels = topVendors.Select(v => v.VendorName).ToArray();
             var chartValues = topVendors.Select(v => v.Revenue).ToArray();
 
             var summary = new Models.Reports.VendorSummary
             {
-                TotalVendors = vendors.Count,
-                ActiveVendors = vendors.Count(v => v.Orders > 0),
-                TotalRevenue = Math.Round(vendors.Sum(v => v.Revenue), 2),
-                TotalOrders = vendors.Sum(v => v.Orders)
+                TotalVendors = vendorRows.Count,
+                ActiveVendors = vendorRows.Count(v => v.Orders > 0),
+                TotalRevenue = Math.Round(vendorRows.Sum(v => v.Revenue), 2),
+                TotalOrders = vendorRows.Sum(v => v.Orders)
             };
 
             var model = new Models.Reports.VendorPerformanceModel
@@ -290,109 +416,110 @@ namespace NUTRIBITE.Controllers
         [HttpGet]
         public IActionResult GetLocationAnalyticsData(string city = "All")
         {
-            // NOTE: sample/mock implementation. Replace with real SQL/EF queries against your DB.
-            try
+            // The database doesn't contain explicit city fields on OrderTable in this schema.
+            // We'll use PickupSlot grouping as a practical proxy for "location/time" demand.
+            DateTime start = DateTime.Today.AddDays(-29);
+            DateTime end = DateTime.Today.AddDays(1);
+
+            var grouped = _context.OrderTables
+                .Where(o => !string.IsNullOrEmpty(o.PickupSlot) && o.CreatedAt >= start && o.CreatedAt < end)
+                .GroupBy(o => o.PickupSlot)
+                .Select(g => new
+                {
+                    PickupSlot = g.Key,
+                    OrdersCount = g.Count(),
+                    Revenue = _context.Payments.Where(p => p.OrderId != null && g.Select(x => x.OrderId).Contains(p.OrderId.Value)).Select(p => p.Amount ?? 0m).Sum()
+                })
+                .OrderByDescending(x => x.OrdersCount)
+                .ToList();
+
+            var locations = grouped.Select(g => new Models.Reports.LocationDemandModel
             {
-                // sample cities and regions
-                var cities = new[] { "All", "Downtown", "Uptown", "Suburb", "Airport" };
+                City = g.PickupSlot ?? "Unknown",
+                Region = "",
+                OrdersCount = g.OrdersCount,
+                Percentage = 0m
+            }).ToList();
 
-                // mock location rows (in real code aggregate OrderTable by City/Region)
-                var rnd = new Random(42);
-                var baseLocations = new[]
-                {
-                    new { City = "Downtown", Region = "Central" },
-                    new { City = "Downtown", Region = "Market" },
-                    new { City = "Uptown", Region = "North" },
-                    new { City = "Suburb", Region = "West End" },
-                    new { City = "Airport", Region = "Terminal" }
-                };
-
-                var locations = baseLocations
-                    .Where(l => city == "All" || l.City == city)
-                    .Select(l => new Models.Reports.LocationDemandModel
-                    {
-                        City = l.City,
-                        Region = l.Region,
-                        OrdersCount = 20 + rnd.Next(180),
-                        Percentage = 0m // will compute below
-                    })
-                    .ToList();
-
-                var total = locations.Sum(x => x.OrdersCount);
-                if (total > 0)
-                {
-                    foreach (var loc in locations)
-                        loc.Percentage = Math.Round((decimal)loc.OrdersCount / total * 100m, 2);
-                }
-
-                var chart = locations.Select(l => new Models.Reports.ChartPoint
-                {
-                    Label = $"{l.City} - {l.Region}",
-                    Value = l.OrdersCount
-                }).ToArray();
-
-                var result = new Models.Reports.LocationAnalyticsModel
-                {
-                    SelectedCity = city ?? "All",
-                    Cities = cities,
-                    Locations = locations.ToArray(),
-                    Chart = chart
-                };
-
-                return Json(result);
-            }
-            catch (Exception ex)
+            var total = locations.Sum(x => x.OrdersCount);
+            if (total > 0)
             {
-                return Json(new { error = ex.Message });
+                foreach (var loc in locations)
+                    loc.Percentage = Math.Round((decimal)loc.OrdersCount / total * 100m, 2);
             }
+
+            var chart = locations.Select(l => new Models.Reports.ChartPoint
+            {
+                Label = l.City + (string.IsNullOrEmpty(l.Region) ? "" : " - " + l.Region),
+                Value = l.OrdersCount
+            }).ToArray();
+
+            var cities = locations.Select(l => l.City).Distinct().ToArray();
+
+            var result = new Models.Reports.LocationAnalyticsModel
+            {
+                SelectedCity = city ?? "All",
+                Cities = cities,
+                Locations = locations.ToArray(),
+                Chart = chart
+            };
+
+            return Json(result);
         }
 
         [HttpGet]
         public IActionResult GetPaymentReportsData(DateTime? from, DateTime? to, string status = "All")
         {
-            // NOTE: mock data — replace with real SQL/EF queries using your DB schema.
             DateTime end = to?.Date ?? DateTime.Today;
             DateTime start = from?.Date ?? end.AddDays(-13);
             if (start > end) (start, end) = (end, start);
+            DateTime endExclusive = end.AddDays(1);
 
-            var rnd = new Random(123);
-            var list = new List<NUTRIBITE.Models.Reports.PaymentRow>();
-            int id = 5000;
-
-            // generate sample payments
-            for (DateTime d = start; d <= end; d = d.AddDays(1))
-            {
-                int perDay = 8 + rnd.Next(8);
-                for (int i = 0; i < perDay; i++)
+            var payments = _context.Payments
+                .Where(p => p.CreatedAt >= start && p.CreatedAt < endExclusive)
+                .OrderByDescending(p => p.CreatedAt)
+                .Select(p => new
                 {
-                    var sts = rnd.NextDouble();
-                    string st = sts > 0.85 ? "Failed" : sts > 0.95 ? "Cancelled" : (sts > 0.98 ? "Refunded" : "Success");
-                    if (!string.Equals(status, "All", StringComparison.OrdinalIgnoreCase) &&
-                        !string.Equals(st, status, StringComparison.OrdinalIgnoreCase))
-                        continue;
+                    PaymentId = p.Id,
+                    OrderId = p.OrderId,
+                    PaymentDate = p.CreatedAt,
+                    CustomerName = _context.OrderTables.Where(o => o.OrderId == p.OrderId).Select(o => o.CustomerName).FirstOrDefault() ?? "",
+                    Method = p.PaymentMode ?? "",
+                    Amount = p.Amount ?? 0m,
+                    Status = p.IsRefunded == true ? "Refunded" : (!string.IsNullOrEmpty(p.RefundStatus) ? p.RefundStatus : "Success"),
+                    GatewayRef = "", // not available in current schema
+                    Notes = p.RefundStatus ?? ""
+                })
+                .ToList();
 
-                    list.Add(new NUTRIBITE.Models.Reports.PaymentRow
-                    {
-                        PaymentId = id++,
-                        OrderId = 1000 + rnd.Next(400),
-                        PaymentDate = d.AddHours(8 + rnd.Next(8)).AddMinutes(rnd.Next(60)),
-                        CustomerName = "Cust " + rnd.Next(100, 999),
-                        Method = rnd.Next(10) > 2 ? "Card" : "UPI",
-                        Amount = Math.Round((decimal)(50 + rnd.NextDouble() * 900), 2),
-                        Status = st,
-                        GatewayRef = "GW" + rnd.Next(100000, 999999),
-                        Notes = st == "Failed" ? "Card declined" : ""
-                    });
-                }
+            if (!string.Equals(status, "All", StringComparison.OrdinalIgnoreCase))
+            {
+                payments = payments.Where(p => string.Equals(p.Status, status, StringComparison.OrdinalIgnoreCase)).ToList();
             }
+
+            var totalSuccess = payments.Count(p => string.Equals(p.Status, "Success", StringComparison.OrdinalIgnoreCase));
+            var totalFailed = payments.Count(p => string.Equals(p.Status, "Failed", StringComparison.OrdinalIgnoreCase));
+            var totalRefunded = payments.Count(p => string.Equals(p.Status, "Refunded", StringComparison.OrdinalIgnoreCase));
+            var totalCancelled = payments.Count(p => string.Equals(p.Status, "Cancelled", StringComparison.OrdinalIgnoreCase));
 
             var model = new NUTRIBITE.Models.Reports.PaymentReportModel
             {
-                Payments = list.OrderByDescending(p => p.PaymentDate).ToArray(),
-                TotalSuccess = list.Count(p => p.Status == "Success"),
-                TotalFailed = list.Count(p => p.Status == "Failed"),
-                TotalRefunded = list.Count(p => p.Status == "Refunded"),
-                TotalCancelled = list.Count(p => p.Status == "Cancelled")
+                Payments = payments.Select(p => new NUTRIBITE.Models.Reports.PaymentRow
+                {
+                    PaymentId = p.PaymentId,
+                    OrderId = p.OrderId ?? 0,
+                    PaymentDate = p.PaymentDate ?? DateTime.MinValue,
+                    CustomerName = p.CustomerName,
+                    Method = p.Method,
+                    Amount = p.Amount,
+                    Status = p.Status,
+                    GatewayRef = p.GatewayRef,
+                    Notes = p.Notes
+                }).ToArray(),
+                TotalSuccess = totalSuccess,
+                TotalFailed = totalFailed,
+                TotalRefunded = totalRefunded,
+                TotalCancelled = totalCancelled
             };
 
             return Json(model);

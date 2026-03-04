@@ -5,71 +5,6 @@
 }
 
 /* =========================
-   MAIN WRAPPER
-========================= */
-.page-wrapper {
-    width: 90%;
-    max-width: 1300px;
-    margin: 60px auto;
-    background: #f6fff9;
-    border-radius: 20px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
-    overflow: hidden;
-}
-
-/* =========================
-   NAVBAR
-========================= */
-.public-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 40px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    background: white;
-}
-
-.logo-img {
-    height: 60px;
-}
-
-.nav-center {
-    display: flex;
-    gap: 30px;
-}
-
-    .nav-center a {
-        text-decoration: none;
-        font-weight: 600;
-        color: #1b4332;
-        transition: 0.3s;
-    }
-
-        .nav-center a:hover {
-            color: #40916c;
-        }
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.login-btn {
-    padding: 10px 20px;
-    border-radius: 25px;
-    background: #2d6a4f;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s;
-}
-
-    .login-btn:hover {
-        background: #1b4332;
-    }
-
-/* =========================
    HERO SECTION
 ========================= */
 .hero-section {
@@ -194,56 +129,11 @@
     }
 
 /* =========================
-   SECTION SPACING
+   MEAL SECTION
 ========================= */
 .soft-section {
     padding: 90px 60px;
 }
-
-.special-header span {
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: #2d6a4f;
-}
-
-/* =========================
-   MEAL CARDS
-========================= */
-.meals-grid {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-}
-
-.meal-card {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    text-align: center;
-    text-decoration: none;
-    color: #1b4332;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-    transition: 0.3s;
-    width: 250px;
-}
-
-    .meal-card img {
-        width: 100%;
-        border-radius: 15px;
-        margin-bottom: 15px;
-    }
-
-    .meal-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(34,197,94,0.25);
-    }
-
-
-
-/* =========================
-   MEAL CATEGORY POLISHED
-========================= */
 
 .section-title {
     font-size: 2rem;
@@ -367,74 +257,4 @@
     justify-content: center;
     font-weight: 600;
     cursor: pointer;
-}
-
-/* ===============================
-   HOMEPAGE STUDENT / ELDERLY / CORPORATE SECTION
-================================= */
-
-#studentMeals .combos-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-top: 20px;
-}
-
-/* CARD */
-
-#studentMeals .combo-card {
-    background: #ffffff;
-    border-radius: var(--card-radius);
-    padding: 30px 20px;
-    box-shadow: 0 8px 22px rgba(6,95,70,0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* IMAGE WRAPPER */
-
-#studentMeals .combo-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-    /* IMAGE SIZE */
-
-    #studentMeals .combo-image img {
-        width: 190px;
-        height: 190px;
-        object-fit: contain;
-    }
-#studentMeals .btn.add-cart {
-    background-color: var(--nb-student-green) !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 30px !important;
-    padding: 12px 36px !important;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-top: 18px;
-    display: inline-block;
-    text-align: center;
-    transition: all 0.25s ease;
-}
-    #studentMeals .btn.add-cart:hover {
-        background-color: #3f9c44 !important;
-        color: #ffffff !important;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(76,175,80,0.25);
-    }
-
-
-/* RESPONSIVE */
-
-@media (max-width: 768px) {
-
-    #studentMeals .combos-grid {
-        grid-template-columns: 1fr;
-    }
 }

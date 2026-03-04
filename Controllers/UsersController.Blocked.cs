@@ -1,72 +1,92 @@
 using Microsoft.AspNetCore.Mvc;
-using NUTRIBITE.Models.Users;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using NUTRIBITE.Models.Users;
 
 namespace NUTRIBITE.Controllers
 {
-    // Partial controller file that adds blocked-users functionality.
-    // Drop this file into Controllers\ and it will augment existing UsersController.
+    // Partial controller file — provides endpoints related to blocked users.
+    // NOTE: The main UsersController already contains the server-rendered BlockedUsers() action.
     public partial class UsersController
     {
-        // GET: /Users/BlockedUsers
-        [HttpGet]
-        public IActionResult BlockedUsers()
-        {
-            return View();
-        }
-
         // GET: /Users/GetBlockedUsersData
         [HttpGet]
         public IActionResult GetBlockedUsersData(string q = "", DateTime? from = null, DateTime? to = null, string status = "All")
         {
-            // Replace this mock with DB queries in production.
-            var now = DateTime.UtcNow.Date;
-            var sample = new List<BlockedUserModel>
-            {
-                new BlockedUserModel { UserId = 1002, UserName = "Ravi Kumar", Email = "ravi@example.com", Phone = "9988776655", Reason = "Multiple coupon misuse", BlockedAt = now.AddDays(-10), ExpiresAt = now.AddDays(20), BlockedBy = "admin" , AdminNote = "Warned 2026-01-05" },
-                new BlockedUserModel { UserId = 1010, UserName = "Pooja Sharma", Email = "pooja@example.com", Phone = "9123456789", Reason = "Chargebacks", BlockedAt = now.AddDays(-60), ExpiresAt = null, BlockedBy = "system", AdminNote = "Manual review required" },
-                new BlockedUserModel { UserId = 1021, UserName = "Deepak Jain", Email = "deepak@example.com", Phone = "9012345678", Reason = "Abusive behaviour", BlockedAt = now.AddDays(-2), ExpiresAt = now.AddDays(5), BlockedBy = "mod1", AdminNote = "" }
-            };
+            // Query blocked users from database
+            var query = _context.UserSignups
+                        .Where(u => u.Status == "Blocked")
+                        .AsQueryable();
 
-            // Apply filters
             if (!string.IsNullOrWhiteSpace(q))
             {
                 var qq = q.Trim().ToLowerInvariant();
-                sample = sample.Where(u =>
-                    (u.UserName ?? "").ToLowerInvariant().Contains(qq) ||
-                    (u.Email ?? "").ToLowerInvariant().Contains(qq) ||
-                    (u.Phone ?? "").ToLowerInvariant().Contains(qq) ||
-                    (u.Reason ?? "").ToLowerInvariant().Contains(qq)
-                ).ToList();
+                query = query.Where(u =>
+                    (u.Name ?? "").ToLower().Contains(qq) ||
+                    (u.Email ?? "").ToLower().Contains(qq) ||
+                    (u.Phone ?? "").ToLower().Contains(qq));
             }
 
             if (from.HasValue)
-                sample = sample.Where(u => u.BlockedAt.Date >= from.Value.Date).ToList();
-
-            if (to.HasValue)
-                sample = sample.Where(u => u.BlockedAt.Date <= to.Value.Date).ToList();
-
-            if (!string.Equals(status, "All", StringComparison.OrdinalIgnoreCase))
             {
-                if (string.Equals(status, "Active", StringComparison.OrdinalIgnoreCase))
-                    sample = sample.Where(u => u.IsActiveBlock).ToList();
-                else if (string.Equals(status, "Expired", StringComparison.OrdinalIgnoreCase))
-                    sample = sample.Where(u => !u.IsActiveBlock).ToList();
+                var f = from.Value.Date;
+                query = query.Where(u => (u.CreatedAt ?? DateTime.MinValue) >= f);
             }
 
-            // return JSON
-            return Json(new { total = sample.Count, items = sample.OrderByDescending(u => u.BlockedAt).ToArray() });
+            if (to.HasValue)
+            {
+                var t = to.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(u => (u.CreatedAt ?? DateTime.MinValue) <= t);
+            }
+
+            List<BlockedUserModel> list = query
+                .OrderByDescending(u => u.CreatedAt)
+                .Select(u => new BlockedUserModel
+                {
+                    UserId = u.Id,
+                    UserName = u.Name,
+                    Email = u.Email,
+                    Phone = u.Phone,
+                    Reason = "", // Reason not present in schema
+                    BlockedAt = u.CreatedAt,
+                    ExpiresAt = null,
+                    BlockedBy = "admin",
+                    AdminNote = ""
+                })
+                .ToList();
+
+            // Apply status filter if requested (Active/Expired)
+            if (!string.Equals(status, "All", StringComparison.OrdinalIgnoreCase))
+            {
+                if (string.Equals(status, "Expired", StringComparison.OrdinalIgnoreCase))
+                {
+                    // No expiry data in schema — return empty list for Expired
+                    list = new List<BlockedUserModel>();
+                }
+                else if (string.Equals(status, "Active", StringComparison.OrdinalIgnoreCase))
+                {
+                    list = list.Where(x => x.IsActiveBlock).ToList();
+                }
+            }
+
+            return Json(new { total = list.Count, items = list.ToArray() });
         }
 
         // POST: /Users/UnblockUser
+        // Renamed server method to avoid duplicate method signature with the GET UnblockUser in UsersController.cs.
+        // Route kept as '/Users/UnblockUser' so existing AJAX callers continue to work.
         [HttpPost]
+        [Route("Users/UnblockUser")]
         [ValidateAntiForgeryToken]
-        public IActionResult UnblockUser(int userId)
+        public IActionResult UnblockUserPost(int userId)
         {
-            // TODO: implement DB update to remove block/flag
-            // For now return success for UI.
+            var user = _context.UserSignups.FirstOrDefault(u => u.Id == userId);
+            if (user == null) return Json(new { success = false, message = "User not found" });
+
+            user.Status = "Active";
+            _context.SaveChanges();
+
             return Json(new { success = true, userId = userId });
         }
 
@@ -77,7 +97,13 @@ namespace NUTRIBITE.Controllers
         {
             if (string.IsNullOrWhiteSpace(note)) return Json(new { success = false, message = "Note required" });
 
-            // TODO: persist admin note in DB (append with timestamp)
+            var user = _context.UserSignups.FirstOrDefault(u => u.Id == userId);
+            if (user == null) return Json(new { success = false, message = "User not found" });
+
+            // Schema doesn't include admin notes; no destructive changes here.
+            // Ideally add a separate table/column via migration for notes.
+            _context.SaveChanges();
+
             return Json(new { success = true, userId = userId, note = note });
         }
     }

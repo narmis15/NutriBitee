@@ -1,5 +1,5 @@
 ﻿@using NUTRIBITE.Models
-@model IEnumerable<FoodCategory>
+@model IEnumerable<AddCategory>
 
 @{
     ViewData["Title"] = "View Meal Categories";
@@ -40,7 +40,7 @@
                 {
                     <tr>
                         <!-- ID -->
-                        <td>@item.cid</td>
+                        <td>@item.Cid</td>
 
                         <!-- Meal Category -->
                         <td>@item.MealCategory</td>
@@ -65,13 +65,13 @@
                         <!-- Actions -->
                         <td class="action-cell">
                             <a asp-action="EditMealCategory"
-                               asp-route-id="@item.cid"
+                               asp-route-id="@item.Cid"
                                class="btn-action btn-approve">
                                 Edit
                             </a>
 
                             <a asp-action="DeleteMealCategory"
-                               asp-route-id="@item.cid"
+                               asp-route-id="@item.Cid"
                                class="btn-action btn-reject"
                                onclick="return confirm('Are you sure you want to delete this meal category?');">
                                 Delete

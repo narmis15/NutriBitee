@@ -61,7 +61,8 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
-        => optionsBuilder.UseSqlServer("Server=SIMRAN\\SQLEXPRESS;Database=FoodDeliveryDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-Q19F524\\SQLEXPRESS;Database=FoodDeliveryDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
+
 );
   
  
@@ -385,6 +386,9 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__UserSign__3214EC075B80A025");
 
             entity.ToTable("UserSignup");
+
+            // Prevent EF from expecting a Role column when it doesn't exist in the DB
+            entity.Ignore(e => e.Role);
 
             entity.HasIndex(e => e.Email, "UQ__UserSign__A9D10534529A670A").IsUnique();
 

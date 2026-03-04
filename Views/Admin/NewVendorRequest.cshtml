@@ -1,4 +1,4 @@
-﻿@model List<object>
+﻿@model IEnumerable<NUTRIBITE.Models.VendorSignup>
 
 @{
     ViewData["Title"] = "New Vendor Requests";
@@ -12,10 +12,10 @@
 
     <div class="vendor-header">
         <h2>New Vendor Requests</h2>
-        <span class="vendor-count">@Model.Count Pending</span>
+        <span class="vendor-count">@Model?.Count() Pending</span>
     </div>
 
-    @if (Model.Count == 0)
+    @if (!Model?.Any() ?? true)
     {
         <div class="no-vendors">
             <h4>No Pending Vendor Requests</h4>
@@ -36,14 +36,14 @@
                 </thead>
                 <tbody>
 
-                    @foreach (dynamic vendor in Model)
+                    @foreach (var vendor in Model)
                     {
                         <tr>
 
                             <td>
                                 <div class="vendor-info">
                                     <div class="vendor-avatar">
-                                        @vendor.VendorName.ToString().Substring(0, 1).ToUpper()
+                                        @vendor.VendorName.Substring(0, 1).ToUpper()
                                     </div>
                                     <div>
                                         <div class="vendor-name">@vendor.VendorName</div>
@@ -56,9 +56,9 @@
 
                             <td>
                                 <div class="date-box">
-                                    @Convert.ToDateTime(vendor.CreatedAt).ToString("dd MMM yyyy")
+                                    @(vendor.CreatedAt.HasValue ? vendor.CreatedAt.Value.ToString("dd MMM yyyy") : "-")
                                     <small>
-                                        @Convert.ToDateTime(vendor.CreatedAt).ToString("hh:mm tt")
+                                        @(vendor.CreatedAt.HasValue ? vendor.CreatedAt.Value.ToString("hh:mm tt") : "")
                                     </small>
                                 </div>
                             </td>
@@ -66,6 +66,7 @@
                             <td class="text-center">
 
                                 <form asp-action="ApproveVendor" method="post" class="inline-form">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@vendor.VendorId" />
                                     <button type="submit" class="btn-approve">
                                         Approve
@@ -73,6 +74,7 @@
                                 </form>
 
                                 <form asp-action="RejectVendor" method="post" class="inline-form">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@vendor.VendorId" />
                                     <button type="submit" class="btn-reject">
                                         Reject
@@ -90,3 +92,8 @@
     }
 
 </div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Success"]</div>
+}
