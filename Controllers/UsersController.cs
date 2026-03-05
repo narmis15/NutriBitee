@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -148,5 +148,67 @@ namespace NUTRIBITE.Controllers
         }
 
         // Existing AJAX endpoints remain unchanged (GetUsersData, GetUserOrdersData, etc.)
+        [HttpGet]
+        public IActionResult GetCalorieAnalyticsData(DateTime? from, DateTime? to)
+        {
+            var uid = HttpContext.Session.GetInt32("UserId");
+
+            if (uid == null)
+                return Json(null);
+
+            var start = from ?? DateTime.Today.AddDays(-13);
+            var end = to ?? DateTime.Today;
+
+            var entries = _context.DailyCalorieEntries
+                .Where(x => x.UserId == uid.Value &&
+                            x.Date >= start &&
+                            x.Date <= end)
+                .ToList();
+
+            var trend = entries
+                .GroupBy(x => x.Date)
+                .Select(g => new
+                {
+                    label = g.Key.ToString("dd MMM"),
+                    calories = g.Sum(x => x.Calories)
+                })
+                .OrderBy(x => x.label)
+                .ToList();
+
+            var todayCalories = entries
+                .Where(x => x.Date == DateTime.Today)
+                .Sum(x => x.Calories);
+
+            // 🔥 Get recommended calories from Health Survey
+            var survey = _context.HealthSurveys
+                .FirstOrDefault(x => x.UserId == uid.Value);
+
+            int recommended = (int)(survey.Bmr ?? 2000);
+
+            if (survey != null && survey.Bmr != null)
+            {
+                recommended = (int)survey.Bmr;
+            }
+
+            int avg = trend.Any() ? (int)trend.Average(x => x.calories) : 0;
+            int peak = trend.Any() ? trend.Max(x => x.calories) : 0;
+
+            int comparison = recommended > 0
+                ? (int)((todayCalories * 100.0) / recommended)
+                : 0;
+
+           
+            return Json(new
+            {
+                userName = HttpContext.Session.GetString("UserName"),
+
+                todayCalories = todayCalories,
+                recommendedDaily = recommended,
+                averageDaily = avg,
+                peakDaily = peak,
+                comparisonPercent = comparison,
+                trend = trend
+            });
+        }
     }
 }

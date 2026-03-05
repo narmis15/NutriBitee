@@ -159,5 +159,20 @@ namespace NUTRIBITE.Controllers
 
             return Json(results);
         }
+        [HttpGet]
+        [HttpGet]
+        public IActionResult Results(string q)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return View(new List<Food>());
+
+            var foods = _context.Foods
+                .Where(f => f.Name.Contains(q))
+                .ToList();
+
+            ViewBag.Query = q;
+
+            return View(foods);
+        }
     }
 }

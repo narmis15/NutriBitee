@@ -1,0 +1,310 @@
+﻿@{
+    ViewData["Title"] = "My Calorie Dashboard";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<style>
+
+    .card {
+        border-radius: 14px;
+        border: none;
+    }
+
+    .progress {
+        border-radius: 20px;
+    }
+
+    .progress-bar {
+        transition: width .6s ease;
+    }
+
+    .dashboard-card {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .dashboard-value {
+        font-size: 26px;
+        font-weight: 600;
+    }
+
+</style>
+
+<div class="container py-5">
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+
+        <div>
+            <h2 class="mb-1">My Calorie Dashboard</h2>
+            <small class="text-muted" id="userLabel">Loading…</small>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+
+            <label class="text-muted">From</label>
+            <input type="date" id="fromDate" class="form-control form-control-sm" />
+
+            <label class="text-muted ms-3">To</label>
+            <input type="date" id="toDate" class="form-control form-control-sm" />
+
+            <button id="refreshBtn" class="btn btn-success btn-sm ms-3">
+                Refresh
+            </button>
+
+        </div>
+    </div>
+
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm dashboard-card">
+                <small>🔥 Average / Day</small>
+                <div class="dashboard-value text-success" id="avgDaily">
+                    — kcal
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm dashboard-card">
+                <small>📈 Peak Day</small>
+                <div class="dashboard-value text-primary" id="peakDaily">
+                    — kcal
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm dashboard-card">
+                <small>🎯 Recommended</small>
+                <div class="dashboard-value text-warning" id="recommendedDaily">
+                    — kcal
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm dashboard-card">
+                <small>⚖ Comparison</small>
+                <div class="dashboard-value text-danger" id="comparisonPct">
+                    — %
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm p-4">
+
+                <h6 class="mb-3">🔥 Today's Progress</h6>
+
+                <div class="progress" style="height:18px;">
+
+                    <div id="todayProgress"
+                         class="progress-bar bg-success"
+                         style="width:0%">
+                    </div>
+
+                </div>
+
+                <div class="small mt-2 text-muted">
+
+                    <span id="todayCalories">0</span>
+                    /
+                    <span id="recommendedCalories">0</span> kcal
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm p-4 mb-3">
+
+                <canvas id="calorieChart"
+                        height="220"
+                        aria-label="Calorie trend chart"
+                        role="img">
+                </canvas>
+
+            </div>
+
+            <div id="alertsContainer"></div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm p-4">
+
+                <h5 class="mb-3">Summary</h5>
+
+                <div id="summaryContent">
+
+                    <p class="text-muted mb-1">
+                        Use the date selectors above to filter analytics.
+                    </p>
+
+                    <ul class="list-unstyled" id="trendList"></ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        (function () {
+
+        const $avg = document.getElementById('avgDaily');
+        const $peak = document.getElementById('peakDaily');
+        const $rec = document.getElementById('recommendedDaily');
+        const $cmp = document.getElementById('comparisonPct');
+        const $userLabel = document.getElementById('userLabel');
+        const $trendList = document.getElementById('trendList');
+        const ctx = document.getElementById('calorieChart').getContext('2d');
+
+        let chart = null;
+
+        function toIsoDate(d){
+        const tzOff=d.getTimezoneOffset()*60000;
+        return new Date(d-tzOff).toISOString().slice(0,10);
+        }
+
+        const today=new Date();
+        const twoWeeksAgo=new Date();
+        twoWeeksAgo.setDate(today.getDate()-13);
+
+        document.getElementById('fromDate').value=toIsoDate(twoWeeksAgo);
+        document.getElementById('toDate').value=toIsoDate(today);
+
+
+        function renderTrendList(trend){
+
+        $trendList.innerHTML='';
+
+        if(!trend || !trend.length) return;
+
+        trend.slice().reverse().forEach(pt=>{
+
+        const li=document.createElement('li');
+
+        li.className='mb-2';
+
+        li.innerHTML=`<strong>${pt.label}</strong> — ${pt.calories} kcal`;
+
+        $trendList.appendChild(li);
+
+        });
+
+        }
+
+
+        function fetchData(){
+
+        const from=document.getElementById('fromDate').value;
+        const to=document.getElementById('toDate').value;
+
+        $.getJSON('/Users/GetCalorieAnalyticsData',{from:from||null,to:to||null})
+
+        .done(function(model){
+
+        if(!model) return;
+
+        $userLabel.textContent=model.userName||'';
+
+        $avg.textContent=(model.averageDaily??'—')+' kcal';
+        $peak.textContent=(model.peakDaily??'—')+' kcal';
+        const recommended = model.recommendedDaily ?? model.RecommendedDaily ?? 2000;
+
+        $rec.textContent = recommended + " kcal";
+        $cmp.textContent=(model.comparisonPercent??'—')+' %';
+
+
+        const today=model.todayCalories??0;
+        const recommended=model.recommendedDaily??2000;
+
+        document.getElementById("todayCalories").innerText=today;
+        document.getElementById("recommendedCalories").innerText=recommended;
+
+        let percent=0;
+
+        if(recommended>0){
+        percent=Math.min((today/recommended)*100,100);
+        }
+
+        document.getElementById("todayProgress").style.width=percent+"%";
+
+
+        renderTrendList(model.trend||[]);
+
+
+        const labels=model.trend.map(x=>x.label);
+        const data=model.trend.map(x=>x.calories);
+
+        if(chart){
+
+        chart.data.labels=labels;
+        chart.data.datasets[0].data=data;
+        chart.update();
+
+        }else{
+
+        chart=new Chart(ctx,{
+        type:'line',
+        data:{
+        labels:labels,
+        datasets:[{
+        label:'Calories',
+        data:data,
+        borderColor:'#16a34a',
+        backgroundColor:'rgba(22,163,74,0.08)',
+        fill:true,
+        tension:0.25
+        }]
+        },
+        options:{
+        responsive:true,
+        plugins:{legend:{display:false}}
+        }
+        });
+
+        }
+
+        });
+
+        }
+
+        document.getElementById('refreshBtn').addEventListener('click',fetchData);
+
+        fetchData();
+
+        })();
+
+    </script>
+
+}

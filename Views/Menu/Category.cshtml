@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
+
 @model List<NUTRIBITE.Models.Food>
 
 <h2 class="text-center mb-4">@ViewBag.CategoryName</h2>
@@ -16,12 +17,61 @@
                      style="height:200px; object-fit:cover;" />
 
                 <div class="card-body text-center">
+
                     <h5>@food.Name</h5>
+
                     <p>@food.Description</p>
+
                     <p><strong>₹ @food.Price</strong></p>
+
+                    <button class="btn btn-success w-100 mt-2 add-to-cart"
+                            data-id="@food.Id">
+                        Add To Cart
+                    </button>
+
                 </div>
 
             </div>
         </div>
     }
 </div>
+
+
+<script>
+
+    document.querySelectorAll(".add-to-cart").forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            const foodId = this.getAttribute("data-id");
+
+            fetch("/Cart/AddToCart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    productId: parseInt(foodId)
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                if (data.success) {
+
+                    alert("Item added to cart");
+
+                } else {
+
+                    alert("Please login first");
+
+                }
+
+            })
+            .catch(err => console.error(err));
+
+        });
+
+    });
+
+</script>

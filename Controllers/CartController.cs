@@ -195,6 +195,36 @@ namespace NutriBite.Controllers
                     CreatedAt = DateTime.Now
                 });
             }
+            // 🔥 Add Order Items + Auto Calorie Tracking
+            foreach (var item in cartItems)
+            {
+                var food = _context.Foods.FirstOrDefault(f => f.Id == item.Pid);
+
+                _context.OrderItems.Add(new OrderItem
+                {
+                    OrderId = order.OrderId,
+                    ItemName = food?.Name,
+                    Quantity = item.Qty,
+                    CreatedAt = DateTime.Now
+                });
+
+                // 🔥 Auto calorie tracking
+                if (food != null)
+                {
+                    var calorieEntry = new DailyCalorieEntry
+                    {
+                        UserId = uid.Value,
+                        Date = DateTime.Today,
+                        FoodName = food.Name,
+                        Calories = (food.Calories ?? 0) * item.Qty  ,                     
+                        Protein = 0,
+                        Carbs = 0,
+                        Fats = 0
+                    };
+
+                    _context.DailyCalorieEntries.Add(calorieEntry);
+                }
+            }
 
             _context.SaveChanges();
 

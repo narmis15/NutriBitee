@@ -136,6 +136,11 @@ namespace NUTRIBITE.Controllers
             if (!IsLoggedIn())
                 return RedirectToAction("Login");
 
+            ViewBag.Categories = _context.AddCategories
+                .Where(c => c.MealCategory != null)
+                .OrderBy(c => c.MealCategory)
+                .ToList();
+
             return View();
         }
 

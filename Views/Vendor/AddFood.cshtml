@@ -47,17 +47,22 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Category</label>
-                            <select name="CategoryId"
-                                    class="form-control"
-                                    required>
+                            <<select name="CategoryId" class="form-control" required>
+
                                 <option value="">Select Category</option>
-                                <option>Standard Thali</option>
-                                <option>High Protein</option>
-                                <option>Low Carb</option>
-                                <option>Weight Loss</option>
+
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.Cid">
+                                        @category.MealCategory
+                                    </option>
+                                }
+
                             </select>
+
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row g-3 mt-1">
