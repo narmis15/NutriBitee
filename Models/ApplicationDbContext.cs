@@ -58,11 +58,16 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<UserSignup> UserSignups { get; set; }
 
     public virtual DbSet<VendorSignup> VendorSignups { get; set; }
+
+    // New DbSet for Bulk items
+    public virtual DbSet<BulkItem> BulkItems { get; set; }
+
     public object OrderTable { get; internal set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
-        => optionsBuilder.UseSqlServer("Server=SIMRAN\\SQLEXPRESS;Database=FoodDeliveryDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-Q19F524\\SQLEXPRESS;Database=FoodDeliveryDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
+
 );
   
 
@@ -416,6 +421,23 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(150);
             entity.Property(e => e.PasswordHash).HasMaxLength(255);
             entity.Property(e => e.VendorName).HasMaxLength(100);
+        });
+
+        // Mapping for BulkItem (table created by SQL script)
+        modelBuilder.Entity<BulkItem>(entity =>
+        {
+            entity.ToTable("BulkItem");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).HasMaxLength(200).IsRequired();
+            entity.Property(e => e.ShortDescription).HasMaxLength(500);
+            entity.Property(e => e.LongDescription);
+            entity.Property(e => e.Price).HasColumnType("decimal(10,2)");
+            entity.Property(e => e.IsVeg).HasDefaultValue(true);
+            entity.Property(e => e.Category).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.ImagePath).HasMaxLength(300);
+            entity.Property(e => e.MOQ);
+            entity.Property(e => e.Status).HasMaxLength(20).HasDefaultValue("Active");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
         });
 
         OnModelCreatingPartial(modelBuilder);

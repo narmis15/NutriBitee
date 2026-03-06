@@ -17,7 +17,7 @@
                 Fresh, calorie-counted meals prepared by verified home chefs.
                 Daily deliveries tailored to your goals.
             </p>
-            <a asp-controller="Meals" asp-action="Index" class="cta-btn">
+            <a asp-controller="Menu" asp-action="Index" class="cta-btn">
                 Start Ordering
             </a>
         </div>
@@ -29,101 +29,23 @@
         </div>
     </div>
 
-    <!-- FEATURES -->
-    <div class="features">
-        <div class="feature-card">
-            <h4>🔥 Calorie Counted</h4>
-            <p>Clear nutritional info for every meal.</p>
-        </div>
-        <div class="feature-card">
-            <h4>🥗 Fresh Daily</h4>
-            <p>Cooked fresh and delivered same day.</p>
-        </div>
+        <!-- FEATURES -->
+        <div class="features">
+            <div class="feature-card">
+                <h4>🔥 Calorie Counted</h4>
+                <p>Clear nutritional info for every meal.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🥗 Fresh Daily</h4>
+                <p>Cooked fresh and delivered same day.</p>
+            </div>
 
         <div class="feature-card">
             <h4>🏡 Homemade</h4>
             <p>Prepared by verified home chefs.</p>
         </div>
     </div>
-    
-
-
-    <!-- ===============================
-       AUDIENCE MEALS SECTION
-    ================================= -->
-
-    <section id="studentMeals">
-
-        <div class="container">
-
-            <div class="audience-title text-center mb-5">
-                <span></span>
-                <h4>SPECIALLY FOR YOU</h4>
-                <span></span>
-            </div>
-
-            <div class="combos-grid">
-
-                <!-- ===============================
-                     STUDENTS
-                ================================ -->
-                <div class="combo-card text-center">
-
-                    <div class="combo-image">
-                        <img src="~/images/categories/student.jpeg" alt="Students">
-                    </div>
-
-                    <a asp-controller="Students"
-                       asp-action="Index"
-                       class="btn add-cart">
-                        STUDENTS
-                    </a>
-
-                </div>
-
-
-                <!-- ===============================
-                     ELDERLY
-                ================================ -->
-                <div class="combo-card text-center">
-
-                    <div class="combo-image">
-                        <img src="~/images/categories/elderly.jpeg" alt="Elderly">
-                    </div>
-
-                    <a asp-controller="Elderly"
-                       asp-action="Index"
-                       class="btn add-cart">
-                        ELDERLY
-                    </a>
-
-                </div>
-
-
-                <!-- ===============================
-                     CORPORATE
-                ================================ -->
-                <div class="combo-card text-center">
-
-                    <div class="combo-image">
-                        <img src="~/images/categories/corporate.jpeg" alt="Corporate">
-                    </div>
-
-                    <a asp-controller="Corporate"
-                       asp-action="Index"
-                       class="btn add-cart">
-                        CORPORATE
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-   
-   
 </div>
 
 <!-- MEAL CATEGORIES -->
@@ -211,4 +133,190 @@
 
         </div>
     </div>
+</section>
+<!-- ===============================
+       AUDIENCE MEALS SECTION
+    ================================= -->
+
+<section id="studentMeals">
+
+    <div class="container">
+
+        <div class="audience-title text-center mb-5">
+            <span></span>
+            <h4>SPECIALLY FOR YOU</h4>
+            <span></span>
+        </div>
+
+        <div class="combos-grid">
+
+            <!-- ===============================
+                 STUDENTS
+            ================================ -->
+            <div class="combo-card text-center">
+
+                <div class="combo-image">
+                    <img src="~/images/categories/student.jpeg" alt="Students">
+                </div>
+
+                <a asp-controller="Students"
+                   asp-action="Index"
+                   class="btn add-cart">
+                    STUDENTS
+                </a>
+
+            </div>
+
+
+            <!-- ===============================
+                 ELDERLY
+            ================================ -->
+            <div class="combo-card text-center">
+
+                <div class="combo-image">
+                    <img src="~/images/categories/elderly.jpeg" alt="Elderly">
+                </div>
+
+                <a asp-controller="Elderly"
+                   asp-action="Index"
+                   class="btn add-cart">
+                    ELDERLY
+                </a>
+
+            </div>
+
+
+            <!-- ===============================
+                 CORPORATE
+            ================================ -->
+            <div class="combo-card text-center">
+
+                <div class="combo-image">
+                    <img src="~/images/categories/corporate.jpeg" alt="Corporate">
+                </div>
+
+                <a asp-controller="Corporate"
+                   asp-action="Index"
+                   class="btn add-cart">
+                    CORPORATE
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===============================
+       NUTRIBITE INFO SECTION
+================================= -->
+
+<section class="nutribite-info">
+
+    <div class="container">
+
+        <div class="row">
+
+            <!-- LEFT SIDE -->
+
+            <div class="col-md-4">
+
+                <div class="brand-block">
+
+                    <img src="~/images/hero/Nutribitelogo.png"
+                         class="footer-logo" />
+
+                    <p>
+                        NutriBite connects people with healthy homemade meals prepared by trusted home chefs, making nutritious and calorie-counted food
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- COMPANY -->
+
+            <div class="col-md-3">
+
+                <h5>Company</h5>
+
+                <ul class="footer-links">
+
+                    <li>
+                        <a asp-controller="Home" asp-action="About">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Why NutriBite
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-controller="Vendor" asp-action="Register">
+                            Join as Vendor
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Careers
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- INFORMATION -->
+
+            <div class="col-md-3">
+
+                <h5>Information</h5>
+
+                <ul class="footer-links">
+
+                    <li>
+                        <a href="#">Privacy Policy</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Terms & Conditions</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Cancellation & Refunds</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- CONTACT -->
+
+            <div class="col-md-2">
+
+                <h5>Contact Us</h5>
+
+                <p class="contact-item">
+                    📞 +91 9876543210
+                </p>
+
+                <p class="contact-item">
+                    ✉ support@nutribite.com
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </section>

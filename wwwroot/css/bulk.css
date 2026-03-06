@@ -1,10 +1,62 @@
 /* bulk.css - styles for Bulk page (NutriBite) */
 
-/* Container constraint */
-.bulk-container { max-width: 1200px; margin: 0 auto; }
+/* ==============================
+   Container
+================================*/
+.bulk-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
 
-/* HERO CARDS */
-.bulk-hero .hb-card {
+/* ==============================
+   HERO BANNER CAROUSEL
+   (1 banner per slide)
+   - Do NOT override .carousel-item display properties
+================================*/
+
+.bulk-hero .carousel-inner {
+    padding: 6px 0;
+}
+
+.bulk-hero .carousel-item {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+/* Banner image: full-width, rounded, consistent height, cover */
+.bulk-hero-banner {
+    width: 100%;
+    border-radius: 12px;
+    height: 370px;
+    object-fit: contain;
+    box-shadow: 0 8px 22px rgba(6,95,70,0.04);
+    display: block; /* safe: img naturally displays block */
+}
+
+/* Responsive banner heights */
+@media (max-width: 991px) {
+    .bulk-hero-banner { height: 320px; }
+}
+
+@media (max-width: 575px) {
+    .bulk-hero-banner { height: 220px; border-radius: 10px; }
+}
+
+/* Carousel arrow style (visual only, does not change behavior) */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #2d6a4f;
+    border-radius: 50%;
+    padding: 12px;
+}
+
+/* ==============================
+   HERO CARDS (legacy support)
+   (kept unchanged — ensure no display:none on .carousel-item)
+================================*/
+
+.hb-card {
     background: linear-gradient(180deg, rgba(76,175,80,0.06), #ffffff);
     border-radius: 20px;
     padding: 18px;
@@ -19,35 +71,48 @@
 /* left (text) / right (image) */
 .hb-left { flex: 1 1 55%; min-width: 0; }
 .hb-right { flex: 0 0 40%; display:flex; align-items:center; justify-content:center; }
-.hb-img { max-width: 100%; height: 120px; object-fit:contain; border-radius:12px; }
+.hb-img { max-width: 100%; height: 120px; object-fit: contain; border-radius: 12px; }
 
-/* Typography */
-.hb-title { margin: 0 0 8px; font-size: 1.05rem; color: #0b2b20; font-weight:700; }
-.hb-desc { margin: 0 0 12px; color: #3b4b45; font-size: .95rem; }
+.hb-title {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    color: #0b2b20;
+    font-weight: 700;
+}
+
+.hb-desc {
+    margin: 0 0 12px;
+    color: #3b4b45;
+    font-size: .95rem;
+}
 
 /* CTA button */
 .bulk-cta {
-    background-color: #4CAF50;
+    background-color: #2d6a4f;
     color: #fff;
     border-radius: 25px;
     padding: 10px 20px;
     display: inline-block;
     text-decoration: none;
-    font-weight:700;
+    font-weight: 700;
     border: none;
 }
 
-/* Make carousel cards responsive spacing */
+/* Responsive hero card behavior */
 @media (max-width: 991px) {
     .hb-img { height: 100px; }
     .hb-card { min-height: 150px; }
 }
+
 @media (max-width: 575px) {
-    .hb-right { display: none; } /* stack for small screens, show only text */
+    .hb-right { display: none; }
     .hb-card { padding: 16px; }
 }
 
-/* CATEGORY CARDS */
+/* ==============================
+   CATEGORY CARDS
+================================*/
+
 .cat-card {
     position: relative;
     display: block;
@@ -62,20 +127,20 @@
     box-shadow: 0 10px 30px rgba(6,95,70,0.06);
 }
 
-/* Background images (use images saved in wwwroot/images/bulk/) */
+/* Category images */
 .cat-meals { background-image: url('/images/bulk/bulk-meal1.webp'); }
 .cat-snacks { background-image: url('/images/bulk/bulk-meal2.webp'); }
 .cat-foodbox { background-image: url('/images/bulk/bulk-meal3.webp'); }
 
-/* overlay for contrast */
+/* Overlay */
 .cat-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(4,85,38,0.08), rgba(4,85,38,0.12));
+    background: linear-gradient( 180deg, rgba(4,85,38,0.08), rgba(4,85,38,0.12) );
     transition: background .24s ease;
 }
 
-/* centered bottom text */
+/* Text label */
 .cat-text {
     position: absolute;
     left: 16px;
@@ -90,13 +155,13 @@
     text-shadow: 0 6px 18px rgba(2,6,2,0.28);
 }
 
-/* hover */
+/* Hover animation */
 .cat-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 22px 60px rgba(6,95,70,0.12);
 }
 .cat-card:hover .cat-overlay {
-    background: linear-gradient(180deg, rgba(76,175,80,0.18), rgba(76,175,80,0.22));
+    background: linear-gradient( 180deg, rgba(76,175,80,0.18), rgba(76,175,80,0.22) );
 }
 
 /* Accessibility focus */
@@ -105,7 +170,7 @@
     outline-offset: 2px;
 }
 
-/* small screens adjust height */
+/* Mobile category height */
 @media (max-width: 768px) {
     .cat-card { height: 180px; }
 }

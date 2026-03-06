@@ -289,3 +289,51 @@
         grid-template-columns: 1fr;
     }
 }
+/* ===============================
+   NUTRIBITE INFO SECTION
+================================= */
+
+.nutribite-info {
+    background: #f8f9fa;
+    padding: 60px 0;
+    margin-top: 80px;
+}
+
+.footer-logo {
+    height: 50px;
+    margin-bottom: 15px;
+}
+
+.brand-block p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.nutribite-info h5 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+    .footer-links li {
+        margin-bottom: 8px;
+    }
+
+    .footer-links a {
+        text-decoration: none;
+        color: #333;
+        transition: 0.2s;
+    }
+
+        .footer-links a:hover {
+            color: #2e7d32;
+        }
+
+.contact-item {
+    margin-bottom: 8px;
+    color: #444;
+}

@@ -136,3 +136,146 @@
         transform: translateY(-10px);
         box-shadow: 0 25px 50px rgba(34,197,94,0.25);
     }
+
+/* ===============================
+   NUTRIBITE INFO SECTION
+================================= */
+
+.nutribite-info {
+    background: #f8f9fa;
+    padding: 60px 0;
+    margin-top: 80px;
+}
+
+.footer-logo {
+    height: 50px;
+    margin-bottom: 15px;
+}
+
+.brand-block p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.nutribite-info h5 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+    .footer-links li {
+        margin-bottom: 8px;
+    }
+
+    .footer-links a {
+        text-decoration: none;
+        color: #333;
+        transition: 0.2s;
+    }
+
+        .footer-links a:hover {
+            color: #2e7d32;
+        }
+
+.contact-item {
+    margin-bottom: 8px;
+    color: #444;
+}
+/* ===============================
+   NUTRIBITE INFO SECTION FIX
+================================= */
+
+.nutribite-info .row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.nutribite-info .brand-block {
+    max-width: 420px;
+}
+
+.nutribite-info .footer-logo {
+    height: 55px;
+    margin-bottom: 15px;
+}
+
+.nutribite-info h5 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.nutribite-info .footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+    .nutribite-info .footer-links li {
+        margin-bottom: 8px;
+    }
+
+    .nutribite-info .footer-links a {
+        text-decoration: none;
+        color: #333;
+    }
+
+        .nutribite-info .footer-links a:hover {
+            color: #2e7d32;
+        }
+
+.nutribite-info .contact-item {
+    margin-bottom: 10px;
+}
+
+/* responsive */
+
+@media(max-width:900px) {
+
+    .nutribite-info .row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width:600px) {
+
+    .nutribite-info .row {
+        grid-template-columns: 1fr;
+    }
+}
+.brand-block img {
+    max-width: 180px;
+}
+.nutribite-info .brand-block {
+    max-width: 420px;
+}
+
+    .nutribite-info .brand-block p {
+        line-height: 1.6;
+        color: #555;
+    }
+.nutribite-info p {
+    word-break: normal;
+    white-space: normal;
+}
+.nutribite-info .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+    .contact-item .icon {
+        font-size: 16px;
+    }
