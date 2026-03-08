@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using NUTRIBITE.ViewModels;
 using NUTRIBITE.Services;
 using NUTRIBITE.Models;
@@ -26,37 +27,56 @@ namespace NUTRIBITE.Controllers
         public IActionResult Index()
         {
             var uid = HttpContext.Session.GetInt32("UserId");
+
             if (!uid.HasValue)
                 return RedirectToAction("Login", "Auth");
 
             var survey = _context.HealthSurveys
                 .FirstOrDefault(h => h.UserId == uid.Value);
 
-            // If survey exists → load data into form (EDIT MODE)
+            // If survey exists → directly show Result
             if (survey != null)
-            {
-                var vm = new HealthSurveyViewModel
-                {
-                    Age = survey.Age,
-                    Gender = survey.Gender,
+                return RedirectToAction("Result");
 
-                    HeightCm = survey.HeightCm ?? 0, // Fix: handle nullable decimal
-                    WeightKg = survey.WeightKg ?? 0, // Fix: handle nullable decimal
-                    ActivityLevel = survey.ActivityLevel,
-                    Goal = survey.Goal,
-                    ChronicDiseases = survey.ChronicDiseases,
-                    FoodAllergies = survey.FoodAllergies,
-                    DietaryPreference = survey.DietaryPreference,
-                    Smoking = survey.Smoking,
-                    Alcohol = survey.Alcohol
-                };
-
-                return View(vm);
-            }
-
-            // First time survey
             return View(new HealthSurveyViewModel());
         }
+
+
+        // =========================
+        // GET: /HealthSurvey/Edit
+        // =========================
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            var uid = HttpContext.Session.GetInt32("UserId");
+
+            if (!uid.HasValue)
+                return RedirectToAction("Login", "Auth");
+
+            var survey = _context.HealthSurveys
+                .FirstOrDefault(h => h.UserId == uid.Value);
+
+            if (survey == null)
+                return RedirectToAction("Index");
+
+            var vm = new HealthSurveyViewModel
+            {
+                Age = survey.Age,
+                Gender = survey.Gender,
+                HeightCm = survey.HeightCm ?? 0,
+                WeightKg = survey.WeightKg ?? 0,
+                ActivityLevel = survey.ActivityLevel,
+                Goal = survey.Goal,
+                ChronicDiseases = survey.ChronicDiseases,
+                FoodAllergies = survey.FoodAllergies,
+                DietaryPreference = survey.DietaryPreference,
+                Smoking = survey.Smoking,
+                Alcohol = survey.Alcohol
+            };
+
+            return View("Index", vm);
+        }
+
 
         // =========================
         // POST: /HealthSurvey
@@ -66,6 +86,7 @@ namespace NUTRIBITE.Controllers
         public IActionResult Index(HealthSurveyViewModel model)
         {
             var uid = HttpContext.Session.GetInt32("UserId");
+
             if (!uid.HasValue)
                 return RedirectToAction("Login", "Auth");
 
@@ -75,12 +96,10 @@ namespace NUTRIBITE.Controllers
             var survey = _context.HealthSurveys
                 .FirstOrDefault(h => h.UserId == uid.Value);
 
-            // Run calculations
             var calcResult = _calc.Calculate(model);
 
             if (survey == null)
             {
-                // CREATE NEW
                 survey = new HealthSurvey
                 {
                     UserId = uid.Value,
@@ -90,7 +109,7 @@ namespace NUTRIBITE.Controllers
                 _context.HealthSurveys.Add(survey);
             }
 
-            // UPDATE VALUES
+            // Update survey values
             survey.Age = model.Age;
             survey.Gender = model.Gender ?? "";
             survey.HeightCm = model.HeightCm;
@@ -103,7 +122,7 @@ namespace NUTRIBITE.Controllers
             survey.Smoking = model.Smoking;
             survey.Alcohol = model.Alcohol;
 
-            // Calculated fields
+            // Calculated values
             survey.Bmi = calcResult.BMI;
             survey.Bmr = calcResult.BMR;
             survey.RecommendedCalories = calcResult.RecommendedCalories;
@@ -114,13 +133,16 @@ namespace NUTRIBITE.Controllers
             return RedirectToAction("Result");
         }
 
+
         // =========================
         // GET: /HealthSurvey/Result
         // =========================
         [HttpGet]
+        [HttpGet]
         public IActionResult Result()
         {
             var uid = HttpContext.Session.GetInt32("UserId");
+
             if (!uid.HasValue)
                 return RedirectToAction("Login", "Auth");
 
@@ -130,9 +152,35 @@ namespace NUTRIBITE.Controllers
             if (survey == null)
                 return RedirectToAction("Index");
 
-            var suggestions = _calc.SuggestFoods(survey.DietaryPreference ?? "");
+            List<Food> foods;
 
-            ViewBag.FoodSuggestions = suggestions;
+            // SMART FOOD RECOMMENDATION BASED ON GOAL
+            if (survey.Goal == "Weight Loss")
+            {
+                foods = _context.Foods
+                    .Where(f => f.Calories <= 450)
+                    .OrderBy(f => f.Calories)
+                    .Take(6)
+                    .ToList();
+            }
+            else if (survey.Goal == "Muscle Gain")
+            {
+                foods = _context.Foods
+                    .Where(f => f.Calories >= 600)
+                    .OrderByDescending(f => f.Calories)
+                    .Take(6)
+                    .ToList();
+            }
+            else
+            {
+                foods = _context.Foods
+                    .OrderBy(f => f.Calories)
+                    .Take(6)
+                    .ToList();
+            }
+
+            ViewBag.FoodSuggestions = foods;
+
             return View(survey);
         }
     }

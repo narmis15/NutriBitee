@@ -9,6 +9,20 @@
     --shadow: 0 8px 20px rgba(0,0,0,0.05);
 }
 
+.vendor-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+    .vendor-logo img {
+        width: 130px;
+    }
+
+    
+
+        .
 /* ================= RESET ================= */
 * {
     box-sizing: border-box;
@@ -35,7 +49,7 @@ body {
     width: var(--sidebar-w);
     height: 100vh;
     background: linear-gradient(180deg, var(--green-dark), #154a19);
-    display: flex;
+    background-color: #2f6f4 display: flex;
     flex-direction: column;
     padding: 25px 15px;
     transition: width 0.3s ease;
@@ -55,15 +69,15 @@ body {
         margin-bottom: 8px;
         border-radius: 8px;
         text-decoration: none;
-        color: #e8f5e9;
         font-size: 14px;
         transition: 0.3s;
+        color: white;
     }
 
         .vendor-sidebar a:hover,
         .vendor-sidebar a.active {
-            background: var(--green-mid);
             color: white;
+            background: rgba(255,255,255,0.1);
         }
 
     .vendor-sidebar.collapsed .nav-label {
@@ -326,3 +340,13 @@ body {
         padding: 16px;
     }
 }
+.vendor-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+    .vendor-logo img {
+        width: 130px;
+    }

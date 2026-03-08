@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -25,6 +26,23 @@ namespace NUTRIBITE.Controllers
             if (!uid.HasValue)
                 return RedirectToAction("Login", "Auth");
 
+            var today = DateTime.Today;
+
+            // Get survey for recommended calories
+            var survey = _context.HealthSurveys
+                .FirstOrDefault(h => h.UserId == uid.Value);
+
+            int recommendedCalories = survey?.RecommendedCalories ?? 2000;
+
+            // Calculate today's calories
+            int todayCalories = _context.DailyCalorieEntries
+                .Where(d => d.UserId == uid.Value && d.Date == today)
+                .Sum(d => d.Calories);
+
+            ViewBag.RecommendedCalories = recommendedCalories;
+            ViewBag.TodayCalories = todayCalories;
+            ViewBag.RemainingCalories = recommendedCalories - todayCalories;
+
             return View();
         }
 
@@ -36,11 +54,12 @@ namespace NUTRIBITE.Controllers
         public IActionResult AddEntry(string foodName, int calories, decimal protein = 0, decimal carbs = 0, decimal fats = 0)
         {
             var uid = HttpContext.Session.GetInt32("UserId");
-            if (!uid.HasValue)
-                return Json(new { success = false, message = "Not authenticated" });
 
-            if (string.IsNullOrWhiteSpace(foodName) || calories < 0)
-                return Json(new { success = false, message = "Invalid input" });
+            if (!uid.HasValue)
+                return Json(new { success = false, message = "User not logged in" });
+
+            if (string.IsNullOrWhiteSpace(foodName) || calories <= 0)
+                return Json(new { success = false, message = "Invalid food entry" });
 
             var entry = new DailyCalorieEntry
             {
@@ -66,12 +85,13 @@ namespace NUTRIBITE.Controllers
         public IActionResult GetTodayEntries()
         {
             var uid = HttpContext.Session.GetInt32("UserId");
+
             if (!uid.HasValue)
                 return Json(new { authenticated = false });
 
             var today = DateTime.Today;
 
-            var items = _context.DailyCalorieEntries
+            var entries = _context.DailyCalorieEntries
                 .Where(d => d.UserId == uid.Value && d.Date == today)
                 .OrderByDescending(d => d.Id)
                 .Select(d => new
@@ -85,7 +105,42 @@ namespace NUTRIBITE.Controllers
                 })
                 .ToList();
 
-            return Json(new { authenticated = true, items });
+            return Json(new
+            {
+                authenticated = true,
+                items = entries
+            });
+        }
+
+        // =============================
+        // GET: /CalorieTracker/GetWeeklyData
+        // =============================
+        [HttpGet]
+        public IActionResult GetWeeklyData()
+        {
+            var uid = HttpContext.Session.GetInt32("UserId");
+
+            if (!uid.HasValue)
+                return Json(new { authenticated = false });
+
+            var startDate = DateTime.Today.AddDays(-6);
+
+            var weekly = _context.DailyCalorieEntries
+                .Where(d => d.UserId == uid.Value && d.Date >= startDate)
+                .GroupBy(d => d.Date)
+                .Select(g => new
+                {
+                    date = g.Key,
+                    calories = g.Sum(x => x.Calories)
+                })
+                .OrderBy(g => g.date)
+                .ToList();
+
+            return Json(new
+            {
+                authenticated = true,
+                data = weekly
+            });
         }
     }
 }

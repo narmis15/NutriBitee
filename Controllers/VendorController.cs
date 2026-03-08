@@ -201,13 +201,32 @@ namespace NUTRIBITE.Controllers
         }
 
         // ================= ORDERS =================
+        // ================= ORDERS =================
         public IActionResult Order()
         {
             if (!IsLoggedIn())
                 return RedirectToAction("Login");
 
-            return View();
+            var orders = _context.OrderTables
+                .Select(o => new VendorOrderViewModel
+                {
+                    OrderId = o.OrderId,
+                    CustomerName = o.CustomerName,
+                    FoodItem = o.OrderItems
+                                .Select(i => i.ItemName)
+                                .FirstOrDefault(),
+                    Amount = o.Payments
+                                .Select(p => p.Amount)
+                                .FirstOrDefault(),
+                    Status = o.Status,
+                    Date = o.CreatedAt
+                })
+                .OrderByDescending(o => o.Date)
+                .ToList();
+
+            return View(orders);
         }
+
 
         // ================= PROFILE =================
         public IActionResult Profile()

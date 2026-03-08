@@ -17,14 +17,34 @@
                      style="height:200px; object-fit:cover;" />
 
                 <div class="card-body text-center">
-
                     <h5>@food.Name</h5>
 
-                    <p>@food.Description</p>
+                    <p class="text-muted">
+                        @food.Description
+                    </p>
 
-                    <p><strong>₹ @food.Price</strong></p>
+                    <p class="text-muted small">
+                        🔥 @food.Calories kcal
+                    </p>
 
-                    <button class="btn btn-success w-100 mt-2 add-to-cart"
+                    @if (food.Calories <= 400)
+                    {
+                        <span class="badge bg-success mb-2">Low Calorie</span>
+                    }
+                    else if (food.Calories >= 700)
+                    {
+                        <span class="badge bg-danger mb-2">High Calorie</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark mb-2">Balanced Meal</span>
+                    }
+
+                    <p class="fw-bold mt-2">
+                        ₹@food.Price
+                    </p>
+
+                    <button class="btn btn-success addToCartBtn"
                             data-id="@food.Id">
                         Add To Cart
                     </button>

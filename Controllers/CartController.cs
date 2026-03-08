@@ -137,6 +137,7 @@ namespace NutriBite.Controllers
 
             return View(cartItems);
         }
+        
         [HttpPost]
         public IActionResult Checkout(string pickupSlot = "12:00 PM")
         {
@@ -182,24 +183,12 @@ namespace NutriBite.Controllers
             _context.OrderTables.Add(order);
             _context.SaveChanges();
 
-            // 🔥 Add Order Items
+            // 🔥 Order Items + Calorie Tracking
             foreach (var item in cartItems)
             {
                 var food = _context.Foods.FirstOrDefault(f => f.Id == item.Pid);
 
-                _context.OrderItems.Add(new OrderItem
-                {
-                    OrderId = order.OrderId,
-                    ItemName = food?.Name,
-                    Quantity = item.Qty,
-                    CreatedAt = DateTime.Now
-                });
-            }
-            // 🔥 Add Order Items + Auto Calorie Tracking
-            foreach (var item in cartItems)
-            {
-                var food = _context.Foods.FirstOrDefault(f => f.Id == item.Pid);
-
+                // Order item
                 _context.OrderItems.Add(new OrderItem
                 {
                     OrderId = order.OrderId,
@@ -208,7 +197,7 @@ namespace NutriBite.Controllers
                     CreatedAt = DateTime.Now
                 });
 
-                // 🔥 Auto calorie tracking
+                // Calorie tracking
                 if (food != null)
                 {
                     var calorieEntry = new DailyCalorieEntry
@@ -216,7 +205,7 @@ namespace NutriBite.Controllers
                         UserId = uid.Value,
                         Date = DateTime.Today,
                         FoodName = food.Name,
-                        Calories = (food.Calories ?? 0) * item.Qty  ,                     
+                        Calories = (food.Calories ?? 0) * item.Qty,
                         Protein = 0,
                         Carbs = 0,
                         Fats = 0
@@ -228,7 +217,7 @@ namespace NutriBite.Controllers
 
             _context.SaveChanges();
 
-            // 🔥 Clear cart after order
+            // Clear cart
             _context.Carttables.RemoveRange(cartItems);
             _context.SaveChanges();
 
