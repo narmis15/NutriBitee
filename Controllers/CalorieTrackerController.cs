@@ -142,5 +142,66 @@ namespace NUTRIBITE.Controllers
                 data = weekly
             });
         }
+        [HttpGet]
+        public IActionResult GetAnalytics()
+        {
+            var uid = HttpContext.Session.GetInt32("UserId");
+
+            if (!uid.HasValue)
+                return Json(null);
+
+            var today = DateTime.Today;
+
+            var todayCalories = _context.DailyCalorieEntries
+                .Where(d => d.UserId == uid.Value && d.Date.Date == today)
+                .Sum(d => (int?)d.Calories) ?? 0;
+
+            var survey = _context.HealthSurveys
+                .Where(h => h.UserId == uid.Value)
+                .OrderByDescending(h => h.CreatedAt)
+                .FirstOrDefault();
+
+            int recommended = survey != null ? (int)survey.RecommendedCalories : 2000;
+
+            var dailyData = _context.DailyCalorieEntries
+                .Where(d => d.UserId == uid.Value)
+                .GroupBy(d => d.Date.Date)
+                .Select(g => new
+                {
+                    Date = g.Key,
+                    Calories = g.Sum(x => x.Calories)
+                })
+                .OrderBy(x => x.Date)
+                .ToList();
+
+            int average = dailyData.Any()
+                ? (int)dailyData.Average(x => x.Calories)
+                : 0;
+
+            int peak = dailyData.Any()
+                ? dailyData.Max(x => x.Calories)
+                : 0;
+
+            double comparison = recommended > 0
+                ? (double)todayCalories / recommended * 100
+                : 0;
+
+            var trend = dailyData.Select(d => new
+            {
+                label = d.Date.ToString("dd MMM"),
+                calories = d.Calories
+            });
+
+            return Json(new
+            {
+                userName = HttpContext.Session.GetString("UserName"),
+                averageDaily = average,
+                peakDaily = peak,
+                recommendedDaily = recommended,
+                comparisonPercent = Math.Round(comparison, 1),
+                todayCalories = todayCalories,
+                trend = trend
+            });
+        }
     }
 }

@@ -17,6 +17,7 @@
                      style="height:200px; object-fit:cover;" />
 
                 <div class="card-body text-center">
+
                     <h5>@food.Name</h5>
 
                     <p class="text-muted">
@@ -59,39 +60,31 @@
 
 <script>
 
-    document.querySelectorAll(".add-to-cart").forEach(btn => {
+    document.querySelectorAll(".addToCartBtn").forEach(btn => {
 
         btn.addEventListener("click", function () {
 
-            const foodId = this.getAttribute("data-id");
+            const foodId = this.dataset.id;
 
-            fetch("/Cart/AddToCart", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    productId: parseInt(foodId)
-                })
+            fetch("/Cart/AddToCart?foodId=" + foodId, {
+                method: "POST"
             })
-            .then(res => res.json())
+            .then(response => response.json())
             .then(data => {
 
                 if (data.success) {
-
                     alert("Item added to cart");
-
-                } else {
-
-                    alert("Please login first");
-
+                }
+                else {
+                    alert("Login required");
                 }
 
             })
-            .catch(err => console.error(err));
+            .catch(error => console.log(error));
 
         });
 
     });
 
+</script>
 </script>

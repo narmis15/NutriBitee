@@ -173,6 +173,7 @@
 
 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -226,10 +227,7 @@
 
         function fetchData(){
 
-        const from=document.getElementById('fromDate').value;
-        const to=document.getElementById('toDate').value;
-
-        $.getJSON('/Users/GetCalorieAnalyticsData',{from:from||null,to:to||null})
+         $.getJSON('/CalorieTracker/GetAnalytics')
 
         .done(function(model){
 
@@ -246,8 +244,6 @@
 
 
         const today=model.todayCalories??0;
-        const recommended=model.recommendedDaily??2000;
-
         document.getElementById("todayCalories").innerText=today;
         document.getElementById("recommendedCalories").innerText=recommended;
 

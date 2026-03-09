@@ -169,7 +169,17 @@ namespace NUTRIBITE.Controllers
         [SessionAuthorize]
         public IActionResult MyOrders()
         {
-            return View();
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (!userId.HasValue)
+                return RedirectToAction("Login", "Auth");
+
+            var orders = _context.OrderTables
+                .Where(o => o.UserId == userId.Value)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToList();
+
+            return View(orders);
         }
         [HttpGet]
         public IActionResult EditProfile()

@@ -21,17 +21,18 @@ namespace NutriBite.Controllers
             public int productId { get; set; }
         }
 
-        // ================= ADD TO CART =================
         [HttpPost]
-        public IActionResult AddToCart([FromBody] AddToCartRequest req)
+        public IActionResult AddToCart(int foodId)
         {
             var uid = HttpContext.Session.GetInt32("UserId");
 
-            if (uid == null || req == null || req.productId <= 0)
-                return Json(new { success = false });
+            if (uid == null)
+            {
+                return Json(new { success = false, message = "Please login first" });
+            }
 
             var existingItem = _context.Carttables
-                .FirstOrDefault(c => c.Uid == uid.Value && c.Pid == req.productId);
+                .FirstOrDefault(c => c.Uid == uid.Value && c.Pid == foodId);
 
             if (existingItem != null)
             {
@@ -42,7 +43,7 @@ namespace NutriBite.Controllers
                 var cartItem = new Carttable
                 {
                     Uid = uid.Value,
-                    Pid = req.productId,
+                    Pid = foodId,
                     Qty = 1,
                     Date = DateTime.Now
                 };
@@ -52,11 +53,7 @@ namespace NutriBite.Controllers
 
             _context.SaveChanges();
 
-            var count = _context.Carttables
-                .Where(c => c.Uid == uid.Value)
-                .Sum(c => c.Qty);
-
-            return Json(new { success = true, count });
+            return Json(new { success = true });
         }
 
         // ================= REMOVE ITEM =================
@@ -137,7 +134,6 @@ namespace NutriBite.Controllers
 
             return View(cartItems);
         }
-        
         [HttpPost]
         public IActionResult Checkout(string pickupSlot = "12:00 PM")
         {
@@ -182,42 +178,40 @@ namespace NutriBite.Controllers
 
             _context.OrderTables.Add(order);
             _context.SaveChanges();
-
-            // 🔥 Order Items + Calorie Tracking
             foreach (var item in cartItems)
             {
                 var food = _context.Foods.FirstOrDefault(f => f.Id == item.Pid);
 
-                // Order item
+                if (food == null)
+                    continue;
+
+                // Add order item
                 _context.OrderItems.Add(new OrderItem
                 {
                     OrderId = order.OrderId,
-                    ItemName = food?.Name,
+                    ItemName = food.Name,
                     Quantity = item.Qty,
                     CreatedAt = DateTime.Now
                 });
 
-                // Calorie tracking
-                if (food != null)
+                // 🔥 Auto calorie tracking
+                var calorieEntry = new DailyCalorieEntry
                 {
-                    var calorieEntry = new DailyCalorieEntry
-                    {
-                        UserId = uid.Value,
-                        Date = DateTime.Today,
-                        FoodName = food.Name,
-                        Calories = (food.Calories ?? 0) * item.Qty,
-                        Protein = 0,
-                        Carbs = 0,
-                        Fats = 0
-                    };
+                    UserId = uid.Value,
+                    Date = DateTime.Today,
+                    FoodName = food.Name,
+                    Calories = (food.Calories ?? 0) * item.Qty,
+                    Protein = 0,
+                    Carbs = 0,
+                    Fats = 0
+                };
 
-                    _context.DailyCalorieEntries.Add(calorieEntry);
-                }
+                _context.DailyCalorieEntries.Add(calorieEntry);
             }
 
             _context.SaveChanges();
 
-            // Clear cart
+            // 🔥 Clear cart after order
             _context.Carttables.RemoveRange(cartItems);
             _context.SaveChanges();
 

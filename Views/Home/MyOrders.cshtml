@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<NUTRIBITE.Models.OrderTable>
+
+@{
     ViewData["Title"] = "My Orders";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
@@ -53,20 +55,38 @@
 
     <h2 class="mb-4">📦 My Orders</h2>
 
-    <div class="order-card">
-        <div class="order-info">
-            <h5>Protein Meal</h5>
-            <span>Ordered on: 22 Feb 2026</span>
-        </div>
-        <div class="order-status status-picked">Picked</div>
-    </div>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var order in Model)
+        {
+            var statusClass = "status-picked";
 
-    <div class="order-card">
-        <div class="order-info">
-            <h5>Classic Thali</h5>
-            <span>Ordered on: 20 Feb 2026</span>
-        </div>
-        <div class="order-status status-cancelled">Cancelled</div>
-    </div>
+            if (order.Status == "Cancelled")
+            {
+                statusClass = "status-cancelled";
+            }
+
+            <div class="order-card">
+
+                <div class="order-info">
+                    <h5>Order #@order.OrderId</h5>
+
+                    <span>
+                        Ordered on:
+                        @(order.CreatedAt?.ToString("dd MMM yyyy"))
+                    </span>
+                </div>
+
+                <div class="order-status @statusClass">
+                    @order.Status
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <p>No orders found.</p>
+    }
 
 </div>

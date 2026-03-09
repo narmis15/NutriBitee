@@ -27,6 +27,7 @@ public partial class HealthSurvey
 
     public int? RecommendedCalories { get; set; }
 
+
     public int? RecommendedProtein { get; set; }
 
     public DateTime? CreatedAt { get; set; }
