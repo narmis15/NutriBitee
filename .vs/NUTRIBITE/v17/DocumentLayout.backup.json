@@ -1,0 +1,1071 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\services\\ilocationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:services\\ilocationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\locationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\locationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\shared\\_publiclayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\shared\\_publiclayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\wwwroot\\js\\location.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\js\\location.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\shared\\_locationselector.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\shared\\_locationselector.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\services\\locationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:services\\locationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\userlocation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\userlocation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\bulk\\foodbox.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\bulk\\foodbox.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\wwwroot\\css\\bulk.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\css\\bulk.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\services\\razorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:services\\razorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\cart\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\cart\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\payment\\success.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\payment\\success.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\bulk\\meals.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\bulk\\meals.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\bulkcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\bulkcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\services\\irazorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:services\\irazorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\nutribite.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:nutribite.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\bulk\\snacks.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\bulk\\snacks.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\elderly\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\elderly\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\bulkitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\bulkitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\corporate\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\corporate\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\ordertable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\ordertable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\dailycalorieentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\dailycalorieentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\bulk\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\bulk\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\shared\\_vendorlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\shared\\_vendorlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\wwwroot\\css\\land.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\css\\land.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\wwwroot\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\users\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\users\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\admin\\viewmealcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\admin\\viewmealcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\users\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\users\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\users\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\users\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\userscontroller.blocked.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\userscontroller.blocked.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\users\\blockedusers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\users\\blockedusers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\users\\blockedusermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\users\\blockedusermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\admin\\viewcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\admin\\viewcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\admin\\newvendorrequest.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\admin\\newvendorrequest.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\admin\\managevendor.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\admin\\managevendor.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\wwwroot\\css\\corporate.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\css\\corporate.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\wwwroot\\css\\students.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\css\\students.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\wwwroot\\css\\elderly.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\css\\elderly.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\menu\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\menu\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\mealscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\mealscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\usersignup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\usersignup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\usersaccountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\usersaccountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\viewmodels\\userprofileeditviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:viewmodels\\userprofileeditviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\models\\meal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\meal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\calorietrackercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\calorietrackercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\elderlycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\elderlycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\controllers\\corporatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\corporatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\sql\\createnutribiteschema.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:sql\\createnutribiteschema.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\users\\hp\\source\\repos\\narmis15\\nutribitee\\views\\shared\\_validationscriptspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\shared\\_validationscriptspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Users\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\Edit.cshtml",
+              "RelativeToolTip": "Views\\Users\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T15:15:46.205Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "land.css",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\land.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\land.css",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\land.css",
+              "RelativeToolTip": "wwwroot\\css\\land.css",
+              "ViewState": "AgIAAP4AAAAAAAAAAAAUwBgBAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-06T05:29:48.657Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "bulk.css",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\bulk.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\bulk.css",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\bulk.css",
+              "RelativeToolTip": "wwwroot\\css\\bulk.css",
+              "ViewState": "AgIAADEBAAAAAAAAAAAQwEIBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-02-24T08:28:00.784Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_PublicLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_PublicLayout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_PublicLayout.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_PublicLayout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_PublicLayout.cshtml",
+              "ViewState": "AgIAAOoBAAAAAAAAAAAYwBEBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-15T08:44:24.889Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAqwCMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T07:39:17.097Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ILocationService.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\ILocationService.cs",
+              "RelativeDocumentMoniker": "Services\\ILocationService.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\ILocationService.cs",
+              "RelativeToolTip": "Services\\ILocationService.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAADwvxIAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T07:57:44.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "_LocationSelector.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_LocationSelector.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_LocationSelector.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_LocationSelector.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_LocationSelector.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T08:00:54.68Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LocationController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\LocationController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LocationController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\LocationController.cs",
+              "RelativeToolTip": "Controllers\\LocationController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T07:58:20.345Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "location.js",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\js\\location.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\location.js",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\js\\location.js",
+              "RelativeToolTip": "wwwroot\\js\\location.js",
+              "ViewState": "AgIAAA0BAAAAAAAAAIBZwA4AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-13T08:04:37.423Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LocationService.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\LocationService.cs",
+              "RelativeDocumentMoniker": "Services\\LocationService.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\LocationService.cs",
+              "RelativeToolTip": "Services\\LocationService.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAEBdwKQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T07:57:58.808Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserLocation.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\UserLocation.cs",
+              "RelativeDocumentMoniker": "Models\\UserLocation.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\UserLocation.cs",
+              "RelativeToolTip": "Models\\UserLocation.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwBEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T07:57:19.248Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Success.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Payment\\Success.cshtml",
+              "RelativeDocumentMoniker": "Views\\Payment\\Success.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Payment\\Success.cshtml",
+              "RelativeToolTip": "Views\\Payment\\Success.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-12T14:48:53.988Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAgwAsAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-15T09:20:05.808Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "RazorpayService.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\RazorpayService.cs",
+              "RelativeDocumentMoniker": "Services\\RazorpayService.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\RazorpayService.cs",
+              "RelativeToolTip": "Services\\RazorpayService.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAcwFsAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-11T11:54:06.132Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "FoodBox.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\FoodBox.cshtml",
+              "RelativeDocumentMoniker": "Views\\Bulk\\FoodBox.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\FoodBox.cshtml",
+              "RelativeToolTip": "Views\\Bulk\\FoodBox.cshtml",
+              "ViewState": "AgIAAH8BAAAAAAAAAAAiwI8BAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T13:10:11.718Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\cart\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\cart\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\cart\\Index.cshtml",
+              "RelativeToolTip": "Views\\cart\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKIAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T05:12:18.479Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CartController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\CartController.cs",
+              "RelativeToolTip": "Controllers\\CartController.cs",
+              "ViewState": "AgIAALUAAAAAAAAAAIBZwMIAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T03:05:18.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Checkout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\cart\\Checkout.cshtml",
+              "RelativeDocumentMoniker": "Views\\cart\\Checkout.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\cart\\Checkout.cshtml",
+              "RelativeToolTip": "Views\\cart\\Checkout.cshtml",
+              "ViewState": "AgIAACMAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T03:31:14.452Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "PaymentController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\PaymentController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PaymentController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\PaymentController.cs",
+              "RelativeToolTip": "Controllers\\PaymentController.cs",
+              "ViewState": "AgIAAOEAAAAAAAAAAIBZwPAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T14:45:14.631Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "NUTRIBITE.csproj",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\NUTRIBITE.csproj",
+              "RelativeDocumentMoniker": "NUTRIBITE.csproj",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\NUTRIBITE.csproj",
+              "RelativeToolTip": "NUTRIBITE.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-11T11:50:03.704Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Elderly\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Elderly\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Elderly\\Index.cshtml",
+              "RelativeToolTip": "Views\\Elderly\\Index.cshtml",
+              "ViewState": "AgIAAEIBAAAAAAAAAIBpwE4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-17T11:55:32.134Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Meals.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\Meals.cshtml",
+              "RelativeDocumentMoniker": "Views\\Bulk\\Meals.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\Meals.cshtml",
+              "RelativeToolTip": "Views\\Bulk\\Meals.cshtml",
+              "ViewState": "AgIAANIAAAAAAAAAAAAmwOUAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T13:08:42.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "BulkController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\BulkController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BulkController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\BulkController.cs",
+              "RelativeToolTip": "Controllers\\BulkController.cs",
+              "ViewState": "AgIAADwAAAAAAAAAACBjwHMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-24T08:27:02.037Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "IRazorpayService.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\IRazorpayService.cs",
+              "RelativeDocumentMoniker": "Services\\IRazorpayService.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Services\\IRazorpayService.cs",
+              "RelativeToolTip": "Services\\IRazorpayService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-11T11:52:16.149Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Snacks.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\Snacks.cshtml",
+              "RelativeDocumentMoniker": "Views\\Bulk\\Snacks.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\Snacks.cshtml",
+              "RelativeToolTip": "Views\\Bulk\\Snacks.cshtml",
+              "ViewState": "AgIAAFMAAAAAAAAAAIBpwGoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T13:09:53.669Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Corporate\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Corporate\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Corporate\\Index.cshtml",
+              "RelativeToolTip": "Views\\Corporate\\Index.cshtml",
+              "ViewState": "AgIAAGQBAAAAAAAAAIBpwHYBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-17T11:56:56.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "BulkItem.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\BulkItem.cs",
+              "RelativeDocumentMoniker": "Models\\BulkItem.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\BulkItem.cs",
+              "RelativeToolTip": "Models\\BulkItem.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAqwCMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-06T13:25:29.327Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOcAAACYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-17T02:38:43.424Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAUwCUAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T08:50:52.146Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Models\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Models\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAJkBAAAAAAAAAIBpwKwBAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:26:34.838Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "Controllers\\AdminController.cs",
+              "ViewState": "AgIAABUBAAAAAAAAAIBpwHwBAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T11:04:57.901Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "OrderTable.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\OrderTable.cs",
+              "RelativeDocumentMoniker": "Models\\OrderTable.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\OrderTable.cs",
+              "RelativeToolTip": "Models\\OrderTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-08T08:36:47.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "DailyCalorieEntry.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\DailyCalorieEntry.cs",
+              "RelativeDocumentMoniker": "Models\\DailyCalorieEntry.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\DailyCalorieEntry.cs",
+              "RelativeToolTip": "Models\\DailyCalorieEntry.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-08T10:40:05.887Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Bulk\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Bulk\\Index.cshtml",
+              "RelativeToolTip": "Views\\Bulk\\Index.cshtml",
+              "ViewState": "AgIAAEoAAAAAAAAAAIBpwF4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-24T08:27:26.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAnwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T12:02:27.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "_VendorLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_VendorLayout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_VendorLayout.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_VendorLayout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_VendorLayout.cshtml",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAnwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T12:01:59.905Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "home.css",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\home.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\home.css",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\home.css",
+              "RelativeToolTip": "wwwroot\\css\\home.css",
+              "ViewState": "AgIAAD8BAAAAAAAAAIBpwFMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-02-17T02:50:42.624Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "ViewMealCategory.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\ViewMealCategory.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\ViewMealCategory.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\ViewMealCategory.cshtml",
+              "RelativeToolTip": "Views\\Admin\\ViewMealCategory.cshtml",
+              "ViewState": "AgIAAFEAAAAAAAAAAGBnwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T16:23:28.322Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "BlockedUserModel.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\Users\\BlockedUserModel.cs",
+              "RelativeDocumentMoniker": "Models\\Users\\BlockedUserModel.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\Users\\BlockedUserModel.cs",
+              "RelativeToolTip": "Models\\Users\\BlockedUserModel.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAawAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T14:43:32.38Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "BlockedUsers.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\BlockedUsers.cshtml",
+              "RelativeDocumentMoniker": "Views\\Users\\BlockedUsers.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\BlockedUsers.cshtml",
+              "RelativeToolTip": "Views\\Users\\BlockedUsers.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAIBpwAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T14:33:25.009Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "UsersController.Blocked.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\UsersController.Blocked.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersController.Blocked.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\UsersController.Blocked.cs",
+              "RelativeToolTip": "Controllers\\UsersController.Blocked.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAIBpwD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T14:38:52.069Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Controllers\\UsersController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAD4v30AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:43:32.126Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Users\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\Index.cshtml",
+              "RelativeToolTip": "Views\\Users\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T14:33:03.671Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\Users\\Details.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Users\\Details.cshtml",
+              "RelativeToolTip": "Views\\Users\\Details.cshtml",
+              "ViewState": "AgIAABMAAAAAAAAAAGBnwCkAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T15:15:27.684Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "ReportsController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\ReportsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReportsController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\ReportsController.cs",
+              "RelativeToolTip": "Controllers\\ReportsController.cs",
+              "ViewState": "AgIAAFACAAAAAAAAAIBpwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T13:42:40.937Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "ManageVendor.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\ManageVendor.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\ManageVendor.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\ManageVendor.cshtml",
+              "RelativeToolTip": "Views\\Admin\\ManageVendor.cshtml",
+              "ViewState": "AgIAADoAAAAAAAAAAIBpwEIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T12:25:14.291Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "elderly.css",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\elderly.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\elderly.css",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\elderly.css",
+              "RelativeToolTip": "wwwroot\\css\\elderly.css",
+              "ViewState": "AgIAACUBAAAAAAAAAIBpwD4BAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-02-17T11:59:11.359Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "NewVendorRequest.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\NewVendorRequest.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\NewVendorRequest.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\NewVendorRequest.cshtml",
+              "RelativeToolTip": "Views\\Admin\\NewVendorRequest.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T12:27:12.338Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "students.css",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\students.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\students.css",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\students.css",
+              "RelativeToolTip": "wwwroot\\css\\students.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-02-17T11:34:56.318Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "ViewCategory.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\ViewCategory.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\ViewCategory.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Admin\\ViewCategory.cshtml",
+              "RelativeToolTip": "Views\\Admin\\ViewCategory.cshtml",
+              "ViewState": "AgIAAFIAAAAAAAAAAIBpwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T12:47:00.303Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "corporate.css",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\corporate.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\corporate.css",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\wwwroot\\css\\corporate.css",
+              "RelativeToolTip": "wwwroot\\css\\corporate.css",
+              "ViewState": "AgIAAG4AAAAAAAAAAIBpwIsAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-02-17T11:59:30.848Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Menu\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Menu\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Menu\\Index.cshtml",
+              "RelativeToolTip": "Views\\Menu\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-02T06:33:07.708Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "MealsController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\MealsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MealsController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\MealsController.cs",
+              "RelativeToolTip": "Controllers\\MealsController.cs",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAkwH0AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:15:49.844Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "Meal.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\Meal.cs",
+              "RelativeDocumentMoniker": "Models\\Meal.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\Meal.cs",
+              "RelativeToolTip": "Models\\Meal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T07:00:03.249Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "UserSignup.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\UserSignup.cs",
+              "RelativeDocumentMoniker": "Models\\UserSignup.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Models\\UserSignup.cs",
+              "RelativeToolTip": "Models\\UserSignup.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T07:27:04.365Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "MenuController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\MenuController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MenuController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\MenuController.cs",
+              "RelativeToolTip": "Controllers\\MenuController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:22:32.193Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "UserProfileEditViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\ViewModels\\UserProfileEditViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\UserProfileEditViewModel.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\ViewModels\\UserProfileEditViewModel.cs",
+              "RelativeToolTip": "ViewModels\\UserProfileEditViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:47:32.978Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "CalorieTrackerController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\CalorieTrackerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CalorieTrackerController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\CalorieTrackerController.cs",
+              "RelativeToolTip": "Controllers\\CalorieTrackerController.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAuwEcAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:37:56.62Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "UsersAccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\UsersAccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersAccountController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\UsersAccountController.cs",
+              "RelativeToolTip": "Controllers\\UsersAccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANQAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:51:29.737Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T02:09:38.841Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Auth\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Auth\\Login.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Auth\\Login.cshtml",
+              "RelativeToolTip": "Views\\Auth\\Login.cshtml",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAIwG0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-23T11:10:46.276Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "ElderlyController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\ElderlyController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ElderlyController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\ElderlyController.cs",
+              "RelativeToolTip": "Controllers\\ElderlyController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T11:57:54.365Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "CorporateController.cs",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\CorporateController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CorporateController.cs",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Controllers\\CorporateController.cs",
+              "RelativeToolTip": "Controllers\\CorporateController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T11:58:24.332Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "CreateNutriBiteSchema.sql",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\sql\\CreateNutriBiteSchema.sql",
+              "RelativeDocumentMoniker": "sql\\CreateNutriBiteSchema.sql",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\sql\\CreateNutriBiteSchema.sql",
+              "RelativeToolTip": "sql\\CreateNutriBiteSchema.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-02-16T00:47:35.877Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "_ValidationScriptsPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "ToolTip": "C:\\Users\\Hp\\source\\repos\\narmis15\\NutriBitee\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-15T08:45:00.163Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
