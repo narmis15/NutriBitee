@@ -11,19 +11,6 @@ namespace NUTRIBITE.Controllers
 {
     public partial class UsersController : Controller
     {
-        private readonly UserManager<IdentityUser>? _userManager;
-        private readonly SignInManager<IdentityUser>? _signInManager;
-
-        public UsersController(
-            ApplicationDbContext context,
-            UserManager<IdentityUser>? userManager = null,
-            SignInManager<IdentityUser>? signInManager = null)
-        {
-            _context = context;
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
-
         private int? ResolveUserId()
         {
             return HttpContext.Session.GetInt32("UserId");

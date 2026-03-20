@@ -6,17 +6,30 @@ using NUTRIBITE.Models;
 using NUTRIBITE.Models.Users;
 using Microsoft.Extensions.DependencyInjection;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace NUTRIBITE.Controllers
 {
     public partial class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser>? _userManager;
+        private readonly SignInManager<IdentityUser>? _signInManager;
         private const int PageSize = 10;
 
+<<<<<<< HEAD
         [ActivatorUtilitiesConstructor]
         public UsersController(ApplicationDbContext context)
+=======
+        public UsersController(
+            ApplicationDbContext context,
+            UserManager<IdentityUser>? userManager = null,
+            SignInManager<IdentityUser>? signInManager = null)
+>>>>>>> 694cee74928822038d14aaba15f656ca2bf31689
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // INDEX: supports search, status filter and pagination

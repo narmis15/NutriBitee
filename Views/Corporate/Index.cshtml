@@ -1,15 +1,20 @@
-﻿@{
-    ViewData["Title"] = "NutriBite — Students";
+@model List<NUTRIBITE.Models.Food>
+
+@{
+    ViewData["Title"] = "NutriBite — Corporate";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
+
+    // Helper to find food ID by name safely
+    int GetFoodId(string name) => Model?.FirstOrDefault(f => f.Name.Trim().ToLower() == name.Trim().ToLower())?.Id ?? 0;
 }
 
 <link rel="stylesheet" href="~/css/corporate.css" />
 
-<section class="students-hero container my-4" role="region" aria-label="Students hero">
+<section class="students-hero container my-4" role="region" aria-label="Corporate hero">
     <div class="hero-card">
         <div class="hero-left">
-            <h1>Smart Meals for Smart Students</h1>
-            <p class="lead">Fuel your brain without emptying your wallet.</p>
+            <h1>Productive Meals for Corporate Professionals</h1>
+            <p class="lead">Fuel your performance without the afternoon slump.</p>
             <a class="btn explore-combos" href="#featuredCombos">Explore Combos</a>
         </div>
         <div class="hero-right" aria-hidden="true">
@@ -67,7 +72,7 @@
                 <div class="combo-price">₹<strong>149</strong></div>
                 <div class="combo-burn">Burns in <span>48</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Deep Work Grain Bowl")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -93,7 +98,7 @@
                 <div class="combo-price">₹<strong>129</strong></div>
                 <div class="combo-burn">Burns in <span>42</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Paneer Tikka Wrap (Whole Wheat)")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -119,7 +124,7 @@
                 <div class="combo-price">₹<strong>159</strong></div>
                 <div class="combo-burn">Burns in <span>50</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Executive Lean Thali")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -145,7 +150,7 @@
                 <div class="combo-price">₹<strong>139</strong></div>
                 <div class="combo-burn">Burns in <span>35</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Grilled Tofu & Sprout Salad")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -171,7 +176,7 @@
                 <div class="combo-price">₹<strong>149</strong></div>
                 <div class="combo-burn">Burns in <span>47</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Methi-Matar Malai (Low Cream)")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -199,7 +204,7 @@
                 <div class="combo-price">₹<strong>139</strong></div>
                 <div class="combo-burn">Burns in <span>43</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Black Chana & Barley Salad")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -225,7 +230,7 @@
                 <div class="combo-price">₹<strong>135</strong></div>
                 <div class="combo-burn">Burns in <span>41</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Whole Wheat Pesto Paneer Wrap")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -251,7 +256,7 @@
                 <div class="combo-price">₹<strong>149</strong></div>
                 <div class="combo-burn">Burns in <span>46</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Tandoori Soya Chaap Bowl")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -279,7 +284,7 @@
                 <div class="combo-price">₹<strong>89</strong></div>
                 <div class="combo-burn">Burns in <span>48</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Work-Day Dal Khichdi Bowl")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -305,7 +310,7 @@
                 <div class="combo-price">₹<strong>85</strong></div>
                 <div class="combo-burn">Burns in <span>52</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Aloo-Matar Tehri")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -331,7 +336,7 @@
                 <div class="combo-price">₹<strong>95</strong></div>
                 <div class="combo-burn">Burns in <span>45</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Black Chana Curry & Rotis")">Add to Cart</button>
             </div>
 
             <!-- RIGHT SIDE (IMAGE) -->
@@ -356,7 +361,7 @@
                 <div class="combo-price">₹<strong>79</strong></div>
                 <div class="combo-burn">Burns in <span>39</span> mins walking</div>
 
-                <button class="btn add-cart">Add to Cart</button>
+                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Mixed Veg Jowar Upma")">Add to Cart</button>
             </div>
             <div class="combo-image">
                 <img src="~/images/menu items/jowar upma.png"

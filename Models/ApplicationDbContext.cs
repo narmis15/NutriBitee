@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using NUTRIBITE.Migrations;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+
 namespace NUTRIBITE.Models;
 
-public partial class ApplicationDbContext : DbContext
+public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
     public ApplicationDbContext()
     {
@@ -62,8 +65,6 @@ public partial class ApplicationDbContext : DbContext
     // New DbSet for Bulk items
     public virtual DbSet<BulkItem> BulkItems { get; set; }
 
-    public object OrderTable { get; internal set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
         => optionsBuilder.UseSqlServer("Server=SIMRAN\\SQLEXPRESS;Database=FoodDeliveryDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
@@ -72,6 +73,7 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<AddCategory>(entity =>
         {
             entity.HasKey(e => e.Cid).HasName("PK__AddCateg__D837D05F04218349");
