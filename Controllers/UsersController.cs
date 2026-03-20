@@ -7,16 +7,25 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace NUTRIBITE.Controllers
 {
     public partial class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser>? _userManager;
+        private readonly SignInManager<IdentityUser>? _signInManager;
         private const int PageSize = 10;
 
-        public UsersController(ApplicationDbContext context)
+        public UsersController(
+            ApplicationDbContext context,
+            UserManager<IdentityUser>? userManager = null,
+            SignInManager<IdentityUser>? signInManager = null)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]

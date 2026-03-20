@@ -1,4 +1,4 @@
-﻿@model List<NUTRIBITE.Models.UserSignup>
+@model List<NUTRIBITE.Models.UserSignup>
 
 @{
     ViewData["Title"] = "All Users";
@@ -111,7 +111,8 @@
                         <td>@(string.IsNullOrEmpty(u.Status) ? "Active" : u.Status)</td>
                         <td>@(u.CreatedAt.HasValue ? u.CreatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
                         <td class="text-center">
-                            <a asp-action="Details" asp-route-id="@u.Id" class="btn-action">View</a>
+                            <a asp-action="Profile" asp-route-userId="@u.Id" class="btn-action">Profile</a>
+                            <a asp-action="Details" asp-route-id="@u.Id" class="btn-action btn-approve">Info</a>
                             <a asp-action="Edit" asp-route-id="@u.Id" class="btn-action btn-approve">Edit</a>
 
                             @if ((u.Status ?? "Active") == "Blocked")
