@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "My Account";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
     var uid = ViewBag.UserId ?? 0;
@@ -57,6 +57,22 @@
                     <div><strong id="userName">—</strong></div>
                     <div class="text-muted" id="userEmail">—</div>
                     <div class="text-muted" id="userPhone">—</div>
+                </div>
+            </div>
+
+            <!-- Profile Picture Upload -->
+            <div class="card p-3 mt-3 card-smooth">
+                <h5>Profile Picture</h5>
+                <hr />
+                <div class="d-flex align-items-center">
+                    <img id="profilePictureImg" src="/images/default-avatar.png" alt="Profile Picture" class="rounded-circle me-3" width="80" height="80" />
+                    <div>
+                        <form id="uploadProfilePictureForm" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <input type="file" name="profilePicture" id="profilePictureInput" class="form-control form-control-sm" />
+                            <button type="submit" class="btn btn-sm btn-primary mt-2">Upload</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -287,6 +303,29 @@
 
             $(function () {
                 loadProfileAndHealth();
+
+                $('#uploadProfilePictureForm').on('submit', function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: '/Users/UploadProfilePicture',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                $('#profilePictureImg').attr('src', response.filePath);
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function() {
+                            alert('An error occurred while uploading the profile picture.');
+                        }
+                    });
+                });
             });
         })();
     </script>

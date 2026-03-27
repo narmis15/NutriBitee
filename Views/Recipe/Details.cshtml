@@ -1,0 +1,134 @@
+@model NUTRIBITE.Models.Food
+@{
+    ViewData["Title"] = Model.Name + " - Recipe";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+    var recipe = Model.Recipe;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header Section -->
+            <div class="card border-0 shadow-sm overflow-hidden mb-4">
+                <div class="row g-0">
+                    <div class="col-md-5">
+                        <img src="@(string.IsNullOrEmpty(recipe?.ImagePath) ? Model.ImagePath : recipe.ImagePath)" 
+                             class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 300px;" alt="@Model.Name">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body p-4 p-lg-5">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-3">
+                                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-success">Home</a></li>
+                                    <li class="breadcrumb-item active">Recipe</li>
+                                </ol>
+                            </nav>
+                            
+                            @if (Model.IsVerified)
+                            {
+                                <span class="badge bg-success-subtle text-success border border-success-subtle mb-3 px-3 py-2">
+                                    <i class="bi bi-patch-check-fill me-1"></i> Nutritionist Verified
+                                </span>
+                            }
+
+                            <h1 class="display-5 fw-bold mb-3">@Model.Name</h1>
+                            <p class="text-muted lead mb-4">@Model.Description</p>
+
+                            <div class="d-flex flex-wrap gap-4 mb-4">
+                                <div class="text-center">
+                                    <div class="h4 fw-bold mb-0">@Model.Calories</div>
+                                    <div class="extra-small text-muted text-uppercase">Calories</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h4 fw-bold mb-0">@(Model.Protein ?? 0)g</div>
+                                    <div class="extra-small text-muted text-uppercase">Protein</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h4 fw-bold mb-0">@(Model.Carbs ?? 0)g</div>
+                                    <div class="extra-small text-muted text-uppercase">Carbs</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h4 fw-bold mb-0">@(Model.Fat ?? 0)g</div>
+                                    <div class="extra-small text-muted text-uppercase">Fat</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="h2 fw-bold text-success mb-0">₹@Model.Price</div>
+                                <button class="btn btn-success px-4 py-2 fw-bold rounded-pill add-to-cart-btn" data-id="@Model.Id">
+                                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recipe Content -->
+            <div class="row g-4 justify-content-center">
+                <!-- Ingredients -->
+                <div class="col-md-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="mb-0 fw-bold text-center"><i class="bi bi-basket2-fill text-success me-2"></i>Ingredients</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @if (!string.IsNullOrEmpty(recipe?.Ingredients))
+                                {
+                                    var ingredientList = recipe.Ingredients.Split(new[] { '\n', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                    foreach (var ingredient in ingredientList)
+                                    {
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center p-3 border rounded-pill bg-light">
+                                                <i class="bi bi-check2-circle text-success me-3 fs-5"></i>
+                                                <span class="fw-medium">@ingredient.Trim()</span>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.Nutritionist != null)
+            {
+                <div class="card border-0 shadow-sm mt-4 bg-light">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-white p-3 me-3">
+                                <i class="bi bi-person-workspace text-success fs-2"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Nutritionist's Note</h6>
+                                <p class="small text-muted mb-0">
+                                    Verified by <strong>@Model.Nutritionist.Name</strong>. 
+                                    @Model.Nutritionist.Qualification with @Model.Nutritionist.Experience years of experience.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .step-number {
+        width: 32px;
+        height: 32px;
+        background: #22c55e;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+    .extra-small { font-size: 0.7rem; }
+    .bg-success-subtle { background-color: #e6f9f0 !important; }
+</style>

@@ -3,19 +3,17 @@
 @{
     ViewData["Title"] = "NutriBite — Corporate";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
-
-    // Helper to find food ID by name safely
-    int GetFoodId(string name) => Model?.FirstOrDefault(f => f.Name.Trim().ToLower() == name.Trim().ToLower())?.Id ?? 0;
 }
 
 <link rel="stylesheet" href="~/css/corporate.css" />
 
-<section class="students-hero container my-4" role="region" aria-label="Corporate hero">
+<!-- Hero Section -->
+<section class="corporate-hero container my-4" role="region" aria-label="Corporate hero">
     <div class="hero-card">
         <div class="hero-left">
-            <h1>Productive Meals for Corporate Professionals</h1>
-            <p class="lead">Fuel your performance without the afternoon slump.</p>
-            <a class="btn explore-combos" href="#featuredCombos">Explore Combos</a>
+            <h1>Premium Corporate Catering</h1>
+            <p class="lead">Healthy, timely, and professional meal solutions for your team.</p>
+            <a class="btn explore-combos" href="#corporateMeals">Explore Productivity Menu</a>
         </div>
         <div class="hero-right" aria-hidden="true">
             <img src="~/images/categories/corporate.jpeg" alt="Corporate meals" loading="lazy" />
@@ -24,11 +22,11 @@
 </section>
 
 <!-- Sticky filter bar -->
-<section class="filter-bar-wrap" aria-label="Student filters">
-    <div class="filter-bar container" role="region" aria-label="Filters" id="studentsFilterBar">
+<section class="filter-bar-wrap" aria-label="Corporate filters">
+    <div class="filter-bar container" role="region" aria-label="Filters" id="corporateFilterBar">
         <div class="filter-item">
-            <label for="priceRange">Budget: <span id="priceValue">₹75</span></label>
-            <input id="priceRange" type="range" min="50" max="150" value="100" />
+            <label for="priceRange">Budget: <span id="priceValue">₹120</span></label>
+            <input id="priceRange" type="range" min="80" max="200" value="150" />
         </div>
 
         <div class="filter-item toggle-item">
@@ -49,332 +47,159 @@
     </div>
 </section>
 
+@section Styles {
+    <style>
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #e6f9f0;
+            color: #2d6a4f;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border: 1px solid #c2f0d5;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+        }
+
+        .nutrition-item strong {
+            color: #333;
+        }
+
+        .nutritionist-info {
+            font-size: 0.7rem;
+            color: #888;
+            font-style: italic;
+            margin-top: 5px;
+        }
+    </style>
+}
+
 <!-- Corporate Productivity Menu -->
 <section id="corporateMeals" class="container my-5" aria-labelledby="corporateHeading">
     <h2 id="corporateHeading">Corporate Specials – Productivity Menu</h2>
 
     <div class="combos-grid" role="list">
-
-        <!-- ================= PREMIUM NO-NAP ================= -->
-
-        <article class="combo-card" role="listitem"
-                 data-calories="480"
-                 data-protein="28"
-                 data-price="149"
-                 data-veg="true">
-            <div class="combo-badge">480 kcal</div>
-
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Deep Work Grain Bowl</h3>
-
-                <div class="combo-meta">Protein: <strong>28g</strong></div>
-                <div class="combo-price">₹<strong>149</strong></div>
-                <div class="combo-burn">Burns in <span>48</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Deep Work Grain Bowl")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/deep grain bowl.png"
-                     alt="Deep Work Grain Bowl"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="420"
-                 data-protein="24"
-                 data-price="129"
-                 data-veg="true">
-            <div class="combo-badge">420 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Paneer Tikka Wrap (Whole Wheat)</h3>
-
-                <div class="combo-meta">Protein: <strong>24g</strong></div>
-                <div class="combo-price">₹<strong>129</strong></div>
-                <div class="combo-burn">Burns in <span>42</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Paneer Tikka Wrap (Whole Wheat)")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/paneer tikka wrap.png"
-                     alt="Paneer Tikka Wrap"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="500"
-                 data-protein="30"
-                 data-price="159"
-                 data-veg="true">
-            <div class="combo-badge">500 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Executive Lean Thali</h3>
-
-                <div class="combo-meta">Protein: <strong>30g</strong></div>
-                <div class="combo-price">₹<strong>159</strong></div>
-                <div class="combo-burn">Burns in <span>50</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Executive Lean Thali")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/executive lean thali.png"
-                     alt="Executive Lean Thali"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="350"
-                 data-protein="26"
-                 data-price="139"
-                 data-veg="true">
-            <div class="combo-badge">350 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Grilled Tofu & Sprout Salad</h3>
-
-                <div class="combo-meta">Protein: <strong>26g</strong></div>
-                <div class="combo-price">₹<strong>139</strong></div>
-                <div class="combo-burn">Burns in <span>35</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Grilled Tofu & Sprout Salad")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/Grilled tofu salad with sprouts.png"
-                     alt="Grilled Tofu & Sprout Salad"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="470"
-                 data-protein="22"
-                 data-price="149"
-                 data-veg="true">
-            <div class="combo-badge">470 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Methi-Matar Malai (Low Cream)</h3>
-
-                <div class="combo-meta">Protein: <strong>22g</strong></div>
-                <div class="combo-price">₹<strong>149</strong></div>
-                <div class="combo-burn">Burns in <span>47</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Methi-Matar Malai (Low Cream)")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/Methi-Matar Malai.png"
-                     alt="Methi-Matar Malai"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- ================= EXECUTIVE EXPANSION ================= -->
-
-        <article class="combo-card" role="listitem"
-                 data-calories="430"
-                 data-protein="20"
-                 data-price="139"
-                 data-veg="true">
-            <div class="combo-badge">430 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Black Chana & Barley Salad</h3>
-
-                <div class="combo-meta">Protein: <strong>20g</strong></div>
-                <div class="combo-price">₹<strong>139</strong></div>
-                <div class="combo-burn">Burns in <span>43</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Black Chana & Barley Salad")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/Black Chana & Barley Salad.png"
-                     alt="Black Chana & Barley Salad"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="410"
-                 data-protein="23"
-                 data-price="135"
-                 data-veg="true">
-            <div class="combo-badge">410 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Whole Wheat Pesto Paneer Wrap</h3>
-
-                <div class="combo-meta">Protein: <strong>23g</strong></div>
-                <div class="combo-price">₹<strong>135</strong></div>
-                <div class="combo-burn">Burns in <span>41</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Whole Wheat Pesto Paneer Wrap")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/pesto paneer wrap.png"
-                     alt="Whole Wheat Pesto Paneer Wrap"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="460"
-                 data-protein="27"
-                 data-price="149"
-                 data-veg="true">
-            <div class="combo-badge">460 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Tandoori Soya Chaap Bowl</h3>
-
-                <div class="combo-meta">Protein: <strong>27g</strong></div>
-                <div class="combo-price">₹<strong>149</strong></div>
-                <div class="combo-burn">Burns in <span>46</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Tandoori Soya Chaap Bowl")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/Tandoori Soya Chaap Bowl.png"
-                     alt="Tandoori Soya Chaap Bowl"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- ================= VALUE MEALS ================= -->
-
-        <article class="combo-card" role="listitem"
-                 data-calories="480"
-                 data-protein="22"
-                 data-price="89"
-                 data-veg="true">
-            <div class="combo-badge">480 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Work-Day Dal Khichdi Bowl</h3>
-
-                <div class="combo-meta">Protein: <strong>22g</strong></div>
-                <div class="combo-price">₹<strong>89</strong></div>
-                <div class="combo-burn">Burns in <span>48</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Work-Day Dal Khichdi Bowl")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/Dal khichdi.png"
-                     alt="Work-Day Dal Khichdi Bowl"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="520"
-                 data-protein="18"
-                 data-price="85"
-                 data-veg="true">
-            <div class="combo-badge">520 kcal</div>
-            <!-- LEFT SIDE (TEXT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Aloo-Matar Tehri</h3>
-
-                <div class="combo-meta">Protein: <strong>18g</strong></div>
-                <div class="combo-price">₹<strong>85</strong></div>
-                <div class="combo-burn">Burns in <span>52</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Aloo-Matar Tehri")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/Tehri.png"
-                     alt="Aloo-Matar Tehri"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="450"
-                 data-protein="25"
-                 data-price="95"
-                 data-veg="true">
-            <div class="combo-badge">450 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Black Chana Curry & Rotis</h3>
-
-                <div class="combo-meta">Protein: <strong>25g</strong></div>
-                <div class="combo-price">₹<strong>95</strong></div>
-                <div class="combo-burn">Burns in <span>45</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Black Chana Curry & Rotis")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/black channa with 2 rotis.png"
-                     alt="Black Chana Curry & Rotis"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <article class="combo-card" role="listitem"
-                 data-calories="390"
-                 data-protein="17"
-                 data-price="79"
-                 data-veg="true">
-            <div class="combo-badge">390 kcal</div>
-            <div class="combo-content">
-                <h3 class="combo-title">Mixed Veg Jowar Upma</h3>
-
-                <div class="combo-meta">Protein: <strong>17g</strong></div>
-                <div class="combo-price">₹<strong>79</strong></div>
-                <div class="combo-burn">Burns in <span>39</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Mixed Veg Jowar Upma")">Add to Cart</button>
-            </div>
-            <div class="combo-image">
-                <img src="~/images/menu items/jowar upma.png"
-                     alt="Mixed Veg Jowar Upma"
-                     loading="lazy" />   
-            </div>
-
-        </article>
-
+        @if (Model != null && Model.Any())
+        {
+            foreach (var food in Model)
+            {
+                <article class="combo-card" role="listitem"
+                         data-calories="@food.Calories"
+                         data-price="@food.Price"
+                         data-veg="true">
+                    
+                    @if (food.IsVerified)
+                    {
+                        <div class="verification-badge">
+                            <i class="bi bi-patch-check-fill"></i> Verified by Nutritionist
+                        </div>
+                    }
+
+                    <div class="combo-badge">@food.Calories kcal</div>
+                    <!-- LEFT SIDE (TEXT CONTENT) -->
+                    <div class="combo-content">
+                        <h3 class="combo-title">@food.Name</h3>
+
+                        <div class="nutrition-grid">
+                            <div class="nutrition-item"><span>Protein:</span> <strong>@(food.Protein ?? 0)g</strong></div>
+                            <div class="nutrition-item"><span>Carbs:</span> <strong>@(food.Carbs ?? 0)g</strong></div>
+                            <div class="nutrition-item"><span>Fat:</span> <strong>@(food.Fat ?? 0)g</strong></div>
+                            <div class="nutrition-item"><span>Prep:</span> <strong>@food.PreparationTime</strong></div>
+                        </div>
+
+                        <div class="combo-price">₹<strong>@food.Price</strong></div>
+                        
+                        @if (food.Nutritionist != null)
+                        {
+                            <div class="nutritionist-info">
+                                Verified by @food.Nutritionist.Name, @food.Nutritionist.Qualification
+                            </div>
+                        }
+
+                        <button class="btn add-cart" data-id="@food.Id">Add to Cart</button>
+                    </div>
+
+                    <!-- RIGHT SIDE (IMAGE) -->
+                    <div class="combo-image">
+                        <img src="@(string.IsNullOrEmpty(food.ImagePath) ? "/images/menu items/default.png" : food.ImagePath)"
+                             alt="@food.Name"
+                             loading="lazy" />
+                    </div>
+                </article>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info w-100">No corporate special meals found in the database. Please run SeedData.</div>
+        }
     </div>
 </section>
 
 @section Scripts {
     <script src="~/js/corporate.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const priceRange = document.getElementById("priceRange");
+            const priceValue = document.getElementById("priceValue");
+            const highProtein = document.getElementById("highProtein");
+            const under500 = document.getElementById("under500");
+            const vegOnly = document.getElementById("vegOnly");
+            const resetBtn = document.getElementById("resetFilters");
+            const comboCards = document.querySelectorAll(".combo-card");
+
+            function applyFilters() {
+                const maxPrice = parseInt(priceRange.value);
+                priceValue.textContent = "₹" + maxPrice;
+
+                comboCards.forEach(card => {
+                    const price = parseInt(card.dataset.price);
+                    const calories = parseInt(card.dataset.calories);
+                    const isVeg = card.dataset.veg === "true";
+
+                    let visible = true;
+
+                    if (price > maxPrice) visible = false;
+                    if (highProtein.checked && calories < 600) visible = false;
+                    if (under500.checked && calories >= 500) visible = false;
+                    if (vegOnly.checked && !isVeg) visible = false;
+
+                    card.style.display = visible ? "flex" : "none";
+                });
+            }
+
+            if(priceRange) priceRange.addEventListener("input", applyFilters);
+            if(highProtein) highProtein.addEventListener("change", applyFilters);
+            if(under500) under500.addEventListener("change", applyFilters);
+            if(vegOnly) vegOnly.addEventListener("change", applyFilters);
+
+            if(resetBtn) {
+                resetBtn.addEventListener("click", () => {
+                    priceRange.value = 120;
+                    highProtein.checked = false;
+                    under500.checked = false;
+                    vegOnly.checked = false;
+                    applyFilters();
+                });
+            }
+        });
+    </script>
 }
- 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace NUTRIBITE.Models;
@@ -50,6 +50,20 @@ public partial class OrderTable
     public DateTime? UpdatedAt { get; set; }
 
     public DateTime? CancelledAt { get; set; }
+
+    public decimal TotalAmount { get; set; } = 0.00m;
+
+    public decimal CommissionAmount { get; set; } = 0.00m;
+
+    public decimal VendorAmount { get; set; } = 0.00m;
+
+    public int? VendorId { get; set; }
+
+    public int? AdminId { get; set; }
+
+    public int Version { get; set; } = 1;
+
+    public int TrackingProgress { get; set; } = 0;
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 

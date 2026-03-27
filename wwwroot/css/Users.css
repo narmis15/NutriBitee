@@ -1,4 +1,4 @@
-﻿body {
+body {
 }
 
 :root{
@@ -226,3 +226,33 @@
     .users-table tbody td { display: block; width: 100%; }
     .users-page { padding: 12px; }
 }
+
+/* Analytics & Profile Enhancements */
+.summary-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border: 1px solid #f1f5f9;
+    transition: transform 0.2s;
+}
+.summary-card:hover { transform: translateY(-3px); }
+.summary-card .title { font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.summary-card .value { font-size: 24px; font-weight: 700; color: #0f172a; margin: 8px 0; }
+.summary-card .sub { font-size: 12px; }
+
+.bg-success-soft { background-color: #f0fdf4 !important; }
+.bg-danger-soft { background-color: #fef2f2 !important; }
+.bg-warning-soft { background-color: #fffbeb !important; }
+.bg-info-soft { background-color: #f0f9ff !important; }
+
+.text-success { color: #16a34a !important; }
+.text-danger { color: #dc2626 !important; }
+.text-warning { color: #d97706 !important; }
+
+.btn-approve { background-color: #16a34a; color: #fff; border: none; }
+.btn-approve:hover { background-color: #15803d; color: #fff; }
+
+.user-avatar-lg { width: 80px; height: 80px; font-size: 32px; }
+.health-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+
+.table-hover tbody tr:hover { background-color: #f8fafc; }

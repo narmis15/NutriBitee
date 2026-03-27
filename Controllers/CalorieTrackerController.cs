@@ -3,17 +3,22 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using NUTRIBITE.Models;
+using global::NUTRIBITE.Models;
+using Microsoft.AspNetCore.SignalR;
+using global::NUTRIBITE.Hubs;
+using System.Threading.Tasks;
 
 namespace NUTRIBITE.Controllers
 {
     public class CalorieTrackerController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<AnalyticsHub> _hubContext;
 
-        public CalorieTrackerController(ApplicationDbContext context)
+        public CalorieTrackerController(ApplicationDbContext context, IHubContext<AnalyticsHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // =============================
@@ -46,12 +51,11 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
-        // =============================
         // POST: /CalorieTracker/AddEntry
         // =============================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddEntry(string foodName, int calories, decimal protein = 0, decimal carbs = 0, decimal fats = 0)
+        public async Task<IActionResult> AddEntry(string foodName, int calories, string mealType = "Other", decimal protein = 0, decimal carbs = 0, decimal fats = 0)
         {
             var uid = HttpContext.Session.GetInt32("UserId");
 
@@ -67,6 +71,7 @@ namespace NUTRIBITE.Controllers
                 Date = DateTime.Today,
                 FoodName = foodName.Trim(),
                 Calories = calories,
+                MealType = mealType,
                 Protein = protein,
                 Carbs = carbs,
                 Fats = fats
@@ -74,6 +79,9 @@ namespace NUTRIBITE.Controllers
 
             _context.DailyCalorieEntries.Add(entry);
             _context.SaveChanges();
+
+            // Trigger real-time update for admin analytics
+            await _hubContext.Clients.All.SendAsync("ReceiveUpdate", $"New calorie entry: {foodName} ({calories} kcal)");
 
             return Json(new { success = true });
         }

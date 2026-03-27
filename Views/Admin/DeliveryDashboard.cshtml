@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Delivery Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Delivery Dashboard</h2>
+            <p class="text-muted small mb-0">Monitor real-time delivery performance and partner activity.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary" onclick="location.reload()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Active Partners</div>
+                <div class="h3 fw-bold text-success mb-0">12</div>
+                <div class="text-muted extra-small mt-1"><i class="bi bi-caret-up-fill text-success"></i> 2 new today</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">In Transit</div>
+                <div class="h3 fw-bold text-primary mb-0">8</div>
+                <div class="text-muted extra-small mt-1">Avg. time: 24 mins</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Pending Assignment</div>
+                <div class="h3 fw-bold text-warning mb-0">3</div>
+                <div class="text-muted extra-small mt-1">Immediate action required</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Completed (Today)</div>
+                <div class="h3 fw-bold text-dark mb-0">45</div>
+                <div class="text-muted extra-small mt-1">98% on-time rate</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Live Delivery Map & Partners</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-muted small text-uppercase">
+                        <tr>
+                            <th class="ps-4">Partner</th>
+                            <th>Status</th>
+                            <th>Current Task</th>
+                            <th>Rating</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-soft-primary text-primary rounded-circle p-2 me-3" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">Rahul Kumar</div>
+                                        <div class="text-muted extra-small">+91 98765 43210</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-soft-success text-success border border-success border-opacity-25 rounded-pill px-3">Available</span></td>
+                            <td class="small text-muted">Waiting for assignment</td>
+                            <td><i class="bi bi-star-fill text-warning me-1"></i> 4.8</td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-light border">Track</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-soft-primary text-primary rounded-circle p-2 me-3" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">Amit Singh</div>
+                                        <div class="text-muted extra-small">+91 87654 32109</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-soft-info text-info border border-info border-opacity-25 rounded-pill px-3">On Delivery</span></td>
+                            <td class="small text-muted">Order #1042 • 1.2km away</td>
+                            <td><i class="bi bi-star-fill text-warning me-1"></i> 4.5</td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-light border text-primary">Track</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-soft-primary { background-color: rgba(59, 130, 246, 0.1); }
+    .bg-soft-success { background-color: rgba(34, 197, 94, 0.1); }
+    .bg-soft-info { background-color: rgba(6, 182, 212, 0.1); }
+    .extra-small { font-size: 0.75rem; }
+</style>

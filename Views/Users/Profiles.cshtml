@@ -1,0 +1,46 @@
+@model IEnumerable<NUTRIBITE.Models.UserSignup>
+@{
+    ViewData["Title"] = "User Profiles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/users.css" />
+
+<div class="users-page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="page-title">User Profiles</h3>
+            <small class="text-muted">View, search, and manage user profiles</small>
+        </div>
+    </div>
+
+    <div class="users-table-wrapper">
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td><span class="badge badge-success">@(user.Status ?? "Active")</span></td>
+                        <td>@(user.CreatedAt?.ToString("dd MMM yyyy"))</td>
+                        <td>
+                            <a href="/Users/Profile/@user.Id" class="btn btn-sm btn-outline-primary">View Profile</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

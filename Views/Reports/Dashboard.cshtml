@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Reports Dashboard";
 }
 
@@ -65,16 +65,22 @@
 
             function renderSummary(summary) {
                 const container = $('#summaryCards').empty();
+                if (!summary) return;
                 summary.forEach(s => {
                     const col = $('<div class="col-md-3"></div>');
+                    const trendHtml = s.trend ? `<div class="mt-2 small ${s.trendClass || 'text-success'}">${s.trend}</div>` : '';
+                    const iconHtml = s.icon ? `<i class="bi ${s.icon} fs-4"></i>` : (s.Icon || '');
+                    
                     const card = $(`
-                        <div class="summary-card p-3 h-100">
-                            <div class="d-flex align-items-start gap-2">
-                                <div class="icon">${s.icon || s.Icon || ''}</div>
+                        <div class="summary-card p-3 h-100 bg-white shadow-sm border rounded-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="icon-wrapper p-2 bg-light rounded-circle text-primary">
+                                    ${iconHtml}
+                                </div>
                                 <div>
-                                    <div class="title">${s.title || s.Title}</div>
-                                    <div class="value">${s.value || s.Value}</div>
-                                    <div class="sub text-muted">${s.subText || s.SubText}</div>
+                                    <div class="text-muted small fw-bold text-uppercase">${s.title || s.Title}</div>
+                                    <div class="h4 mb-0 fw-bold">${s.value || s.Value}</div>
+                                    ${trendHtml}
                                 </div>
                             </div>
                         </div>`);
@@ -127,14 +133,14 @@
             function renderAlerts(alerts) {
                 const $body = $('#alertsBody').empty();
                 if (!alerts || alerts.length === 0) {
-                    $body.append('<tr><td colspan="4" class="text-muted small">No alerts</td></tr>');
+                    $body.append('<tr><td colspan="4" class="text-muted small text-center py-3">No alerts found</td></tr>');
                     return;
                 }
                 alerts.forEach(a => {
-                    const time = new Date(a.time || a.Time).toLocaleString();
+                    const time = a.time || a.Time || '—';
                     const $tr = $('<tr></tr>');
                     $tr.append('<td class="small text-muted">' + time + '</td>');
-                    $tr.append('<td><span class="' + severityClass(a.severity || a.Severity) + '">' + (a.type || a.Type) + '</span></td>');
+                    $tr.append('<td><span class="badge bg-light text-dark border">' + (a.type || a.Type) + '</span></td>');
                     $tr.append('<td class="small">' + (a.message || a.Message) + '</td>');
                     const link = a.orderId ? '<a href="/Admin/OrderDetails?orderId=' + a.orderId + '" class="small">#' + a.orderId + '</a>' : '';
                     $tr.append('<td class="text-end">' + link + '</td>');

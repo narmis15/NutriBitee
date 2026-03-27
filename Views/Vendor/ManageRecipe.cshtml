@@ -1,0 +1,98 @@
+@model NUTRIBITE.Models.Recipe
+@{
+    ViewData["Title"] = "Manage Recipe";
+    Layout = "~/Views/Shared/_VendorLayout.cshtml";
+    var food = ViewBag.Food as NUTRIBITE.Models.Food;
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Manage Recipe</h2>
+            <p class="text-muted small mb-0">Define ingredients and quantities for <strong>@food?.Name</strong></p>
+        </div>
+        <a asp-action="MyFood" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to My Food
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="SaveRecipe" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="FoodId" />
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Steps" value="NA" />
+
+                        <div class="mb-4">
+                            <label asp-for="Ingredients" class="form-label fw-bold">Ingredients & Quantities</label>
+                            <textarea asp-for="Ingredients" class="form-control" rows="12" 
+                                      placeholder="Example:&#10;250g Chicken Breast&#10;2 tbsp Olive Oil&#10;1 tsp Salt..."></textarea>
+                            <span asp-validation-for="Ingredients" class="text-danger small"></span>
+                            <div class="form-text small">Include precise measurements for better user experience.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Recipe Image (Optional)</label>
+                            <div class="input-group">
+                                <input type="file" name="RecipeImage" class="form-control" accept="image/*" />
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.ImagePath))
+                            {
+                                <div class="mt-2">
+                                    <p class="small text-muted mb-1">Current Image:</p>
+                                    <img src="@Model.ImagePath" class="rounded shadow-sm" style="height: 100px;" />
+                                </div>
+                            }
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="btn btn-primary px-5 py-2 fw-bold">
+                                <i class="bi bi-check-circle me-2"></i> Save Recipe Ingredients
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h6 class="mb-0 fw-bold">Quick Tips</h6>
+                </div>
+                <div class="card-body small">
+                    <ul class="ps-3 mb-0">
+                        <li class="mb-2">Be specific with measurements (e.g., "250g", "2 tbsp").</li>
+                        <li class="mb-2">Use one line per ingredient.</li>
+                        <li>High-quality images help users understand the final result.</li>
+                    </ul>
+                </div>
+            </div>
+
+            @if (food != null)
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="mb-0 fw-bold">Item Details</h6>
+                    </div>
+                    <div class="card-body">
+                        <img src="@food.ImagePath" class="img-fluid rounded mb-3" />
+                        <div class="h5 fw-bold mb-1">@food.Name</div>
+                        <div class="text-success fw-bold mb-2">₹@food.Price</div>
+                        <div class="small text-muted">@food.Description</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #22c55e;
+        box-shadow: 0 0 0 0.25rem rgba(34, 197, 94, 0.25);
+    }
+</style>

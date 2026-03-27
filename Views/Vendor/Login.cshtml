@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Vendor";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
@@ -57,3 +57,34 @@
     </div>
 
 </div>
+
+@if (TempData["VendorSuccess"] != null)
+{
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-success text-white border-0">
+                    <h5 class="modal-title"><i class="bi bi-check-circle-fill me-2"></i> Registration Successful</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3 text-success">
+                        <i class="bi bi-clock-history" style="font-size: 3rem;"></i>
+                    </div>
+                    <p class="fs-5 fw-semibold text-dark mb-2">Account Created!</p>
+                    <p class="text-muted">@TempData["VendorSuccess"]</p>
+                    <button type="button" class="btn btn-success px-4 py-2 mt-2" data-bs-dismiss="modal">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    @section Scripts {
+        <script>
+            $(document).ready(function() {
+                var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+                myModal.show();
+            });
+        </script>
+    }
+}

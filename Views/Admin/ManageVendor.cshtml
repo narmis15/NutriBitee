@@ -1,71 +1,122 @@
-﻿@model IEnumerable<NUTRIBITE.Models.VendorSignup>
+@model IEnumerable<NUTRIBITE.Models.VendorSignup>
 
 @{
     ViewData["Title"] = "Manage Vendors";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/admin-manage-vendors.css" asp-append-version="true" />
-}
-<h2 class="page-title">Manage Vendors</h2>
-
-<div class="admin-full-wrapper">
-
-    <div class="table-responsive">
-        <table class="admin-table">
-
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Vendor</th>
-                    <th>Email</th>
-                    <th>Created</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var vendor in Model)
-                {
-                    <tr>
-
-                        <td>#@vendor.VendorId</td>
-
-                        <td>
-                            <div class="vendor-info">
-                                <div class="vendor-avatar">
-                                    @vendor.VendorName.Substring(0, 1).ToUpper()
-                                </div>
-                                <div class="vendor-name">
-                                    @vendor.VendorName
-                                </div>
-                            </div>
-                        </td>
-
-                        <td>@vendor.Email</td>
-
-                        <td>@(vendor.CreatedAt.HasValue ? vendor.CreatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
-
-                        <td>
-                            @if (vendor.IsApproved)
-                            {
-                                <span class="status-badge approved">Approved</span>
-                            }
-                            else if (vendor.IsRejected)
-                            {
-                                <span class="status-badge rejected">Rejected</span>
-                            }
-                            else
-                            {
-                                <span class="status-badge pending">Pending</span>
-                            }
-                        </td>
-
-                    </tr>
-                }
-            </tbody>
-
-        </table>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Vendor Management</h2>
+            <p class="text-muted small mb-0">Monitor and manage registered vendors on your platform.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="NewVendorRequest" class="btn btn-outline-primary">
+                <i class="bi bi-person-plus me-1"></i> New Requests
+            </a>
+            <a asp-action="Payouts" class="btn btn-primary">
+                <i class="bi bi-wallet2 me-1"></i> Vendor Payouts
+            </a>
+        </div>
     </div>
 
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-muted small text-uppercase">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Vendor Details</th>
+                            <th>Contact Info</th>
+                            <th>Joined On</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vendor in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 text-muted small">#@vendor.VendorId</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="vendor-avatar-circle me-3">
+                                            @vendor.VendorName.Substring(0, 1).ToUpper()
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold">@vendor.VendorName</div>
+                                            <div class="text-muted extra-small">@(vendor.Description ?? "Kitchen Partner")</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div class="text-dark">@vendor.Email</div>
+                                        <div class="text-muted">@(vendor.Phone ?? "No Phone")</div>
+                                    </div>
+                                </td>
+                                <td class="small text-muted">
+                                    @(vendor.CreatedAt.HasValue ? vendor.CreatedAt.Value.ToString("dd MMM yyyy") : "-")
+                                </td>
+                                <td>
+                                    @if (vendor.IsApproved)
+                                    {
+                                        <span class="badge bg-soft-success text-success border border-success border-opacity-25 rounded-pill px-3">Approved</span>
+                                    }
+                                    else if (vendor.IsRejected)
+                                    {
+                                        <span class="badge bg-soft-danger text-danger border border-danger border-opacity-25 rounded-pill px-3">Rejected</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-soft-warning text-warning border border-warning border-opacity-25 rounded-pill px-3">Pending</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-light rounded-circle p-1" type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 small">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i> View Details</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i> Edit Profile</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            @if (!vendor.IsApproved && !vendor.IsRejected)
+                                            {
+                                                <li><a class="dropdown-item text-success" href="#"><i class="bi bi-check-circle me-2"></i> Approve</a></li>
+                                                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-x-circle me-2"></i> Reject</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .vendor-avatar-circle {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    .bg-soft-success { background-color: rgba(34, 197, 94, 0.1); }
+    .bg-soft-danger { background-color: rgba(239, 68, 68, 0.1); }
+    .bg-soft-warning { background-color: rgba(245, 158, 11, 0.1); }
+    .extra-small { font-size: 0.75rem; }
+    .dropdown-item { padding: 0.5rem 1rem; }
+    .dropdown-item:hover { background-color: rgba(0,0,0,0.03); }
+</style>

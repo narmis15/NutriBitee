@@ -1,323 +1,305 @@
-/* bulk.css - styles for Bulk page (NutriBite) */
+/* bulk.css - Modern Refresh for Bulk section (NutriBite) */
+
+:root {
+    --nb-primary: #2d6a4f;
+    --nb-primary-light: #e8f5e9;
+    --nb-accent: #4CAF50;
+    --nb-text-dark: #0b2b20;
+    --nb-text-muted: #556b63;
+    --nb-card-shadow: 0 10px 30px rgba(6,95,70,0.06);
+    --nb-hover-shadow: 0 15px 35px rgba(6,95,70,0.12);
+    --nb-radius-lg: 20px;
+    --nb-radius-md: 12px;
+}
 
 /* ==============================
-   Container
+   Layout & Typography
 ================================*/
+.bulk-page {
+    background-color: #fbfdfc;
+    min-height: 100vh;
+}
+
 .bulk-container {
+    width: 92%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 60px 0;
+}
+
+h2.fw-bold {
+    font-size: 2.2rem;
+    color: var(--nb-text-dark);
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
 }
 
 /* ==============================
    HERO BANNER CAROUSEL
-   (1 banner per slide)
-   - Do NOT override .carousel-item display properties
 ================================*/
-
-.bulk-hero .carousel-inner {
-    padding: 6px 0;
+.bulk-hero {
+    border-radius: var(--nb-radius-lg);
+    overflow: hidden;
+    margin-bottom: 50px;
+    box-shadow: var(--nb-card-shadow);
 }
 
-.bulk-hero .carousel-item {
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-
-/* Banner image: full-width, rounded, consistent height, cover */
 .bulk-hero-banner {
     width: 100%;
-    border-radius: 12px;
-    height: 370px;
+    height: auto;
+    max-height: 450px;
     object-fit: contain;
-    box-shadow: 0 8px 22px rgba(6,95,70,0.04);
-    display: block; /* safe: img naturally displays block */
+    display: block;
+    background-color: #f8faf9;
 }
 
-/* Responsive banner heights */
-@media (max-width: 991px) {
-    .bulk-hero-banner { height: 320px; }
-}
-
-@media (max-width: 575px) {
-    .bulk-hero-banner { height: 220px; border-radius: 10px; }
-}
-
-/* Carousel arrow style (visual only, does not change behavior) */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: #2d6a4f;
+    background-color: rgba(45, 106, 79, 0.8);
     border-radius: 50%;
-    padding: 12px;
-}
-
-/* ==============================
-   HERO CARDS (legacy support)
-   (kept unchanged — ensure no display:none on .carousel-item)
-================================*/
-
-.hb-card {
-    background: linear-gradient(180deg, rgba(76,175,80,0.06), #ffffff);
-    border-radius: 20px;
-    padding: 18px;
-    box-shadow: 0 10px 30px rgba(6,95,70,0.06);
-    min-height: 160px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* left (text) / right (image) */
-.hb-left { flex: 1 1 55%; min-width: 0; }
-.hb-right { flex: 0 0 40%; display:flex; align-items:center; justify-content:center; }
-.hb-img { max-width: 100%; height: 120px; object-fit: contain; border-radius: 12px; }
-
-.hb-title {
-    margin: 0 0 8px;
-    font-size: 1.05rem;
-    color: #0b2b20;
-    font-weight: 700;
-}
-
-.hb-desc {
-    margin: 0 0 12px;
-    color: #3b4b45;
-    font-size: .95rem;
-}
-
-/* CTA button */
-.bulk-cta {
-    background-color: #2d6a4f;
-    color: #fff;
-    border-radius: 25px;
-    padding: 10px 20px;
-    display: inline-block;
-    text-decoration: none;
-    font-weight: 700;
-    border: none;
-}
-
-/* Responsive hero card behavior */
-@media (max-width: 991px) {
-    .hb-img { height: 100px; }
-    .hb-card { min-height: 150px; }
-}
-
-@media (max-width: 575px) {
-    .hb-right { display: none; }
-    .hb-card { padding: 16px; }
+    padding: 15px;
+    background-size: 50%;
 }
 
 /* ==============================
    CATEGORY CARDS
 ================================*/
-
 .cat-card {
     position: relative;
-    display: block;
-    height: 240px;
-    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 280px;
+    border-radius: var(--nb-radius-lg);
     overflow: hidden;
     text-decoration: none;
-    color: #fff;
-    transition: transform .28s ease, box-shadow .28s ease;
-    background-size: cover;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
-    box-shadow: 0 10px 30px rgba(6,95,70,0.06);
+    background-color: #f0f2f1; /* Soft background color for the container */
+    box-shadow: var(--nb-card-shadow);
 }
 
-/* Category images */
+/* Specific Category Placeholder Images */
 .cat-meals { background-image: url('/images/bulk/bulk-meal1.webp'); }
 .cat-snacks { background-image: url('/images/bulk/bulk-meal2.webp'); }
 .cat-foodbox { background-image: url('/images/bulk/bulk-meal3.webp'); }
 
-/* Overlay */
 .cat-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient( 180deg, rgba(4,85,38,0.08), rgba(4,85,38,0.12) );
-    transition: background .24s ease;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%);
+    transition: background 0.3s ease;
 }
 
-/* Text label */
 .cat-text {
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: 14px;
-    text-align: center;
-    font-size: 1.25rem;
+    position: relative;
+    font-size: 1.8rem;
     font-weight: 800;
-    letter-spacing: .2px;
     color: #ffffff;
     z-index: 2;
-    text-shadow: 0 6px 18px rgba(2,6,2,0.28);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-/* Hover animation */
 .cat-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 22px 60px rgba(6,95,70,0.12);
+    transform: translateY(-8px);
+    box-shadow: var(--nb-hover-shadow);
 }
+
 .cat-card:hover .cat-overlay {
-    background: linear-gradient( 180deg, rgba(76,175,80,0.18), rgba(76,175,80,0.22) );
+    background: linear-gradient(180deg, rgba(45, 106, 79, 0.2) 0%, rgba(45, 106, 79, 0.7) 100%);
 }
 
-/* Accessibility focus */
-.cat-card:focus-visible {
-    outline: 3px solid rgba(76,175,80,0.12);
-    outline-offset: 2px;
-}
-
-/* Mobile category height */
-@media (max-width: 768px) {
-    .cat-card { height: 180px; }
-}
-
-/* Utility spacing */
-.bulk-inner { padding-left: 12px; padding-right: 12px; }
-
-.meal-card {
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-    padding: 20px;
+/* ==============================
+   PACKAGING & FILTERS
+================================*/
+.packaging-options {
     background: #fff;
+    padding: 25px;
+    border-radius: var(--nb-radius-md);
+    box-shadow: var(--nb-card-shadow);
+    margin-bottom: 40px;
+}
+
+.packaging-label {
+    cursor: pointer;
+    padding: 15px 20px;
+    border: 2px solid transparent;
+    border-radius: var(--nb-radius-md);
+    transition: all 0.2s ease;
+    background: #f8faf9;
+    flex: 1;
+}
+
+.packaging-label input[type="radio"]:checked + .packaging-content {
+    color: var(--nb-primary);
+}
+
+.packaging-label:has(input[type="radio"]:checked) {
+    border-color: var(--nb-primary);
+    background: var(--nb-primary-light);
+}
+
+.diet-pill {
+    cursor: pointer;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border: 1px solid #e0e7e3;
+    background: #fff;
+    color: var(--nb-text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.diet-pill.active {
+    background: var(--nb-primary);
+    color: #fff;
+    border-color: var(--nb-primary);
+    box-shadow: 0 4px 12px rgba(45, 106, 79, 0.2);
+}
+
+/* ==============================
+   MEAL/SNACK CARDS
+================================*/
+.meal-card {
+    border: none !important;
+    border-radius: var(--nb-radius-md);
+    transition: all 0.3s ease;
+    background: #fff;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.meal-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--nb-hover-shadow) !important;
+}
+
+.veg-indicator {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
 }
 
 .meal-title {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--nb-text-dark);
+    margin-bottom: 6px;
 }
 
 .meal-price {
-    font-weight: 600;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--nb-primary);
+    margin-bottom: 10px;
 }
 
 .meal-desc {
-    font-size: 14px;
-    color: #666;
+    font-size: 0.95rem;
+    color: var(--nb-text-muted);
+    line-height: 1.5;
 }
 
 .meal-img-box {
-    width: 80px;
-    height: 80px;
+    width: 140px;
+    height: 110px;
+    border-radius: var(--nb-radius-md);
     overflow: hidden;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: inline-block;
 }
 
 .meal-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: #f8faf9;
 }
 
-.btn-add-cart {
-    background: #16a34a;
-    color: white;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 6px;
-    font-weight: 600;
+/* Transition for box image */
+#boxImage {
+    object-fit: contain;
+    background-color: transparent;
 }
+#boxImage.active { transform: scale(1.1) rotate(5deg); }
 
-.qty {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
-
-    .qty button {
-        width: 28px;
-        height: 28px;
-    }
-
-.qty-input {
-    width: 40px;
-    text-align: center;
-    border: 1px solid #ccc;
-}
-
-.diet-pill {
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-}
-
-    .diet-pill.active {
-        background: #16a34a;
-        color: white;
-    }
-
-.veg-indicator {
-    margin-right: 5px;
-}
-/* FOODBOX IMAGE */
-
-.foodbox-img {
-    width: 120px;
-    height: auto;
-}
-
-
-/* ITEM IMAGE */
-
-.meal-img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-
-/* ITEM ROW */
-
-.foodbox-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-
-/* ADD BUTTON */
-
-.btn-add-box {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-}
+/* ==============================
+   BUTTONS & CONTROLS
+================================*/
 .qty-box {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 5px;
-}
-
-    .qty-box button {
-        background: #eee;
-        border: none;
-        padding: 5px 10px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-.qty {
-    font-weight: bold;
-}
-
-.foodbox-img {
-    width: 120px;
-}
-
-.meal-img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
+    background: #f1f5f3;
     border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #fff;
+    border-radius: 6px;
+    color: var(--nb-primary);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.qty-btn:hover {
+    background: var(--nb-primary);
+    color: #fff;
+}
+
+.qty-input {
+    width: 45px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-weight: 700;
+    color: var(--nb-text-dark);
+}
+
+.btn-add-cart {
+    background: var(--nb-primary);
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(45, 106, 79, 0.15);
+}
+
+.btn-add-cart:hover {
+    background: #23543e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45, 106, 79, 0.25);
+    color: #fff;
+}
+
+/* ==============================
+   RESPONSIVE
+================================*/
+@media (max-width: 991px) {
+    .bulk-hero-banner { max-height: 350px; }
+    .cat-card { height: 220px; }
+}
+
+@media (max-width: 768px) {
+    .bulk-container { padding: 40px 0; }
+    .meal-img-box { width: 100%; height: auto; max-height: 180px; margin-bottom: 15px; }
+    .text-end { text-align: left !important; }
+    .qty-box { margin-bottom: 10px; }
 }

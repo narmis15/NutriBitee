@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Cancelled Orders";
 }
 
@@ -86,24 +86,23 @@
                 $('#cancelledTable').show();
 
                 list.forEach(o => {
-                    const orderLink = '<a href="/Admin/OrderDetails?orderId=' + o.OrderId + '">#' + o.OrderId + '</a>';
-                    const cust = (o.CustomerName || '-') + '<br/><small class="text-muted">' + (o.CustomerPhone || '-') + '</small>';
-                    const amount = '₹' + ((o.Amount || 0).toFixed ? o.Amount.toFixed(2) : (o.Amount || '0.00'));
-                    const notesPreview = (o.AdminNotes || '').length > 80 ? (o.AdminNotes || '').slice(0, 80) + '…' : (o.AdminNotes || '-');
-
-                    const $tr = $('<tr>').attr('data-id', o.OrderId);
+                    const orderLink = '<a href="/Admin/OrderDetails?orderId=' + o.order_id + '">#' + o.order_id + '</a>';
+                    const cust = (o.customer_name || '-') + '<br/><small class="text-muted">' + (o.customer_contact || '-') + '</small>';
+                    const amount = '₹' + ((o.refunded_amount || 0).toFixed ? o.refunded_amount.toFixed(2) : (o.refunded_amount || '0.00'));
+                    
+                    const $tr = $('<tr>').attr('data-id', o.order_id);
                     $tr.append($('<td>').html(orderLink));
-                    $tr.append($('<td>').text(o.CancelledAt ? new Date(o.CancelledAt).toLocaleString() : '-'));
-                    $tr.append($('<td>').text(o.CancelledBy || '-'));
+                    $tr.append($('<td>').text(o.canceled_at ? new Date(o.canceled_at).toLocaleString() : '-'));
+                    $tr.append($('<td>').text(o.status || '-'));
                     $tr.append($('<td>').html(cust));
                     $tr.append($('<td>').html(amount));
-                    $tr.append($('<td>').text(o.CancelReason || '-'));
-                    $tr.append($('<td>').text(o.RefundMethod || '-'));
-                    $tr.append($('<td>').html(formatRefundBadge(o.RefundStatus)));
-                    $tr.append($('<td>').html('<small class="text-muted">' + $('<div>').text(notesPreview).html() + '</small>'));
-                    // actions: mark refund completed, add note, export/report
-                    const actions = '<button class="btn btn-sm btn-approve mark-refund" data-id="' + o.OrderId + '">Mark Refunded</button>' +
-                                    '<button class="btn btn-sm btn-outline-secondary ms-1 add-note" data-id="' + o.OrderId + '">Add Note</button>';
+                    $tr.append($('<td>').text(o.cancellation_reason || '-'));
+                    $tr.append($('<td>').text('-')); // RefundMethod not requested in API
+                    $tr.append($('<td>').html(formatRefundBadge(o.status)));
+                    $tr.append($('<td>').html('<small class="text-muted">-</small>'));
+                    
+                    const actions = '<button class="btn btn-sm btn-approve mark-refund" data-id="' + o.order_id + '">Mark Refunded</button>' +
+                                    '<button class="btn btn-sm btn-outline-secondary ms-1 add-note" data-id="' + o.order_id + '">Add Note</button>';
                     $tr.append($('<td>').html(actions));
                     $tbody.append($tr);
                 });
@@ -112,6 +111,9 @@
             }
 
             function fetchCancelled() {
+                // Show loading state
+                $('#cancelledTable tbody').html('<tr><td colspan="10" class="text-center py-5"><div class="spinner-border text-secondary"></div></td></tr>');
+                
                 $.ajax({
                     url: '/Admin/GetCancelledOrders',
                     method: 'GET',
@@ -119,7 +121,7 @@
                 }).done(function (data) {
                     renderRows(data);
                 }).fail(function () {
-                    alert('Failed to load cancelled orders.');
+                    $('#cancelledTable tbody').html('<tr><td colspan="10" class="text-center py-4 text-danger"><i class="bi bi-exclamation-circle me-2"></i>Failed to load cancelled orders.</td></tr>');
                 });
             }
 

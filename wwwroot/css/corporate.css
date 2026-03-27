@@ -1,4 +1,4 @@
-﻿/* ===============================
+/* ===============================
    Students page - White + Green
 ================================= */
 
@@ -27,11 +27,11 @@
    HERO SECTION
 ================================= */
 
-.students-hero {
+.corporate-hero {
     margin-bottom: 50px;
 }
 
-    .students-hero .hero-card {
+    .corporate-hero .hero-card {
         background: #ffffff;
         border-radius: var(--card-radius);
         padding: 28px;
@@ -41,18 +41,18 @@
         box-shadow: 0 10px 28px rgba(6,95,70,0.05);
     }
 
-    .students-hero .hero-left {
+    .corporate-hero .hero-left {
         flex: 1;
     }
 
-    .students-hero h1 {
+    .corporate-hero h1 {
         color: #0f172a;
         margin: 0 0 12px;
         font-size: 1.7rem;
         font-weight: 700;
     }
 
-    .students-hero .lead {
+    .corporate-hero .lead {
         color: #55606a;
         margin-bottom: 16px;
         line-height: 1.5;
@@ -68,12 +68,27 @@
     font-weight: 700;
 }
 
-/* hero image */
-.students-hero .hero-right img {
-    width: 260px;
-    height: auto;
-    border-radius: 12px;
+/* Reduced corporate representative image */
+.corporate-hero .hero-right img {
+    width: 200px; /* Reduced from 260px */
+    height: 200px; /* Make it square/proportional */
+    border-radius: 50%; /* Circle looks more professional for representative */
     object-fit: cover;
+    border: 4px solid var(--nb-student-light);
+}
+
+@media (max-width: 768px) {
+
+    .corporate-hero .hero-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 22px;
+    }
+
+    .corporate-hero .hero-right img {
+        width: 150px;
+        height: 150px;
+    }
 }
 
 /* ===============================

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace NUTRIBITE.Models;
@@ -17,7 +17,8 @@ public partial class UserSignup
     public string? Phone { get; set; }
     public string? Status { get; set; }
     public int? CalorieGoal { get; set; }
-    public string Role { get; set; } = "User";
+    public string? Role { get; set; } = "User";
+    public string? ProfilePictureUrl { get; set; }
 
     public virtual ICollection<OrderTable> OrderTables { get; set; } = new List<OrderTable>();
 }

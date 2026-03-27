@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "User Profile";
     var userId = ViewBag.UserId ?? Context.Request.Query["userId"].ToString();
 }
@@ -11,9 +11,10 @@
             <h3 class="page-title">User Profile</h3>
             <small class="text-muted">Health snapshot and account summary</small>
         </div>
-
-        <div class="text-end">
-            <a asp-controller="Users" asp-action="Index" class="btn btn-sm btn-outline-secondary">Back to users</a>
+        <div>
+            <button class="btn btn-approve shadow-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <i class="bi bi-pencil-square me-1"></i> Edit Full Profile
+            </button>
         </div>
     </div>
 
@@ -21,7 +22,7 @@
         <!-- Left: Profile summary -->
         <div class="col-lg-4">
             <div class="user-card">
-                <div class="user-avatar">@((userId ?? "U").ToString().Substring(0,1))</div>
+                <div class="user-avatar" id="u-avatar">U</div>
                 <div class="user-info">
                     <div class="name" id="u-name">—</div>
                     <div class="meta" id="u-contact">—</div>
@@ -42,8 +43,21 @@
                     </div>
 
                     <div class="mt-3">
-                        <strong>Admin note</strong>
-                        <div class="small text-muted" id="u-note">—</div>
+                        <strong>Health Snapshot</strong>
+                        <div class="row g-2 mt-1">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded text-center">
+                                    <small class="text-muted d-block">BMI</small>
+                                    <span class="fw-bold" id="u-bmi">—</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded text-center">
+                                    <small class="text-muted d-block">Weight</small>
+                                    <span class="fw-bold" id="u-weight">—</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,23 +65,161 @@
 
         <!-- Right: trend chart + details -->
         <div class="col-lg-8">
-            <div class="card p-3 mb-3">
-                <div class="card-header mb-2">
-                    <h4 class="mb-0">Weekly Calorie Trend</h4>
+            <div class="card p-3 mb-3 shadow-sm border-0">
+                <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">7-Day Calorie Trend</h5>
+                    <span class="badge bg-success-soft text-success" id="d-weekly-avg-badge">Avg: 0 kcal</span>
                 </div>
-                <canvas id="weeklyTrendChart" height="120"></canvas>
+                <div style="height: 200px;">
+                    <canvas id="weeklyTrendChart"></canvas>
+                </div>
             </div>
 
-            <div class="card p-3">
-                <h5>Details</h5>
-                <table class="users-table" style="margin-top:10px">
-                    <tbody>
-                        <tr><td style="width:180px"><strong>User ID</strong></td><td id="d-userid">—</td></tr>
-                        <tr><td><strong>Registered</strong></td><td id="d-registered">—</td></tr>
-                        <tr><td><strong>Average (7d)</strong></td><td id="d-weekly-avg">— kcal</td></tr>
-                        <tr><td><strong>Orders</strong></td><td id="d-orders">—</td></tr>
-                    </tbody>
-                </table>
+            <div class="card p-3 shadow-sm border-0">
+                <h5 class="mb-3">Comprehensive Details</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-sm table-borderless">
+                            <tbody>
+                                <tr><td class="text-muted" style="width:140px">User ID</td><td id="d-userid">—</td></tr>
+                                <tr><td class="text-muted">Registered</td><td id="d-registered">—</td></tr>
+                                <tr><td class="text-muted">Status</td><td id="d-status">—</td></tr>
+                                <tr><td class="text-muted">Total Orders</td><td id="d-orders">—</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6 border-start">
+                        <table class="table table-sm table-borderless">
+                            <tbody>
+                                <tr><td class="text-muted" style="width:140px">Age / Gender</td><td id="d-age-gender">—</td></tr>
+                                <tr><td class="text-muted">Activity Level</td><td id="d-activity">—</td></tr>
+                                <tr><td class="text-muted">Health Goal</td><td id="d-goal">—</td></tr>
+                                <tr><td class="text-muted">Dietary Pref.</td><td id="d-dietary">—</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-3 p-3 bg-light rounded">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <small class="text-muted d-block mb-1">Chronic Diseases</small>
+                            <div id="d-chronic" class="small">—</div>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block mb-1">Food Allergies</small>
+                            <div id="d-allergies" class="small">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Edit User Health Profile</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="editProfileForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="userId" value="@userId" />
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Full Name</label>
+                            <input type="text" name="name" id="edit-name" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Email Address</label>
+                            <input type="email" name="email" id="edit-email" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Phone Number</label>
+                            <input type="text" name="phone" id="edit-phone" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Account Status</label>
+                            <select name="status" id="edit-status" class="form-select">
+                                <option value="Active">Active</option>
+                                <option value="Blocked">Blocked</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+
+                        <hr class="my-4" />
+                        <h6 class="mb-0 text-success">Health Survey Data</h6>
+
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Age</label>
+                            <input type="number" name="Age" id="edit-age" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Gender</label>
+                            <select name="Gender" id="edit-gender" class="form-select">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Height (cm)</label>
+                            <input type="number" step="0.1" name="HeightCm" id="edit-height" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Weight (kg)</label>
+                            <input type="number" step="0.1" name="WeightKg" id="edit-weight" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Activity Level</label>
+                            <select name="ActivityLevel" id="edit-activity" class="form-select">
+                                <option value="Sedentary">Sedentary</option>
+                                <option value="Light">Lightly Active</option>
+                                <option value="Moderate">Moderately Active</option>
+                                <option value="Active">Very Active</option>
+                                <option value="Extra Active">Extra Active</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Health Goal</label>
+                            <select name="Goal" id="edit-goal" class="form-select">
+                                <option value="Weight Loss">Weight Loss</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Weight Gain">Weight Gain</option>
+                                <option value="Muscle Building">Muscle Building</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold">Dietary Preference</label>
+                            <select name="DietaryPreference" id="edit-dietary" class="form-select">
+                                <option value="Veg">Vegetarian</option>
+                                <option value="Non-Veg">Non-Vegetarian</option>
+                                <option value="Vegan">Vegan</option>
+                                <option value="Jain">Jain</option>
+                                <option value="Eggetarian">Eggetarian</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Chronic Diseases</label>
+                            <textarea name="ChronicDiseases" id="edit-chronic" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Food Allergies</label>
+                            <textarea name="FoodAllergies" id="edit-allergies" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success px-4" id="saveProfileBtn">Save Changes</button>
             </div>
         </div>
     </div>
@@ -80,6 +232,7 @@
         (function () {
             const id = '@userId';
             const api = '/Users/GetUserProfileData?userId=' + encodeURIComponent(id);
+            const updateApi = '/Users/UpdateUserProfile';
 
             function setStatusBadge(el, status) {
                 const $el = $(el);
@@ -121,12 +274,11 @@
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: true,     // keep a stable aspect ratio
-                        animation: false,              // disable continuous/entrance animations
+                        maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
                         scales: {
                             x: { grid: { display: false } },
-                            y: { beginAtZero: true }
+                            y: { beginAtZero: true, grid: { color: '#f0f0f0' } }
                         }
                     }
                 });
@@ -134,30 +286,82 @@
 
             function load() {
                 $.getJSON(api).done(function (m) {
+                    // Update main cards
                     $('#u-name').text(m.name || m.Name);
+                    $('#u-avatar').text((m.name || m.Name || 'U').substring(0,1).toUpperCase());
                     $('#u-contact').html((m.email || '') + '<br/>' + (m.phone || ''));
                     setStatusBadge('#u-status', (m.status || m.Status));
                     $('#u-diet').text(m.dietType || m.DietType);
                     $('#u-orders').text((m.ordersCount || m.OrdersCount) + ' orders');
                     $('#u-today-cal').text(m.todayCalories || m.TodayCalories);
                     $('#u-goal-cal').text(m.calorieGoal || m.CalorieGoal);
-                    $('#u-note').text(m.adminNote || m.AdminNote || '—');
+                    
+                    const s = m.survey || m.Survey || {};
+                    $('#u-bmi').text(s.bmi || s.Bmi || '—');
+                    $('#u-weight').text((s.weightKg || s.WeightKg || '—') + ' kg');
 
                     const goal = (m.calorieGoal || m.CalorieGoal) || 1;
                     const today = (m.todayCalories || m.TodayCalories) || 0;
                     const pct = Math.min(100, Math.round((today / goal) * 100));
                     $('#u-cal-fill').css('width', pct + '%');
+                    if (pct > 100) $('#u-cal-fill').addClass('bg-danger');
 
+                    // Update detail section
                     $('#d-userid').text(m.userId || m.UserId);
                     $('#d-registered').text(new Date(m.registeredAt || m.RegisteredAt).toLocaleDateString());
-                    $('#d-weekly-avg').text((m.weeklyCaloriesAverage || m.WeeklyCaloriesAverage) + ' kcal');
+                    $('#d-status').text(m.status || m.Status);
                     $('#d-orders').text(m.ordersCount || m.OrdersCount);
+                    
+                    $('#d-age-gender').text((s.age || s.Age || '—') + ' / ' + (s.gender || s.Gender || '—'));
+                    $('#d-activity').text(s.activityLevel || s.ActivityLevel || '—');
+                    $('#d-goal').text(s.goal || s.Goal || '—');
+                    $('#d-dietary').text(s.dietaryPreference || s.DietaryPreference || '—');
+                    $('#d-chronic').text(s.chronicDiseases || s.ChronicDiseases || 'None');
+                    $('#d-allergies').text(s.foodAllergies || s.FoodAllergies || 'None');
+                    $('#d-weekly-avg-badge').text('Avg: ' + (m.weeklyCaloriesAverage || m.WeeklyCaloriesAverage || 0) + ' kcal');
+
+                    // Populate edit modal
+                    $('#edit-name').val(m.name || m.Name);
+                    $('#edit-email').val(m.email || m.Email);
+                    $('#edit-phone').val(m.phone || m.Phone);
+                    $('#edit-status').val(m.status || m.Status);
+                    
+                    $('#edit-age').val(s.age || s.Age);
+                    $('#edit-gender').val(s.gender || s.Gender);
+                    $('#edit-height').val(s.heightCm || s.HeightCm);
+                    $('#edit-weight').val(s.weightKg || s.WeightKg);
+                    $('#edit-activity').val(s.activityLevel || s.ActivityLevel);
+                    $('#edit-goal').val(s.goal || s.Goal);
+                    $('#edit-dietary').val(s.dietaryPreference || s.DietaryPreference);
+                    $('#edit-chronic').val(s.chronicDiseases || s.ChronicDiseases);
+                    $('#edit-allergies').val(s.foodAllergies || s.FoodAllergies);
 
                     renderTrend(m.weeklyTrend || m.WeeklyTrend || []);
                 }).fail(function () {
                     alert('Failed to load profile data');
                 });
             }
+
+            $('#saveProfileBtn').click(function() {
+                const $btn = $(this);
+                $btn.prop('disabled', true).text('Saving...');
+                
+                $.post(updateApi, $('#editProfileForm').serialize())
+                    .done(function(res) {
+                        if (res.success) {
+                            $('#editProfileModal').modal('hide');
+                            load();
+                        } else {
+                            alert('Update failed: ' + (res.message || 'Unknown error'));
+                        }
+                    })
+                    .fail(function() {
+                        alert('Server error while saving profile');
+                    })
+                    .always(function() {
+                        $btn.prop('disabled', false).text('Save Changes');
+                    });
+            });
 
             $(function () { load(); });
         })();

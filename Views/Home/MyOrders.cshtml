@@ -52,44 +52,32 @@
 </style>
 
 <div class="orders-wrapper">
-
     <h2 class="mb-4">📦 My Orders</h2>
 
     @if (Model != null && Model.Any())
     {
+        @Html.AntiForgeryToken()
         foreach (var order in Model)
         {
             var statusClass = "status-picked";
-
             if (order.Status == "Cancelled")
             {
                 statusClass = "status-cancelled";
             }
 
             <div class="order-card">
-
                 <div class="order-info">
                     <h5>Order #@order.OrderId</h5>
                     
-                    @if (order.OrderType == "Delivery")
-                    {
-                        <div class="mt-1">
-                            <span class="badge bg-purple text-white">Delivery</span>
-                            <small class="text-muted d-block mt-1">Status: <strong>@order.DeliveryStatus</strong></small>
-                            <small class="text-muted d-block">Address: @order.DeliveryAddress</small>
-                            @if (!string.IsNullOrEmpty(order.DeliveryNotes))
-                            {
-                                <small class="text-muted d-block"><em>Note: @order.DeliveryNotes</em></small>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="mt-1">
-                            <span class="badge bg-secondary text-white">Pickup</span>
-                            <small class="text-muted d-block mt-1">Slot: @order.PickupSlot</small>
-                        </div>
-                    }
+                    <div class="mt-1">
+                        <span class="badge bg-purple text-white">Delivery</span>
+                        <small class="text-muted d-block mt-1">Status: <strong>@order.DeliveryStatus</strong></small>
+                        <small class="text-muted d-block">Address: @order.DeliveryAddress</small>
+                        @if (!string.IsNullOrEmpty(order.DeliveryNotes))
+                        {
+                            <small class="text-muted d-block"><em>Note: @order.DeliveryNotes</em></small>
+                        }
+                    </div>
 
                     <span class="d-block mt-2">
                         Ordered on:
@@ -99,22 +87,72 @@
 
                 <div class="d-flex align-items-center">
                     <div class="order-status @statusClass me-3">
-                        @order.Status
+                        @{
+                            var displayStatus = order.Status;
+                            if (displayStatus == "Ready for Pickup") displayStatus = "Ready for Delivery";
+                            else if (displayStatus == "Picked") displayStatus = "In Transit";
+                        }
+                        @displayStatus
                     </div>
-                    @if (order.Status != "Cancelled" && order.Status != "Completed" && order.Status != "Delivered")
-                    {
-                        <a href="/Home/TrackOrder?orderId=@order.OrderId" class="btn btn-sm btn-primary rounded-pill px-3">
-                            <i class="bi bi-geo-alt me-1"></i> Track
-                        </a>
-                    }
-                </div>
 
+                    <div class="d-flex flex-column gap-2">
+                        @if (order.Status != "Cancelled" && order.Status != "Completed" && order.Status != "Delivered")
+                        {
+                            <a href="/Home/TrackOrder?orderId=@order.OrderId" class="btn btn-sm btn-primary rounded-pill px-3">
+                                <i class="bi bi-geo-alt me-1"></i> Track
+                            </a>
+
+                            // Cancellation button - Allowed only if not shipped/ready
+                            var canCancel = new[] { "Placed", "New", "Accepted" }.Contains(order.Status, StringComparer.OrdinalIgnoreCase);
+                            if (canCancel)
+                            {
+                                <button class="btn btn-sm btn-outline-danger rounded-pill px-3 cancel-order-btn" data-id="@order.OrderId">
+                                    <i class="bi bi-x-circle me-1"></i> Cancel
+                                </button>
+                            }
+                        }
+                    </div>
+                </div>
             </div>
         }
     }
     else
     {
-        <p>No orders found.</p>
+        <div class="text-center py-5">
+            <i class="bi bi-box display-1 text-muted d-block mb-3"></i>
+            <p class="text-muted">No orders found.</p>
+            <a href="/" class="btn btn-primary rounded-pill mt-2">Explore Menu</a>
+        </div>
     }
-
 </div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(function () {
+            const token = $('input[name="__RequestVerificationToken"]').val();
+
+            $('.cancel-order-btn').on('click', function () {
+                const btn = $(this);
+                const orderId = btn.data('id');
+
+                if (!confirm('Are you sure you want to cancel this order?')) return;
+
+                btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span>');
+
+                $.post('/Home/CancelOrder', { orderId: orderId, __RequestVerificationToken: token }, function (res) {
+                    if (res.success) {
+                        alert(res.message);
+                        location.reload();
+                    } else {
+                        alert(res.message);
+                        btn.prop('disabled', false).html('<i class="bi bi-x-circle me-1"></i> Cancel');
+                    }
+                }).fail(function () {
+                    alert('An error occurred. Please try again.');
+                    btn.prop('disabled', false).html('<i class="bi bi-x-circle me-1"></i> Cancel');
+                });
+            });
+        });
+    </script>
+}

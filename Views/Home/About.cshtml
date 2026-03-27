@@ -1,0 +1,201 @@
+@{
+    ViewData["Title"] = "About Us";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .about-section {
+            padding: 60px 0;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1b4332;
+            margin-bottom: 20px;
+        }
+
+        .about-header p {
+            font-size: 1.2rem;
+            color: #40916c;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2d6a4f;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+            padding: 0 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px;
+            background: #f8fffb;
+            border-radius: 15px;
+            transition: 0.3s;
+            border: 1px solid #eef7f2;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(45,106,79,0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #2d6a4f;
+            margin-bottom: 20px;
+        }
+
+        .feature-item h4 {
+            font-weight: 600;
+            color: #1b4332;
+            margin-bottom: 15px;
+        }
+
+        .feature-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .mission-vision {
+            background: #1b4332;
+            color: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .mission-vision h2 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+        }
+
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .mv-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #d8f3dc;
+        }
+
+        .mv-item p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        @@media (max-width: 992px) {
+            .about-content, .mv-grid {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="about-section">
+        <div class="about-header">
+            <h1>About NutriBite</h1>
+            <p>Your ultimate destination for fresh, homemade, and calorie-counted meals delivered straight to your doorstep.</p>
+        </div>
+
+        <div class="about-content">
+            <div class="about-image">
+                <img src="~/images/hero/hero-food.png" alt="Healthy Food" />
+            </div>
+            <div class="about-text">
+                <h2>Our Story</h2>
+                <p>
+                    NutriBite was born from a simple idea: everyone deserves access to healthy, home-cooked meals, even with a busy lifestyle. We realized that while there are many food delivery services, few focus on the nutritional value and the authentic taste of home.
+                </p>
+                <p>
+                    We connect verified home chefs with people who care about what they eat. Every meal on our platform is prepared with love, using fresh ingredients, and is calorie-counted to help you maintain your health goals.
+                </p>
+                <p>
+                    Whether you are a student, a working professional, or someone looking for specialized meals for the elderly, NutriBite has something tailored for you.
+                </p>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-heart-pulse"></i></div>
+                <h4>Healthy & Nutritious</h4>
+                <p>Every meal is balanced and calorie-counted by experts to ensure you get the best nutrition.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-house-heart"></i></div>
+                <h4>Homemade Quality</h4>
+                <p>Prepared by verified home chefs who use the same care they use for their own families.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-truck"></i></div>
+                <h4>Fast Delivery</h4>
+                <p>Freshly cooked meals delivered to your location while they are still warm and delicious.</p>
+            </div>
+        </div>
+
+        <div class="mission-vision">
+            <h2>Our Purpose</h2>
+            <div class="mv-grid">
+                <div class="mv-item">
+                    <h3>Our Mission</h3>
+                    <p>To make healthy, homemade food accessible to everyone while empowering home chefs to showcase their culinary talents and build their own businesses.</p>
+                </div>
+                <div class="mv-item">
+                    <h3>Our Vision</h3>
+                    <p>To become the world's leading platform for personalized, health-focused homemade meal subscriptions and deliveries.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

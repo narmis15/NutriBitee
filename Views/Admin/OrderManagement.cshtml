@@ -27,8 +27,6 @@
            class="submenu-link @(ViewContext.RouteData.Values["action"].ToString() == "OrderDetails" ? "active" : "")">
             Order Details
         </a>       
-        <a asp-controller="Admin" asp-action="FlaggedOrders" class="submenu-link">Flagged Orders</a>
-        <a asp-controller="Admin" asp-action="PickupSlots" class="submenu-link">Pickup Slots</a>
         <a asp-controller="Admin" asp-action="CancelledOrders" class="submenu-link">Cancelled Orders</a>
     </nav>
 
@@ -37,9 +35,8 @@
         <li class="nav-item"><a class="nav-link active" data-status="All" href="#">All <span class="badge bg-light text-dark ms-1" id="count-All">0</span></a></li>
         <li class="nav-item"><a class="nav-link" data-status="New" href="#">New <span class="badge bg-light text-dark ms-1" id="count-New">0</span></a></li>
         <li class="nav-item"><a class="nav-link" data-status="Accepted" href="#">Accepted <span class="badge bg-light text-dark ms-1" id="count-Accepted">0</span></a></li>
-        <li class="nav-item"><a class="nav-link" data-status="Ready for Pickup" href="#">Ready for Pickup <span class="badge bg-light text-dark ms-1" id="count-Ready for Pickup">0</span></a></li>
-        <li class="nav-item"><a class="nav-link" data-status="Picked" href="#">Picked <span class="badge bg-light text-dark ms-1" id="count-Picked">0</span></a></li>
-        <li class="nav-item"><a class="nav-link" data-status="Flagged" href="#">Flagged <span class="badge bg-light text-dark ms-1" id="count-Flagged">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-status="Ready" href="#">Ready <span class="badge bg-light text-dark ms-1" id="count-Ready">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-status="In Progress" href="#">In Progress <span class="badge bg-light text-dark ms-1" id="count-In Progress">0</span></a></li>
     </ul>
 
     <!-- Orders table -->
@@ -50,8 +47,7 @@
                     <th>Order Id</th>
                     <th>Customer</th>
                     <th>Items</th>
-                    <th>Type</th>
-                    <th>Details</th>
+                    <th>Delivery Address</th>
                     <th>Payment</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -95,19 +91,36 @@
 
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
 
     <script>
+        "use strict";
         (function ($) {
-            const pollIntervalMs = 10000; // 10s
+            const pollIntervalMs = 15000; // 15s (increased because we have SignalR now)
             let pollTimer = null;
             let currentFilter = "All";
             const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+            // SignalR Setup
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/analyticsHub")
+                .build();
+
+            connection.on("ReceiveUpdate", function (message) {
+                console.log("Real-time order update: ", message);
+                window.notify.info(message);
+                fetchOrders(); // Refresh table on update
+            });
+
+            connection.start().catch(err => console.error(err.toString()));
 
             const statusClass = {
                 "New": "order-row-new",
                 "Accepted": "order-row-accepted",
                 "Ready for Pickup": "order-row-ready",
+                "Ready for Delivery": "order-row-ready",
                 "Picked": "order-row-picked",
+                "In Transit": "order-row-picked",
                 "Flagged": "order-row-flagged"
             };
 
@@ -115,32 +128,37 @@
                 let cls = "badge bg-secondary";
                 if (status === "New") cls = "badge bg-warning text-dark";
                 else if (status === "Accepted") cls = "badge bg-info text-dark";
-                else if (status === "Ready for Pickup") cls = "badge bg-success";
-                else if (status === "Picked") cls = "badge bg-primary";
+                else if (status === "Ready for Pickup" || status === "Ready for Delivery") cls = "badge bg-success";
+                else if (status === "Picked" || status === "In Transit") cls = "badge bg-primary";
                 else if (status === "Flagged") cls = "badge bg-danger";
                 return '<span class="' + cls + '">' + status + '</span>';
             }
 
             function buildActionButtons(order) {
                 let btns = [];
-                if (order.Status === "New") {
-                    btns.push('<button class="btn btn-sm glow btn-success action-btn" data-action="AcceptOrder" data-id="' + order.OrderId + '">Accept</button>');
-                } else if (order.Status === "Accepted") {
-                    btns.push('<button class="btn btn-sm glow btn-warning action-btn" data-action="MarkReady" data-id="' + order.OrderId + '">Mark Ready</button>');
-                } else if (order.Status === "Ready for Pickup" && order.OrderType === "Pickup") {
-                    btns.push('<button class="btn btn-sm glow btn-primary action-btn" data-action="MarkPicked" data-id="' + order.OrderId + '">Mark Picked</button>');
-                }
+                const status = order.status;
+                const id = order.orderId;
 
-                if (order.OrderType === "Delivery" && (order.Status === "Accepted" || order.Status === "Ready for Pickup")) {
-                    if (!order.DeliveryPersonId) {
-                        btns.push('<button class="btn btn-sm glow btn-info assign-delivery-btn" data-id="' + order.OrderId + '">Assign Delivery</button>');
+                if (status === "New" || status === "Placed") {
+                    btns.push('<button class="btn btn-sm glow btn-success action-btn me-1" data-action="AcceptOrder" data-id="' + id + '">Accept</button>');
+                } else if (status === "Accepted") {
+                    btns.push('<button class="btn btn-sm glow btn-warning action-btn me-1" data-action="MarkReady" data-id="' + id + '">Mark Ready</button>');
+                } else if (status === "Ready for Delivery") {
+                    if (!order.deliveryPersonId) {
+                        btns.push('<button class="btn btn-sm glow btn-info assign-delivery-btn me-1" data-id="' + id + '">Assign Delivery</button>');
                     } else {
-                        btns.push('<span class="badge bg-info d-block mb-1">Assigned</span>');
+                        btns.push('<button class="btn btn-sm glow btn-primary action-btn me-1" data-action="MarkInTransit" data-id="' + id + '">In Transit</button>');
                     }
+                } else if (status === "In Transit") {
+                    btns.push('<button class="btn btn-sm glow btn-success action-btn me-1" data-action="MarkDelivered" data-id="' + id + '">Delivered</button>');
+                } else if (status === "Ready for Pickup") {
+                    btns.push('<button class="btn btn-sm glow btn-primary action-btn me-1" data-action="MarkPicked" data-id="' + id + '">Mark Picked</button>');
                 }
 
-                const flagLabel = order.IsFlagged ? 'Unflag' : 'Flag';
-                btns.push('<button class="btn btn-sm btn-outline-danger action-btn ms-1" data-action="ToggleFlag" data-id="' + order.OrderId + '">' + flagLabel + '</button>');
+                if (order.deliveryPersonId && (status === "Ready for Delivery" || status === "In Transit")) {
+                    btns.push('<span class="badge bg-info d-block mt-1">Partner Assigned</span>');
+                }
+
                 return btns.join('');
             }
 
@@ -157,10 +175,14 @@
                 $('#noOrders').hide();
                 $('#ordersTable').show();
 
-                const counts = { "All": list.length, "New": 0, "Accepted": 0, "Ready for Pickup": 0, "Picked": 0, "Flagged": 0 };
+                const counts = { "All": list.length, "New": 0, "Accepted": 0, "Ready": 0, "In Progress": 0 };
                 list.forEach(o => {
-                    if (counts[o.Status] !== undefined) counts[o.Status]++;
-                    if (o.IsFlagged) counts["Flagged"]++;
+                    let tabStatus = o.status;
+                    if (o.status === "New" || o.status === "Placed") tabStatus = "New";
+                    else if (o.status === "Ready for Pickup" || o.status === "Ready for Delivery") tabStatus = "Ready";
+                    else if (o.status === "Picked" || o.status === "In Transit") tabStatus = "In Progress";
+
+                    if (counts.hasOwnProperty(tabStatus)) counts[tabStatus]++;
                 });
 
                 for (const k in counts) {
@@ -169,29 +191,29 @@
                 }
 
                 list.forEach(order => {
-                    const cls = statusClass[order.Status] || '';
-                    if (currentFilter !== "All" && currentFilter !== order.Status && !(currentFilter === "Flagged" && order.IsFlagged)) {
+                    let tabStatus = order.status;
+                    if (order.status === "New" || order.status === "Placed") tabStatus = "New";
+                    else if (order.status === "Ready for Pickup" || order.status === "Ready for Delivery") tabStatus = "Ready";
+                    else if (order.status === "Picked" || order.status === "In Transit") tabStatus = "In Progress";
+
+                    const cls = statusClass[order.status] || '';
+                    if (currentFilter !== "All" && currentFilter !== tabStatus) {
                         return;
                     }
 
-                    const flaggedIcon = order.IsFlagged ? '<span class="order-warning ms-2" title="Flagged">⚠</span>' : '';
-                    const orderLink = '<a href="/Admin/OrderDetails?orderId=' + order.OrderId + '">#' + order.OrderId + '</a>';
+                    const orderLink = '<a href="/Admin/OrderDetails?orderId=' + order.orderId + '" class="fw-bold">#' + order.orderId + '</a>';
 
-                    const $tr = $('<tr>').addClass(cls).attr('data-id', order.OrderId);
-                    $tr.append($('<td>').html(orderLink + (order.IsFlagged ? ' <span class="text-danger ms-1">⚑</span>' : '')));
-                    $tr.append($('<td>').text((order.CustomerName || '') + ' • ' + (order.CustomerPhone || '')));
-                    $tr.append($('<td>').text(order.TotalItems));
+                    const $tr = $('<tr>').addClass(cls).attr('data-id', order.orderId);
+                    $tr.append($('<td>').html(orderLink));
+                    $tr.append($('<td>').html('<strong>' + (order.customerName || 'Guest') + '</strong><br/><small class="text-muted">' + (order.customerPhone || 'No Phone') + '</small>'));
+                    $tr.append($('<td>').text(order.totalItems + ' items'));
                     
-                    // Type & Details
-                    const typeBadge = order.OrderType === 'Delivery' ? '<span class="badge bg-purple">Delivery</span>' : '<span class="badge bg-secondary">Pickup</span>';
-                    $tr.append($('<td>').html(typeBadge));
+                    const details = (order.deliveryAddress || 'No Address');
+                    const deliveryInfo = `<br/><small class="text-info">${order.deliveryStatus || 'Unassigned'}</small>`;
+                    $tr.append($('<td>').html('<small>' + details + '</small>' + deliveryInfo));
                     
-                    const details = order.OrderType === 'Delivery' ? (order.DeliveryAddress || 'No Address') : (order.PickupSlot || 'No Slot');
-                    const deliveryInfo = order.OrderType === 'Delivery' ? `<br/><small class="text-info">${order.DeliveryStatus || 'Unassigned'}</small>` : '';
-                    $tr.append($('<td>').html(details + deliveryInfo));
-                    
-                    $tr.append($('<td>').text(order.PaymentStatus || ''));
-                    $tr.append($('<td>').html(formatBadge(order.Status) + flaggedIcon));
+                    $tr.append($('<td>').text(order.paymentStatus || 'Pending'));
+                    $tr.append($('<td>').html(formatBadge(order.status)));
                     $tr.append($('<td>').html(buildActionButtons(order)));
 
                     $tbody.append($tr);
@@ -200,12 +222,24 @@
             }
 
             function fetchOrders() {
+                $('#liveIndicator').removeClass('bg-danger').addClass('bg-success').text('Live');
                 $.ajax({
                     url: '/Admin/GetActiveOrders',
                     method: 'GET',
                     dataType: 'json',
-                    success: function (data) { renderOrders(data); },
-                    error: function () { $('#liveIndicator').removeClass('bg-success').addClass('bg-danger').text('Disconnected'); }
+                    success: function (data) { 
+                        $('#noOrders').hide();
+                        $('#ordersTable').show();
+                        renderOrders(data); 
+                    },
+                    error: function (xhr) { 
+                        console.error("Fetch orders failed:", xhr);
+                        $('#liveIndicator').removeClass('bg-success').addClass('bg-danger').text('Disconnected');
+                        if ($('#ordersTable tbody tr').length === 0) {
+                            $('#ordersTable').hide();
+                            $('#noOrders').html('Error loading orders. <button class="btn btn-sm btn-outline-primary ms-2" onclick="location.reload()">Retry</button>').show();
+                        }
+                    }
                 });
             }
 
@@ -214,23 +248,25 @@
                 const $btn = $(this);
                 const action = $btn.data('action');
                 const id = $btn.data('id');
+                const originalHtml = $btn.html();
 
-                $btn.prop('disabled', true);
+                $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span>');
                 $.post({
                     url: '/Admin/' + action,
                     data: { orderId: id, __RequestVerificationToken: token },
                     dataType: 'json',
                     success: function (res) {
                         if (res.success) {
+                            window.notify.success(res.message || 'Action completed');
                             fetchOrders();
                         } else {
-                            alert(res.message || 'Action failed');
-                            $btn.prop('disabled', false);
+                            window.notify.error(res.message || 'Action failed');
+                            $btn.prop('disabled', false).html(originalHtml);
                         }
                     },
                     error: function () {
-                        alert('Error processing action');
-                        $btn.prop('disabled', false);
+                        window.notify.error('Network error. Please try again.');
+                        $btn.prop('disabled', false).html(originalHtml);
                     }
                 });
             });

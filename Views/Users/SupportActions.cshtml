@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Support & Health Actions";
     var userId = ViewBag.UserId ?? Context.Request.Query["userId"].ToString();
 }
@@ -11,10 +11,6 @@
         <div>
             <h3 class="page-title">Support & Health Actions</h3>
             <small class="text-muted">Audit-style timeline of admin notes and interventions</small>
-        </div>
-
-        <div>
-            <a asp-controller="Users" asp-action="Index" class="btn btn-sm btn-outline-secondary">Back to users</a>
         </div>
     </div>
 

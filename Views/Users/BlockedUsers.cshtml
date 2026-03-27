@@ -1,45 +1,110 @@
-﻿@model List<NUTRIBITE.Models.UserSignup>
+@model List<NUTRIBITE.Models.UserSignup>
 
 @{
     ViewData["Title"] = "Blocked Users";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/users.css" />
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-danger"><i class="bi bi-person-x-fill me-2"></i>Blocked Users</h2>
+            <p class="text-muted small mb-0">Review and manage restricted customer accounts.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Back to Directory
+        </a>
+    </div>
 
-<h2 class="page-title">Blocked Users</h2>
-
-<div class="table-wrapper">
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Blocked On</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var u in Model)
-                {
-                    <tr>
-                        <td>#@u.Id</td>
-                        <td>@u.Name</td>
-                        <td>@u.Email</td>
-                        <td>@(string.IsNullOrEmpty(u.Phone) ? "-" : u.Phone)</td>
-                        <td>@(u.CreatedAt.HasValue ? u.CreatedAt.Value.ToString("dd MMM yyyy") : "-")</td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="5" class="no-records">No blocked users</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h6 class="mb-0 fw-bold">Restricted Accounts <span class="badge bg-danger ms-2">@Model.Count</span></h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-muted small text-uppercase">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>User Details</th>
+                            <th>Contact</th>
+                            <th>Restricted Since</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var u in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 text-muted small">#@u.Id</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-avatar-placeholder bg-soft-danger text-danger me-3">
+                                                @u.Name.Substring(0, 1).ToUpper()
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold text-dark">@u.Name</div>
+                                                <div class="text-muted extra-small">Account ID: @u.Id</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small">
+                                            <div class="text-dark">@u.Email</div>
+                                            <div class="text-muted">@(string.IsNullOrEmpty(u.Phone) ? "No Phone" : u.Phone)</div>
+                                        </div>
+                                    </td>
+                                    <td class="small text-muted">
+                                        @(u.CreatedAt.HasValue ? u.CreatedAt.Value.ToString("dd MMM yyyy") : "-")
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="UnblockUser" asp-route-id="@u.Id" class="btn btn-success" title="Restore Account">
+                                                <i class="bi bi-unlock-fill me-1"></i> Unblock
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@u.Id" class="btn btn-outline-danger" title="Permanently Delete"
+                                               onclick="return confirm('Permanently delete user #@u.Id?');">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="bi bi-shield-check display-4 d-block mb-3 text-success"></i>
+                                        <p class="mb-1 fw-bold text-dark">Clean Record</p>
+                                        <p class="mb-0 small">There are currently no blocked users in the system.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .user-avatar-placeholder {
+        width: 36px;
+        height: 36px;
+        background: #f3f4f6;
+        color: #6b7280;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    .bg-soft-danger { background-color: rgba(239, 68, 68, 0.1); }
+    .extra-small { font-size: 0.75rem; }
+</style>

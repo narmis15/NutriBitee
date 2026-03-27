@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using NUTRIBITE.Models;
 using NUTRIBITE.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace NUTRIBITE.Controllers
 {
@@ -28,46 +30,38 @@ namespace NUTRIBITE.Controllers
             return View();
         }
 
-        // ================= GET PROFILE DATA =================
-        [HttpGet]
-        public IActionResult GetUserProfileData()
+        // ================= UPLOAD PROFILE PICTURE =================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadProfilePicture(IFormFile profilePicture)
         {
             var uid = ResolveUserId();
-            if (!uid.HasValue)
-                return Json(new { authenticated = false });
+            if (!uid.HasValue) 
+                return Json(new { success = false, message = "User not authenticated." });
 
-            var user = _context.UserSignups
-                .Where(u => u.Id == uid.Value)
-                .Select(u => new
-                {
-                    u.Id,
-                    u.Name,
-                    u.Email,
-                    u.Phone
-                })
-                .FirstOrDefault();
+            if (profilePicture == null || profilePicture.Length == 0)
+                return Json(new { success = false, message = "No file uploaded." });
 
-            var survey = _context.HealthSurveys
-                .Where(h => h.UserId == uid.Value)
-                .OrderByDescending(h => h.CreatedAt)
-                .Select(h => new
-                {
-                    h.Id,
-                    h.Age,
-                    h.Gender,
-                    h.HeightCm,
-                    h.WeightKg,
-                    h.ActivityLevel,
-                    h.Goal,
-                    h.ChronicDiseases,
-                    h.DietaryPreference,
-                    BMI = h.Bmi,
-                    h.RecommendedCalories,
-                    h.RecommendedProtein
-                })
-                .FirstOrDefault();
+            var user = await _context.UserSignups.FindAsync(uid.Value);
+            if (user == null)
+                return Json(new { success = false, message = "User not found." });
 
-            return Json(new { authenticated = true, user, survey });
+            var uploadsFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "ProfilePictures");
+            if (!Directory.Exists(uploadsFolderPath))
+                Directory.CreateDirectory(uploadsFolderPath);
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetExtension(profilePicture.FileName);
+            var filePath = Path.Combine(uploadsFolderPath, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await profilePicture.CopyToAsync(stream);
+            }
+
+            user.ProfilePictureUrl = "/ProfilePictures/" + uniqueFileName;
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, filePath = user.ProfilePictureUrl });
         }
 
         // ================= EDIT PROFILE =================

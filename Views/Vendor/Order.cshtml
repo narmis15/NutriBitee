@@ -76,19 +76,37 @@
                             </td>
                             <td>₹@order.Amount</td>
                             <td>
-                                <span class="badge @(order.Status == "Placed" ? "bg-warning" : (order.Status == "Accepted" ? "bg-info" : (order.Status == "Ready for Pickup" ? "bg-primary" : "bg-success")))">
-                                    @order.Status
+                                @{
+                                    var badgeCls = "bg-secondary";
+                                    var displayStatus = order.Status;
+                                    if (order.Status == "Placed" || order.Status == "New") badgeCls = "bg-warning text-dark";
+                                    else if (order.Status == "Accepted") badgeCls = "bg-info text-dark";
+                                    else if (order.Status == "Ready for Pickup" || order.Status == "Ready for Delivery") badgeCls = "bg-primary";
+                                    else if (order.Status == "On the Way" || order.Status == "In Transit") badgeCls = "bg-info text-dark";
+                                    else if (order.Status == "Delivered" || order.Status == "Completed") badgeCls = "bg-success";
+                                }
+                                <span class="badge @badgeCls">
+                                    @displayStatus
                                 </span>
                             </td>
                             <td>@(order.Date.HasValue ? order.Date.Value.ToString("dd MMM, hh:mm tt") : "-")</td>
                             <td class="text-end">
-                                @if (order.Status == "Placed")
+                                @if (order.Status == "Placed" || order.Status == "New")
                                 {
                                     <button class="btn btn-sm btn-success update-status" data-id="@order.OrderId" data-status="Accepted">Accept</button>
                                 }
                                 else if (order.Status == "Accepted")
                                 {
-                                    <button class="btn btn-sm btn-primary update-status" data-id="@order.OrderId" data-status="Ready for Pickup">Ready</button>
+                                    var nextStatus = order.OrderType == "Delivery" ? "Ready for Delivery" : "Ready for Pickup";
+                                    <button class="btn btn-sm btn-primary update-status" data-id="@order.OrderId" data-status="@nextStatus">Ready</button>
+                                }
+                                else if (order.Status == "Ready for Delivery" || order.Status == "Ready for Pickup")
+                                {
+                                    <button class="btn btn-sm btn-info update-status" data-id="@order.OrderId" data-status="On the Way">Dispatch</button>
+                                }
+                                else if (order.Status == "On the Way")
+                                {
+                                    <button class="btn btn-sm btn-success update-status" data-id="@order.OrderId" data-status="Delivered">Deliver</button>
                                 }
                             </td>
                         </tr>

@@ -172,7 +172,7 @@
             btn.prop('disabled', true).text('Updating...');
 
             $.ajax({
-                url: '/Delivery/UpdateStatus',
+                url: '/Admin/UpdateDeliveryStatus',
                 type: 'POST',
                 data: { 
                     orderId: id, 

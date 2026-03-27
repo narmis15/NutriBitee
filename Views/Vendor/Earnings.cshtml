@@ -1,0 +1,160 @@
+@{
+    ViewData["Title"] = "Earnings & Payouts";
+    Layout = "~/Views/Shared/_VendorLayout.cshtml";
+}
+
+<div class="earnings-container">
+    <div class="row g-4 mb-4">
+        <!-- KPI Cards -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                <div class="text-muted small text-uppercase fw-bold mb-2">Total Earnings</div>
+                <h2 class="text-primary mb-0">₹ <span id="totalEarnings">0.00</span></h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                <div class="text-muted small text-uppercase fw-bold mb-2">Commission Deducted</div>
+                <h2 class="text-danger mb-0">₹ <span id="totalCommission">0.00</span></h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                <div class="text-muted small text-uppercase fw-bold mb-2">Pending Payments</div>
+                <h2 class="text-warning mb-0">₹ <span id="pendingPayments">0.00</span></h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payouts Table -->
+    <div class="card border-0 shadow-sm p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0">Payment History</h4>
+            <div class="d-flex gap-2">
+                <select id="statusFilter" class="form-select form-select-sm" style="width: 150px;">
+                    <option value="">All Payouts</option>
+                    <option value="Pending">Pending</option>
+                    <option value="PaidToVendor">Paid</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Details</th>
+                        <th>Payout Period</th>
+                        <th>Total Sales</th>
+                        <th>Commission (10%)</th>
+                        <th>Your Earnings</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody id="payoutsBody">
+                    <tr>
+                        <td colspan="7" class="text-center py-4">Loading payments...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div class="text-muted small">Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> payouts</div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm mb-0" id="pagination">
+                    <!-- Pagination injected here -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let currentPage = 1;
+        const pageSize = 20;
+
+        async function loadEarnings() {
+            try {
+                const response = await fetch('/api/vendor/earnings');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('totalEarnings').textContent = data.totalEarnings.toFixed(2);
+                    document.getElementById('totalCommission').textContent = data.totalCommissionDeducted.toFixed(2);
+                    document.getElementById('pendingPayments').textContent = data.pendingPayments.toFixed(2);
+                }
+            } catch (error) {
+                console.error('Error loading earnings:', error);
+            }
+        }
+
+        async function loadPayouts(page = 1) {
+            const status = document.getElementById('statusFilter').value;
+            try {
+                const response = await fetch(`/api/vendor/payouts?page=${page}&pageSize=${pageSize}&status=${status}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    renderPayouts(data.items);
+                    renderPagination(data.totalItems, data.page, data.pageSize);
+                    document.getElementById('showingCount').textContent = data.items.length;
+                    document.getElementById('totalCount').textContent = data.totalItems;
+                    currentPage = data.page;
+                }
+            } catch (error) {
+                console.error('Error loading payouts:', error);
+            }
+        }
+
+        function renderPayouts(payouts) {
+            const body = document.getElementById('payoutsBody');
+            if (payouts.length === 0) {
+                body.innerHTML = '<tr><td colspan="7" class="text-center py-4">No payouts found.</td></tr>';
+                return;
+            }
+
+            body.innerHTML = payouts.map(p => `
+                <tr>
+                    <td>
+                        ${p.orderId ? `<span class="badge bg-light text-dark border">Order #${p.orderId}</span>` : `<span class="badge bg-primary">Monthly Aggregate</span>`}
+                    </td>
+                    <td>
+                        <div class="fw-bold">${p.payoutMonth || 'N/A'}</div>
+                        <div class="text-muted small">${p.orderDate ? new Date(p.orderDate).toLocaleDateString() : ''}</div>
+                    </td>
+                    <td>₹${p.totalSales.toFixed(2)}</td>
+                    <td class="text-danger">- ₹${p.commissionDeducted.toFixed(2)}</td>
+                    <td class="fw-bold text-success">₹${p.amount.toFixed(2)}</td>
+                    <td>
+                        <span class="badge ${p.status === 'Pending' ? 'bg-warning-subtle text-warning' : 'bg-success-subtle text-success'}">
+                            ${p.status === 'PaidToVendor' ? 'Paid' : p.status}
+                        </span>
+                    </td>
+                    <td class="text-muted small">${new Date(p.updatedAt).toLocaleString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderPagination(totalItems, page, size) {
+            const totalPages = Math.ceil(totalItems / size);
+            const pagination = document.getElementById('pagination');
+            
+            let html = '';
+            for (let i = 1; i <= totalPages; i++) {
+                html += `
+                    <li class="page-item ${i === page ? 'active' : ''}">
+                        <button class="page-link" onclick="loadPayouts(${i})">${i}</button>
+                    </li>
+                `;
+            }
+            pagination.innerHTML = html;
+        }
+
+        document.getElementById('statusFilter').addEventListener('change', () => loadPayouts(1));
+
+        // Initial Load
+        loadEarnings();
+        loadPayouts();
+    </script>
+}

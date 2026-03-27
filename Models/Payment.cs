@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +21,8 @@ public partial class Payment
     public string? RefundMethod { get; set; }
 
     public string? RefundStatus { get; set; }
+
+    public string? TransactionId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

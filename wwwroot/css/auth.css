@@ -116,6 +116,67 @@ body {
     border-radius: 12px;
 }
 
+/* Social Login */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: #888;
+    font-size: 0.85rem;
+}
+
+    .auth-divider::before,
+    .auth-divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .auth-divider:not(:empty)::before {
+        margin-right: 15px;
+    }
+
+    .auth-divider:not(:empty)::after {
+        margin-left: 15px;
+    }
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    color: #495057;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    .social-btn:hover {
+        background: #f8f9fa;
+        border-color: #adb5bd;
+        color: #212529;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .social-btn img {
+        width: 20px;
+        height: 20px;
+    }
+
+/* Register wrapper fix */
+.register-wrapper {
+    min-height: 90vh;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .login-container,

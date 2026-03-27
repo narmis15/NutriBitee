@@ -16,6 +16,10 @@
                             && string.Equals(currentAction, "Index", System.StringComparison.OrdinalIgnoreCase))
                           && !(string.Equals(currentController, "Public", System.StringComparison.OrdinalIgnoreCase)
                             && string.Equals(currentAction, "Index", System.StringComparison.OrdinalIgnoreCase));
+
+    bool isFullWidthPage = isLanding 
+                           || (string.Equals(currentController, "Home", System.StringComparison.OrdinalIgnoreCase) && string.Equals(currentAction, "Index", System.StringComparison.OrdinalIgnoreCase))
+                           || string.Equals(currentController, "Bulk", System.StringComparison.OrdinalIgnoreCase);
 }
 
 <!DOCTYPE html>
@@ -35,28 +39,33 @@
 
         body {
             font-family: 'Poppins',sans-serif;
-            background: linear-gradient(135deg,#d9f3e8,#c3eadb,#b1e3cf);
+            background: #fdfdfd;
             margin: 0;
+            color: #1b4332;
         }
 
-        .page-wrapper {
+        /* Full-width layout main container */
+        .main-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Inner content container to keep things centered */
+        .content-container {
             width: 92%;
-            max-width: 1300px;
-            margin: 50px auto;
-            background: #f6fff9;
-            border-radius: 30px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
-            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
-
 
         .public-navbar {
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
-            padding: 16px 40px;
-            background: white;
+            padding: 16px 4%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
@@ -216,46 +225,47 @@
             }
 
             .search-item img {
-                width: 40px;
-                height: 40px;
-                border-radius: 8px;
-                object-fit: cover;
-            }
-
-        main {
-            padding: 40px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
         }
 
-        /* Global Back Button - NutriBite style */
+        main {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        /* Global Back Button - NutriBite style (Small Circle Arrow Design) */
         .global-back-btn {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 14px;
-            border-radius: 10px;
-            background: #2d6a4f;
-            color: #fff;
-            border: none;
-            font-weight: 600;
-            box-shadow: 0 8px 20px rgba(45,106,79,0.18);
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             cursor: pointer;
             text-decoration: none;
-            transition: transform .08s ease, box-shadow .12s ease;
-            margin-bottom: 18px;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
         }
-        .global-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(45,106,79,0.22); }
-        .global-back-btn .icon {
-            display:inline-flex;
-            width:18px;
-            height:18px;
-            align-items:center;
-            justify-content:center;
-            font-size:14px;
+        .global-back-btn:hover {
+            background: #f8f9fa;
+            color: #212529;
+            border-color: #adb5bd;
+            transform: scale(1.05);
         }
         /* keep button left-aligned and under navbar */
         .back-wrapper {
             display:flex;
             justify-content:flex-start;
+            padding-top: 20px;
         }
 
         .cart-icon {
@@ -373,7 +383,7 @@
 
 <body>
 
-    <div class="page-wrapper">
+    <div class="main-container">
 
         <!-- NAVBAR -->
         <div class="public-navbar">
@@ -399,13 +409,14 @@
             </div>
 
             <div class="nav-center">
-                <a asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
-                <a asp-controller="Home" asp-action="About" class="nav-link">About</a>
+                <a asp-controller="Home" asp-action="Index" class="nav-link @(currentController == "Home" && currentAction == "Index" ? "active" : "")">Home</a>
+                <a asp-controller="Home" asp-action="About" class="nav-link @(currentController == "Home" && currentAction == "About" ? "active" : "")">About</a>
+                <a asp-controller="Nutritionists" asp-action="Index" class="nav-link @(currentController == "Nutritionists" ? "active" : "")">Experts</a>
 
                 @* Bulk nav link: appear on Home and Bulk pages, not on the public landing page. Uses Tag Helpers. *@
                 @if (showBulkNav)
                 {
-                    <a asp-controller="Bulk" asp-action="Index" class="nav-link" id="navBulk">Bulk</a>
+                    <a asp-controller="Bulk" asp-action="Index" class="nav-link @(currentController == "Bulk" ? "active" : "")" id="navBulk">Bulk</a>
                 }
             </div>
 
@@ -489,14 +500,13 @@
         @* Include the Location Selector modal partial *@
         @await Html.PartialAsync("~/Views/Shared/_LocationSelector.cshtml")
 
-        <main>
+        <main class="@(isFullWidthPage ? "" : "content-container")">
             @* Back button (shared) - rendered on most internal pages (not Home or Landing) *@
             @if (showBackButton)
             {
-                <div class="back-wrapper" aria-hidden="false">
+                <div class="back-wrapper content-container" aria-hidden="false">
                     <button type="button" class="global-back-btn" id="globalBackBtn" title="Go back">
-                        <span class="icon">←</span>
-                        <span>Back</span>
+                        <i class="bi bi-arrow-left"></i>
                     </button>
                 </div>
             }

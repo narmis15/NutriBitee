@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "NutriBite — Home";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
@@ -60,77 +60,41 @@
         </div>
 
         <div class="meals-grid">
+            @if (ViewBag.Categories != null && (ViewBag.Categories as IEnumerable<NUTRIBITE.Models.AddCategory>).Any())
+            {
+                foreach (var cat in (ViewBag.Categories as IEnumerable<NUTRIBITE.Models.AddCategory>))
+                {
+                    <a class="meal-card" href="/Menu/Category?name=@Uri.EscapeDataString(cat.MealCategory ?? "")">
+                        <div class="meal-img-wrap">
+                            <img src="~/images/Meals/@(cat.MealPic ?? "default.jpg")" onerror="this.src='/images/Meals/Standard_Thali.jpeg';" />
+                        </div>
+                        <div class="meal-label">@cat.MealCategory</div>
+                    </a>
+                }
+            }
+            else
+            {
+                <a class="meal-card" href="/Menu/Category?name=Standard Thali">
+                    <div class="meal-img-wrap">
+                        <img src="~/images/meals/Standard_Thali.jpeg" />
+                    </div>
+                    <div class="meal-label">Standard Thali</div>
+                </a>
 
-            <a class="meal-card" href="/Menu/Category?name=Standard Thali">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/Standard_Thali.jpeg" />
-                </div>
-                <div class="meal-label">Standard Thali</div>
-            </a>
+                <a class="meal-card" href="/Menu/Category?name=Special Thali">
+                    <div class="meal-img-wrap">
+                        <img src="~/images/meals/Special_Thali.jpeg" />
+                    </div>
+                    <div class="meal-label">Special Thali</div>
+                </a>
 
-            <a class="meal-card" href="/Menu/Category?name=Special Thali">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/Special_Thali.jpeg" />
-                </div>
-                <div class="meal-label">Special Thali</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Deluxe Thali">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/Deluxe_Thali.jpeg" />
-                </div>
-                <div class="meal-label">Deluxe Thali</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Classical Thali">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/Classical_Thali.jpeg" />
-                </div>
-                <div class="meal-label">Classical Thali</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Comfort Thali">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/Comfort_Thali.jpeg" />
-                </div>
-                <div class="meal-label">Comfort Thali</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Jain Thali">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/Jain_Thali.jpeg" />
-                </div>
-                <div class="meal-label">Jain Thali</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Rice Combo">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/Rice_Combo.jpeg" />
-                </div>
-                <div class="meal-label">Rice Combo</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Low Calorie Meal">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/low-calorie.jpg" />
-                </div>
-                <div class="meal-label">Low Calorie</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Protein Meal">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/protein.jpg" />
-                </div>
-                <div class="meal-label">Protein Meal</div>
-            </a>
-
-            <a class="meal-card" href="/Menu/Category?name=Salads">
-                <div class="meal-img-wrap">
-                    <img src="~/images/meals/salads.jpeg" />
-                </div>
-                <div class="meal-label">Salad Bowl</div>
-            </a>
-
+                <a class="meal-card" href="/Menu/Category?name=Deluxe Thali">
+                    <div class="meal-img-wrap">
+                        <img src="~/images/meals/Deluxe_Thali.jpeg" />
+                    </div>
+                    <div class="meal-label">Deluxe Thali</div>
+                </a>
+            }
         </div>
     </div>
 </section>

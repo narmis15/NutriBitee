@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Sign Up - NutriBite";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
@@ -26,6 +26,11 @@
 
             <h4 class="brand">NutriBite</h4>
             <h5 class="mb-4">Create Account</h5>
+
+            @if (TempData["LoginError"] != null)
+            {
+                <div class="alert alert-danger small">@TempData["LoginError"]</div>
+            }
 
             <div id="signupError" class="alert alert-danger small" style="display:none;"></div>
             <div id="signupSuccess" class="alert alert-success small" style="display:none;"></div>
@@ -66,6 +71,18 @@
                 <div class="mt-3 small text-center">
                     Already have an account?
                     <a href="/login" class="link-success">Login here</a>
+                </div>
+
+                <div class="auth-divider">or join with</div>
+
+                <div class="social-login">
+                    <a href="/Auth/GoogleLogin" class="social-btn" id="googleSignupBtn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+                        <span>Sign up with Google</span>
+                    </a>
+                    <div id="demoHintReg" class="mt-2 text-center small text-muted" style="display:none;">
+                        <i class="bi bi-info-circle"></i> <span id="demoMsgReg"></span>
+                    </div>
                 </div>
 
             </form>
@@ -124,52 +141,39 @@
                 // read antiforgery token value from rendered hidden input
                 var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
 
-                // send as form-encoded data and also set header used by antiforgery validation
-                var postData = {
-                    name: name,
-                    email: email,
-                    password: password,
-                    __RequestVerificationToken: token
-                };
-
-                $.ajax({
-                    url: '/Auth/Register',
-                    method: 'POST',
-                    data: postData,
-                    // ensure default contentType (application/x-www-form-urlencoded) so MVC model binding works
-                    headers: {
-                        // set the antiforgery header as some servers expect it for AJAX posts
-                        'RequestVerificationToken': token
-                    },
-                    success: function (res) {
+                $.post('/Auth/Register', { name: name, email: email, password: password, __RequestVerificationToken: token })
+                    .done(function (res) {
                         if (res && res.success) {
-                            // If server returned a redirect URL for non-AJAX flow, handle it
-                            if (res.redirect) {
-                                window.location.href = res.redirect;
-                                return;
-                            }
-                            // otherwise navigate to login page (legacy behavior)
-                            window.location.href = '/login';
+                            $('#signupSuccess').text('Account created successfully! Redirecting...').show();
+                            setTimeout(function () {
+                                window.location.href = res.redirect || '/HealthSurvey';
+                            }, 1500);
                         } else {
                             $('#signupError').text(res && res.message ? res.message : 'Registration failed.').show();
                         }
-                    },
-                    error: function (xhr, status, err) {
-                        // Try to show meaningful message from server response JSON
-                        var msg = 'Unable to reach server. Please try again.';
-                        try {
-                            if (xhr && xhr.responseJSON && xhr.responseJSON.message) {
-                                msg = xhr.responseJSON.message;
-                            } else if (xhr && xhr.responseText) {
-                                // sometimes antiforgery returns plain 400 text; keep generic but log to console
-                                console.error('Register error response:', xhr.responseText);
-                            }
-                        } catch (ex) {
-                            console.error(ex);
+                    }).fail(function () {
+                        $('#signupError').text('Unable to reach server.').show();
+                    });
+            });
+
+            // ⭐ DEMO USER FORM POPULATION (SIGNUP)
+            $('#googleSignupBtn').on('click', function (e) {
+                const url = $(this).attr('href');
+                if (url.includes('GoogleLogin')) {
+                    $.get('/Auth/GetDemoProfile').done(function(res) {
+                        if (res.success) {
+                            // Populate form fields
+                            $('#name').val(res.name);
+                            $('#email').val(res.email);
+                            
+                            // Highlight changes
+                            $('#name, #email').addClass('is-valid');
+                            $('#demoMsgReg').text(`Detected actual user: ${res.name}. Form fields populated.`);
+                            $('#demoHintReg').fadeIn();
                         }
-                        $('#signupError').text(msg).show();
-                    }
-                });
+                    });
+                    e.preventDefault();
+                }
             });
 
         })();

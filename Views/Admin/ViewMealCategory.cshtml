@@ -1,93 +1,117 @@
-﻿@using NUTRIBITE.Models
+@using NUTRIBITE.Models
 @model IEnumerable<AddCategory>
 
 @{
-    ViewData["Title"] = "View Meal Categories";
+    ViewData["Title"] = "Meal Categories";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h3 class="page-title">View Meal Categories</h3>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Meal Categories</h2>
+            <p class="text-muted small mb-0">Organize and manage different types of meal offerings.</p>
+        </div>
+        <a asp-action="AddFoodCategory" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Add New Category
+        </a>
+    </div>
 
-<div class="table-wrapper">
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>
-                    <a asp-action="ViewMealCategory"
-                       asp-route-sortOrder="@ViewBag.IdSort"
-                       class="sortable">
-                        Id ⇅
-                    </a>
-                </th>
-
-                <th>
-                    <a asp-action="ViewMealCategory"
-                       asp-route-sortOrder="@ViewBag.MealSort"
-                       class="sortable">
-                        Meal Category ⇅
-                    </a>
-                </th>
-
-                <th>Meal Image</th>
-
-                <th style="text-align:center;">Action</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
-                {
-                    <tr>
-                        <!-- ID -->
-                        <td>@item.Cid</td>
-
-                        <!-- Meal Category -->
-                        <td>@item.MealCategory</td>
-
-                        <!-- Meal Image -->
-                        <td class="image-cell">
-                            @if (!string.IsNullOrEmpty(item.MealPic))
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-muted small text-uppercase">
+                        <tr>
+                            <th class="ps-4" style="width: 100px;">
+                                <a asp-action="ViewMealCategory" asp-route-sortOrder="@ViewBag.IdSort" class="text-decoration-none text-muted">
+                                    ID <i class="bi bi-arrow-down-up ms-1"></i>
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="ViewMealCategory" asp-route-sortOrder="@ViewBag.MealSort" class="text-decoration-none text-muted">
+                                    Meal Category <i class="bi bi-arrow-down-up ms-1"></i>
+                                </a>
+                            </th>
+                            <th>Preview Image</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
                             {
-                                <img src="~/images/Meals/@item.MealPic"
-                                     alt="@item.MealCategory"
-                                     class="meal-thumb"
-                                     onerror="this.onerror=null;this.src='/images/Meals/default.jpg';" />
+                                <tr>
+                                    <td class="ps-4 fw-medium text-muted">#@item.Cid</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="meal-icon-box me-3">
+                                                <i class="bi bi-cup-hot-fill text-success"></i>
+                                            </div>
+                                            <span class="fw-semibold">@item.MealCategory</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="meal-preview-wrapper">
+                                            @if (!string.IsNullOrEmpty(item.MealPic))
+                                            {
+                                                <img src="~/images/Meals/@item.MealPic" alt="@item.MealCategory" class="rounded shadow-sm" style="width: 60px; height: 40px; object-fit: cover;" onerror="this.src='/images/Meals/default.jpg';" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/Meals/default.jpg" alt="No Image" class="rounded shadow-sm" style="width: 60px; height: 40px; object-fit: cover;" />
+                                            }
+                                        </div>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="EditMealCategory" asp-route-id="@item.Cid" class="btn btn-outline-primary" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="DeleteMealCategory" asp-route-id="@item.Cid" class="btn btn-outline-danger" title="Delete" onclick="return confirm('Are you sure?');">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <img src="~/images/Meals/default.jpg"
-                                     alt="No Image"
-                                     class="meal-thumb" />
-                            }
-                        </td>
-
-                        <!-- Actions -->
-                        <td class="action-cell">
-                            <a asp-action="EditMealCategory"
-                               asp-route-id="@item.Cid"
-                               class="btn-action btn-approve">
-                                Edit
-                            </a>
-
-                            <a asp-action="DeleteMealCategory"
-                               asp-route-id="@item.Cid"
-                               class="btn-action btn-reject"
-                               onclick="return confirm('Are you sure you want to delete this meal category?');">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="4" class="no-records">
-                        No records found
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="bi bi-egg-fried display-4 d-block mb-3"></i>
+                                        <p class="mb-0">No meal categories found.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .meal-icon-box {
+        width: 32px;
+        height: 32px;
+        background: rgba(var(--bs-success-rgb), 0.1);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(0,0,0,0.02);
+    }
+    .meal-preview-wrapper img {
+        transition: transform 0.2s;
+    }
+    .meal-preview-wrapper img:hover {
+        transform: scale(1.1);
+    }
+</style>

@@ -9,6 +9,7 @@ namespace NUTRIBITE.Models
         public DateTime Date { get; set; }
         public string FoodName { get; set; }
         public int Calories { get; set; }
+        public string MealType { get; set; } = "Other";
         public decimal? Protein { get; set; }
         public decimal? Carbs { get; set; }
         public decimal? Fats { get; set; }

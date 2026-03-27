@@ -1,20 +1,26 @@
-﻿body {
+body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #e6f7f0, #c8f1df, #a8e6cf);
+    background: #fff;
     overflow-x: hidden;
+    margin: 0;
 }
 
 /* =========================
    HERO SECTION
 ========================= */
 .hero-section {
-    padding: 80px 60px;
+    padding: 60px 0 100px 0;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    width: 100%;
 }
 
 .hero-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .hero-left h1 {
@@ -112,6 +118,10 @@
     gap: 40px;
     margin-top: 80px;
     flex-wrap: wrap;
+    width: 92%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .feature-card {
@@ -220,19 +230,23 @@
 ========================= */
 
 .soft-section {
-    padding: 90px 60px;
+    padding: 100px 0;
 }
 
 .section-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: #2d6a4f;
+    margin-bottom: 10px;
 }
 
 .meals-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 35px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .meal-card {
@@ -477,13 +491,13 @@ h6.mt-3,
 h6.mt-4 {
     border-left: 4px solid #27ae60;
     padding-left: 10px;
-    /* ===============================
+}
+
+/* ===============================
    PROFILE DROPDOWN UI
 ================================ */
 
-    .dropdown-menu
-
-{
+.dropdown-menu {
     border-radius: 14px;
     border: none;
     padding: 10px 0;

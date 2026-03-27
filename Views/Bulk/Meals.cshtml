@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Bulk Meals — NutriBite";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 
@@ -7,133 +7,138 @@
 
 <link rel="stylesheet" href="~/css/bulk.css" />
 
-<div class="container py-4">
+<div class="bulk-page">
+    <div class="bulk-container">
 
-    <!-- Page Title -->
-    <div class="mb-4">
-        <h2 class="fw-bold">Meals</h2>
-    </div>
+        <!-- Page Title -->
+        <div class="mb-5">
+            <h2 class="fw-bold">Bulk Meals Selection</h2>
+            <p class="text-muted">High-quality, nutritious meals for your events or daily needs.</p>
+        </div>
 
 
-    <!-- Packaging Options -->
-    <div class="row mb-4">
+        <!-- Packaging & Filters -->
+        <div class="packaging-options">
+            <div class="row align-items-center">
 
-        <div class="col-md-8">
+                <div class="col-lg-8">
+                    <div class="d-flex flex-column flex-md-row gap-3">
+                        <label class="packaging-label">
+                            <input type="radio" name="packaging" class="d-none" checked />
+                            <div class="packaging-content">
+                                <strong>Individual Packaging</strong>
+                                <div class="text-muted small">Each meal packed separately</div>
+                                <div class="small fw-bold mt-1">MOQ: 1</div>
+                            </div>
+                        </label>
 
-            <div class="d-flex gap-5">
-
-                <label>
-                    <input type="radio" name="packaging" checked />
-                    <strong>Individual Packaging</strong>
-                    <div class="text-muted small">
-                        Each meal packed separately
+                        <label class="packaging-label">
+                            <input type="radio" name="packaging" class="d-none" />
+                            <div class="packaging-content">
+                                <strong>Bulk Packaging</strong>
+                                <div class="text-muted small">Meals packed together</div>
+                                <div class="small fw-bold mt-1">MOQ: 15</div>
+                            </div>
+                        </label>
                     </div>
-                    <div class="small">MOQ: 1</div>
-                </label>
+                </div>
 
 
-                <label>
-                    <input type="radio" name="packaging" />
-                    <strong>Bulk Packaging</strong>
-                    <div class="text-muted small">
-                        Meals packed together
+                <!-- Veg Filter -->
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <div class="d-flex gap-2 justify-content-lg-end">
+                        <span class="diet-pill active" data-val="veg">
+                            <span class="dot veg"></span> Veg Only
+                        </span>
+
+                        <span class="diet-pill" data-val="nonveg">
+                            <span class="dot nonveg"></span> Non Veg
+                        </span>
                     </div>
-                    <div class="small">MOQ: 15</div>
-                </label>
+                </div>
 
             </div>
-
         </div>
 
 
-        <!-- Veg Filter -->
-        <div class="col-md-4 text-end">
 
-            <span class="diet-pill active" data-val="veg">
-                🟢 Veg
-            </span>
+        <!-- Meal List -->
+        <div class="row">
+            @foreach (var it in items)
+            {
+                var isVeg = (it.IsVeg ? "veg" : "nonveg");
+                var img = (it.ImagePath ?? "/images/bulk/default.jpg").ToString();
 
-            <span class="diet-pill" data-val="nonveg">
-                🔴 Non Veg
-            </span>
+                <div class="col-12 mb-4">
 
-        </div>
+                    <div class="meal-card card shadow-sm p-4" data-veg="@isVeg">
 
-    </div>
+                        <div class="row align-items-center">
 
+                            <!-- LEFT CONTENT -->
+                            <div class="col-md-8">
 
+                                <div class="veg-indicator mb-2">
+                                    <span class="badge @(it.IsVeg ? "bg-success-subtle text-success" : "bg-danger-subtle text-danger") border">
+                                        @(it.IsVeg ? "🟢 Vegetarian" : "🔴 Non-Vegetarian")
+                                    </span>
+                                </div>
 
-    <!-- Meal List -->
-    <div class="row">
-        @foreach (var it in items)
-        {
-            var isVeg = (it.IsVeg ? "veg" : "nonveg");
-            var img = (it.ImagePath ?? "/images/bulk/default.jpg").ToString();
+                                <h3 class="meal-title">@it.Name</h3>
 
-            <div class="col-12 mb-3">
+                                <div class="meal-price">
+                                    ₹@it.Price <span class="text-muted small fw-normal">/ per meal</span>
+                                </div>
 
-                <div class="meal-card card shadow-sm p-3"
-                data-veg="@isVeg">
-
-                    <div class="row align-items-center">
-
-                        <!-- LEFT CONTENT -->
-                        <div class="col-md-8">
-
-                            <div class="veg-indicator">
-                                @(it.IsVeg ? "🟢" : "🔴")
-                            </div>
-
-                            <h5>@it.Name</h5>
-
-                            <div class="price">
-                                ₹@it.Price
-                            </div>
-
-                          <p class="desc">
-                          @(it.Description ?? "")
-                          </p>
-
-                        </div>
-
-
-                        <!-- RIGHT CONTENT -->
-                        <div class="col-md-4 text-end">
-
-                            <img src="@img"
-                                 class="meal-img"
-                                 onerror="this.src='/images/bulk/default.jpg'" />
-
-                            <div class="qty mt-2">
-
-                                <button class="qty-decrease">−</button>
-
-                                <input type="text"
-                                       class="qty-input"
-                                       value="1" />
-
-                                <button class="qty-increase">+</button>
+                                <p class="meal-desc">
+                                    @(it.Description ?? "Freshly prepared meal with high-quality ingredients, balanced nutrition, and authentic taste.")
+                                </p>
 
                             </div>
 
-                            <button class="btn-add-cart mt-2"
-                                    data-id="@it.Id">
-                                ADD
-                            </button>
+
+                            <!-- RIGHT CONTENT -->
+                            <div class="col-md-4 text-md-end">
+
+                                <div class="meal-img-box mb-3">
+                                    <img src="@img"
+                                         class="meal-img"
+                                         alt="@it.Name"
+                                         onerror="this.src='/images/bulk/default.jpg'" />
+                                </div>
+
+                                <div class="d-flex flex-column align-items-md-end gap-3">
+                                    <div class="qty-box">
+                                        <button class="qty-btn qty-decrease" aria-label="Decrease quantity">−</button>
+                                        <input type="text" class="qty-input" value="1" readonly />
+                                        <button class="qty-btn qty-increase" aria-label="Increase quantity">+</button>
+                                    </div>
+
+                                    <button class="btn btn-add-cart w-100 w-md-auto" data-id="@it.Id">
+                                        Add to Cart
+                                    </button>
+                                </div>
+
+                            </div>
 
                         </div>
 
                     </div>
 
                 </div>
+            }
+        </div>
 
-            </div>
-        }
     </div>
-
 </div>
 
-
+@section Styles {
+    <style>
+        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
+        .dot.veg { background-color: #28a745; }
+        .dot.nonveg { background-color: #dc3545; }
+    </style>
+}
 
 @section Scripts {
 
@@ -170,11 +175,11 @@
 
             /* Quantity buttons */
 
-            document.querySelectorAll(".qty").forEach(function(box){
+            document.querySelectorAll(".meal-card").forEach(function(card){
 
-                let input = box.querySelector(".qty-input");
+                let input = card.querySelector(".qty-input");
 
-                box.querySelector(".qty-decrease")
+                card.querySelector(".qty-decrease")
                 .addEventListener("click", function(){
 
                     let v = Math.max(1, parseInt(input.value) - 1);
@@ -182,7 +187,7 @@
 
                 });
 
-                box.querySelector(".qty-increase")
+                card.querySelector(".qty-increase")
                 .addEventListener("click", function(){
 
                     let v = parseInt(input.value) + 1;
@@ -194,40 +199,54 @@
 
 
 
-                   /* Add to Cart */
+            /* Add to Cart */
 
-        document.querySelectorAll(".btn-add-cart")
-        .forEach(function(btn){
+            document.querySelectorAll(".btn-add-cart")
+            .forEach(function(btn){
 
-            btn.addEventListener("click", function(){
+                btn.addEventListener("click", function(){
 
-                let id = this.dataset.id;
+                    let id = this.dataset.id;
+                    let card = this.closest(".meal-card");
+                    let qty = card.querySelector(".qty-input").value;
 
-                let qty = this.closest(".meal-card")
-                              .querySelector(".qty-input").value;
-
-                fetch('/Cart/AddToCart',{
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({
-                        productId:id,
-                        quantity:qty
+                    fetch('/Cart/AddToCart',{
+                        method:'POST',
+                        headers:{'Content-Type':'application/json'},
+                        body:JSON.stringify({
+                            productId: parseInt(id),
+                            quantity: parseInt(qty)
+                        })
                     })
-                })
-                .then(r=>r.json())
-                .then(res=>{
+                    .then(r=>r.json())
+                    .then(res=>{
 
-                    btn.innerText="Added ✓";
+                        if(res.success){
+                            const originalText = btn.innerText;
+                            btn.innerHTML = '<i class="bi bi-check2"></i> Added';
+                            btn.classList.add('bg-success');
+                            
+                            if (window.updateCartCount) {
+                                window.updateCartCount();
+                            }
 
-                    setTimeout(()=>{
-                        btn.innerText="ADD";
-                    },1200);
+                            setTimeout(()=>{
+                                btn.innerText = originalText;
+                                btn.classList.remove('bg-success');
+                            },1500);
+                        }
+                        else{
+                            alert(res.message || "Please login first to add items to your cart.");
+                            if (res.message === "Please login first") {
+                                window.location.href = '/Auth/Login';
+                            }
+                        }
+
+                    });
 
                 });
 
             });
-
-        });
 
         });
 

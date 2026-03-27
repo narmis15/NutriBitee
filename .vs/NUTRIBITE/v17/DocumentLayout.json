@@ -3,6 +3,65 @@
   "WorkspaceRootPath": "C:\\BCA - PROJECT\\NUTRIBITE\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\services\\razorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:services\\razorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\auditcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\auditcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Nitesh_\\AppData\\Local\\Temp\\.vsdbgsrc\\368c5daaf02dd0f4d62a6fda15f3e39959dd762c976408260710459e58db7143\\CategorisationService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\models\\reports\\salesreportmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\reports\\salesreportmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\shared\\_vendorlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\shared\\_vendorlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -13,14 +72,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\vendorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\vendorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\wwwroot\\js\\location.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -47,10 +98,6 @@
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\shared\\_locationselector.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -65,10 +112,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\locationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\locationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\services\\locationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -87,20 +130,12 @@
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:wwwroot\\css\\bulk.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\services\\razorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:services\\razorpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\cart\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\cart\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\payment\\success.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -135,10 +170,6 @@
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\bulkitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -171,10 +202,6 @@
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\admin\\viewmealcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\users\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\users\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -193,10 +220,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\models\\users\\blockedusermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:models\\users\\blockedusermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\admin\\viewcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -225,10 +248,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\views\\menu\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:views\\menu\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|solutionrelative:controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA8DBD64-1636-4073-846F-378A36480FEC}|NUTRIBITE.csproj|c:\\bca - project\\nutribite\\controllers\\mealscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -290,7 +309,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 48,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Users\\Edit.cshtml",
               "RelativeDocumentMoniker": "Views\\Users\\Edit.cshtml",
@@ -303,7 +322,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 47,
               "Title": "land.css",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\wwwroot\\css\\land.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\land.css",
@@ -316,7 +335,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 31,
               "Title": "bulk.css",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\wwwroot\\css\\bulk.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\bulk.css",
@@ -338,6 +357,71 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CartController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\CartController.cs",
+              "RelativeToolTip": "Controllers\\CartController.cs",
+              "ViewState": "AgIAAE0BAAAAAAAAAAAuwCwBAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T03:05:18.478Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MenuController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\MenuController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MenuController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\MenuController.cs",
+              "RelativeToolTip": "Controllers\\MenuController.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAuwHYAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:22:32.193Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RazorpayService.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\RazorpayService.cs",
+              "RelativeDocumentMoniker": "Services\\RazorpayService.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\RazorpayService.cs",
+              "RelativeToolTip": "Services\\RazorpayService.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAqwGQAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-11T11:54:06.132Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AuditController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AuditController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuditController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AuditController.cs",
+              "RelativeToolTip": "Controllers\\AuditController.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAA8wDgAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-25T01:52:37.25Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PaymentController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\PaymentController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PaymentController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\PaymentController.cs",
+              "RelativeToolTip": "Controllers\\PaymentController.cs",
+              "ViewState": "AgIAAIcAAAAAAAAAAAAAAJMAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T14:45:14.631Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
               "Title": "VendorController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\VendorController.cs",
               "RelativeDocumentMoniker": "Controllers\\VendorController.cs",
@@ -345,25 +429,141 @@
               "RelativeToolTip": "Controllers\\VendorController.cs",
               "ViewState": "AgIAADYBAAAAAAAAAAAgwE8BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-15T15:50:53.058Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-15T15:50:53.058Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ILocationService.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\ILocationService.cs",
-              "RelativeDocumentMoniker": "Services\\ILocationService.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\ILocationService.cs",
-              "RelativeToolTip": "Services\\ILocationService.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAADwvxIAAAAWAAAAAAAAAA==",
+              "DocumentIndex": 10,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAIAwwG4AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-13T07:57:44.398Z",
+              "WhenOpened": "2026-03-21T16:45:36.183Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAuwCoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T07:39:17.097Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "SalesReportModel.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\Reports\\SalesReportModel.cs",
+              "RelativeDocumentMoniker": "Models\\Reports\\SalesReportModel.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\Reports\\SalesReportModel.cs",
+              "RelativeToolTip": "Models\\Reports\\SalesReportModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-25T01:30:34.963Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ReportsController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\ReportsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReportsController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\ReportsController.cs",
+              "RelativeToolTip": "Controllers\\ReportsController.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAswEsDAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T13:42:40.937Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAABwBAAAAAAAAAAAowCgBAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T08:50:52.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CategorisationService.cs",
+              "DocumentMoniker": "C:\\Users\\Nitesh_\\AppData\\Local\\Temp\\.vsdbgsrc\\368c5daaf02dd0f4d62a6fda15f3e39959dd762c976408260710459e58db7143\\CategorisationService.cs",
+              "RelativeDocumentMoniker": "..\\..\\Users\\Nitesh_\\AppData\\Local\\Temp\\.vsdbgsrc\\368c5daaf02dd0f4d62a6fda15f3e39959dd762c976408260710459e58db7143\\CategorisationService.cs",
+              "ToolTip": "C:\\Users\\Nitesh_\\AppData\\Local\\Temp\\.vsdbgsrc\\368c5daaf02dd0f4d62a6fda15f3e39959dd762c976408260710459e58db7143\\CategorisationService.cs",
+              "RelativeToolTip": "..\\..\\Users\\Nitesh_\\AppData\\Local\\Temp\\.vsdbgsrc\\368c5daaf02dd0f4d62a6fda15f3e39959dd762c976408260710459e58db7143\\CategorisationService.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAAAF8AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-25T01:49:09.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "_VendorLayout.cshtml",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_VendorLayout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_VendorLayout.cshtml",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_VendorLayout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_VendorLayout.cshtml",
+              "ViewState": "AgIAABYAAAAAAAAAAAAcwDsAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T12:01:59.905Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "Controllers\\AdminController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAewD0AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T11:04:57.901Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Controllers\\UsersController.cs",
+              "ViewState": "AgIAAKYAAAAAAAAAAAD4v7MAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:43:32.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Models\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Models\\ApplicationDbContext.cs",
+              "ViewState": "AgIAALAAAAAAAAAAAAAAALkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-02T06:26:34.838Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
               "Title": "location.js",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\wwwroot\\js\\location.js",
               "RelativeDocumentMoniker": "wwwroot\\js\\location.js",
@@ -371,50 +571,36 @@
               "RelativeToolTip": "wwwroot\\js\\location.js",
               "ViewState": "AgIAAAQBAAAAAAAAAAAcwBQBAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2026-03-13T08:04:37.423Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-13T08:04:37.423Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "Models\\ApplicationDbContext.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\ApplicationDbContext.cs",
-              "RelativeToolTip": "Models\\ApplicationDbContext.cs",
-              "ViewState": "AgIAAKYBAAAAAAAAAAAUwLwBAABDAAAAAAAAAA==",
+              "DocumentIndex": 16,
+              "Title": "ILocationService.cs",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\ILocationService.cs",
+              "RelativeDocumentMoniker": "Services\\ILocationService.cs",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\ILocationService.cs",
+              "RelativeToolTip": "Services\\ILocationService.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAADwvxIAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-02T06:26:34.838Z"
+              "WhenOpened": "2026-03-13T07:57:44.398Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_VendorLayout.cshtml",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_VendorLayout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_VendorLayout.cshtml",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_VendorLayout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_VendorLayout.cshtml",
-              "ViewState": "AgIAACUAAAAAAAAAAAAcwDYAAABFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T12:01:59.905Z",
+              "DocumentIndex": 14,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAD4BAAAAAAAAAAAAAF8BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-20T11:01:49.685Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AdminController.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AdminController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AdminController.cs",
-              "RelativeToolTip": "Controllers\\AdminController.cs",
-              "ViewState": "AgIAAB8BAAAAAAAAAAAowCwBAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-23T11:04:57.901Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 19,
               "Title": "_PublicLayout.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_PublicLayout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_PublicLayout.cshtml",
@@ -426,7 +612,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 20,
               "Title": "home.css",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\wwwroot\\css\\home.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\home.css",
@@ -438,20 +624,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CartController.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\CartController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CartController.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\CartController.cs",
-              "RelativeToolTip": "Controllers\\CartController.cs",
-              "ViewState": "AgIAAPUAAAAAAAAAAAAowAIBAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-13T03:05:18.478Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 22,
               "Title": "Result.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\HealthSurvey\\Result.cshtml",
               "RelativeDocumentMoniker": "Views\\HealthSurvey\\Result.cshtml",
@@ -463,7 +636,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 23,
               "Title": "_LocationSelector.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_LocationSelector.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_LocationSelector.cshtml",
@@ -475,7 +648,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 21,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\CalorieTracker\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\CalorieTracker\\Index.cshtml",
@@ -487,7 +660,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 24,
               "Title": "Payment.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\Payment.cs",
               "RelativeDocumentMoniker": "Models\\Payment.cs",
@@ -499,7 +672,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 25,
               "Title": "OrderTable.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\OrderTable.cs",
               "RelativeDocumentMoniker": "Models\\OrderTable.cs",
@@ -511,7 +684,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 26,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -523,7 +696,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 28,
               "Title": "LocationService.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\LocationService.cs",
               "RelativeDocumentMoniker": "Services\\LocationService.cs",
@@ -535,7 +708,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 27,
               "Title": "LocationController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\LocationController.cs",
               "RelativeDocumentMoniker": "Controllers\\LocationController.cs",
@@ -547,19 +720,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAqwCMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-02T07:39:17.097Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 29,
               "Title": "UserLocation.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\UserLocation.cs",
               "RelativeDocumentMoniker": "Models\\UserLocation.cs",
@@ -571,7 +732,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 34,
               "Title": "Success.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Payment\\Success.cshtml",
               "RelativeDocumentMoniker": "Views\\Payment\\Success.cshtml",
@@ -583,19 +744,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "RazorpayService.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\RazorpayService.cs",
-              "RelativeDocumentMoniker": "Services\\RazorpayService.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\RazorpayService.cs",
-              "RelativeToolTip": "Services\\RazorpayService.cs",
-              "ViewState": "AgIAAFMAAAAAAAAAAAAcwFsAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-11T11:54:06.132Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 30,
               "Title": "FoodBox.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Bulk\\FoodBox.cshtml",
               "RelativeDocumentMoniker": "Views\\Bulk\\FoodBox.cshtml",
@@ -607,7 +756,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 32,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\cart\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\cart\\Index.cshtml",
@@ -619,7 +768,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 33,
               "Title": "Checkout.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\cart\\Checkout.cshtml",
               "RelativeDocumentMoniker": "Views\\cart\\Checkout.cshtml",
@@ -631,19 +780,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "PaymentController.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\PaymentController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PaymentController.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\PaymentController.cs",
-              "RelativeToolTip": "Controllers\\PaymentController.cs",
-              "ViewState": "AgIAAOEAAAAAAAAAAIBZwPAAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T14:45:14.631Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 38,
               "Title": "NUTRIBITE.csproj",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\NUTRIBITE.csproj",
               "RelativeDocumentMoniker": "NUTRIBITE.csproj",
@@ -655,7 +792,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 40,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Elderly\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Elderly\\Index.cshtml",
@@ -667,7 +804,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 35,
               "Title": "Meals.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Bulk\\Meals.cshtml",
               "RelativeDocumentMoniker": "Views\\Bulk\\Meals.cshtml",
@@ -679,7 +816,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 36,
               "Title": "BulkController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\BulkController.cs",
               "RelativeDocumentMoniker": "Controllers\\BulkController.cs",
@@ -691,7 +828,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 37,
               "Title": "IRazorpayService.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Services\\IRazorpayService.cs",
               "RelativeDocumentMoniker": "Services\\IRazorpayService.cs",
@@ -703,7 +840,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 39,
               "Title": "Snacks.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Bulk\\Snacks.cshtml",
               "RelativeDocumentMoniker": "Views\\Bulk\\Snacks.cshtml",
@@ -715,7 +852,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 43,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Corporate\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Corporate\\Index.cshtml",
@@ -727,7 +864,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 41,
               "Title": "BulkItem.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\BulkItem.cs",
               "RelativeDocumentMoniker": "Models\\BulkItem.cs",
@@ -739,7 +876,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 42,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
@@ -751,19 +888,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "Controllers\\HomeController.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAUwCUAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-15T08:50:52.146Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 44,
               "Title": "DailyCalorieEntry.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\DailyCalorieEntry.cs",
               "RelativeDocumentMoniker": "Models\\DailyCalorieEntry.cs",
@@ -775,7 +900,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 45,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Bulk\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Bulk\\Index.cshtml",
@@ -787,7 +912,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 46,
               "Title": "_AdminLayout.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_AdminLayout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_AdminLayout.cshtml",
@@ -799,7 +924,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 49,
               "Title": "ViewMealCategory.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Admin\\ViewMealCategory.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\ViewMealCategory.cshtml",
@@ -811,7 +936,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 54,
               "Title": "BlockedUserModel.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\Users\\BlockedUserModel.cs",
               "RelativeDocumentMoniker": "Models\\Users\\BlockedUserModel.cs",
@@ -823,7 +948,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 53,
               "Title": "BlockedUsers.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Users\\BlockedUsers.cshtml",
               "RelativeDocumentMoniker": "Views\\Users\\BlockedUsers.cshtml",
@@ -835,7 +960,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 52,
               "Title": "UsersController.Blocked.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\UsersController.Blocked.cs",
               "RelativeDocumentMoniker": "Controllers\\UsersController.Blocked.cs",
@@ -847,19 +972,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAD4v30AAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-02T06:43:32.126Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 51,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Users\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Users\\Index.cshtml",
@@ -871,7 +984,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 50,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Users\\Details.cshtml",
               "RelativeDocumentMoniker": "Views\\Users\\Details.cshtml",
@@ -883,19 +996,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
-              "Title": "ReportsController.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\ReportsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ReportsController.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\ReportsController.cs",
-              "RelativeToolTip": "Controllers\\ReportsController.cs",
-              "ViewState": "AgIAAFACAAAAAAAAAIBpwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-04T13:42:40.937Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 57,
               "Title": "ManageVendor.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Admin\\ManageVendor.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\ManageVendor.cshtml",
@@ -907,7 +1008,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 60,
               "Title": "elderly.css",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\wwwroot\\css\\elderly.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\elderly.css",
@@ -919,7 +1020,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 56,
               "Title": "NewVendorRequest.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Admin\\NewVendorRequest.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\NewVendorRequest.cshtml",
@@ -931,7 +1032,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 59,
               "Title": "students.css",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\wwwroot\\css\\students.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\students.css",
@@ -943,7 +1044,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 55,
               "Title": "ViewCategory.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Admin\\ViewCategory.cshtml",
               "RelativeDocumentMoniker": "Views\\Admin\\ViewCategory.cshtml",
@@ -955,7 +1056,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 58,
               "Title": "corporate.css",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\wwwroot\\css\\corporate.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\corporate.css",
@@ -967,7 +1068,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 61,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Menu\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Menu\\Index.cshtml",
@@ -979,7 +1080,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 62,
               "Title": "MealsController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\MealsController.cs",
               "RelativeDocumentMoniker": "Controllers\\MealsController.cs",
@@ -991,7 +1092,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 66,
               "Title": "Meal.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\Meal.cs",
               "RelativeDocumentMoniker": "Models\\Meal.cs",
@@ -1003,7 +1104,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 63,
               "Title": "UserSignup.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Models\\UserSignup.cs",
               "RelativeDocumentMoniker": "Models\\UserSignup.cs",
@@ -1015,19 +1116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
-              "Title": "MenuController.cs",
-              "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\MenuController.cs",
-              "RelativeDocumentMoniker": "Controllers\\MenuController.cs",
-              "ToolTip": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\MenuController.cs",
-              "RelativeToolTip": "Controllers\\MenuController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-02T06:22:32.193Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 65,
               "Title": "UserProfileEditViewModel.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\ViewModels\\UserProfileEditViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\UserProfileEditViewModel.cs",
@@ -1039,7 +1128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 67,
               "Title": "CalorieTrackerController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\CalorieTrackerController.cs",
               "RelativeDocumentMoniker": "Controllers\\CalorieTrackerController.cs",
@@ -1051,7 +1140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 64,
               "Title": "UsersAccountController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\UsersAccountController.cs",
               "RelativeDocumentMoniker": "Controllers\\UsersAccountController.cs",
@@ -1063,7 +1152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 68,
               "Title": "AccountController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
@@ -1075,7 +1164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 69,
               "Title": "Login.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Auth\\Login.cshtml",
               "RelativeDocumentMoniker": "Views\\Auth\\Login.cshtml",
@@ -1087,7 +1176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 70,
               "Title": "ElderlyController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\ElderlyController.cs",
               "RelativeDocumentMoniker": "Controllers\\ElderlyController.cs",
@@ -1099,7 +1188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 71,
               "Title": "CorporateController.cs",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Controllers\\CorporateController.cs",
               "RelativeDocumentMoniker": "Controllers\\CorporateController.cs",
@@ -1111,7 +1200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 72,
               "Title": "CreateNutriBiteSchema.sql",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\sql\\CreateNutriBiteSchema.sql",
               "RelativeDocumentMoniker": "sql\\CreateNutriBiteSchema.sql",
@@ -1122,7 +1211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 73,
               "Title": "_ValidationScriptsPartial.cshtml",
               "DocumentMoniker": "C:\\BCA - PROJECT\\NUTRIBITE\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_ValidationScriptsPartial.cshtml",

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using NUTRIBITE.Models;
 
 namespace NUTRIBITE.Controllers
@@ -160,13 +161,13 @@ namespace NUTRIBITE.Controllers
             return Json(results);
         }
         [HttpGet]
-        [HttpGet]
         public IActionResult Results(string q)
         {
             if (string.IsNullOrWhiteSpace(q))
                 return View(new List<Food>());
 
             var foods = _context.Foods
+                .Include(f => f.Nutritionist)
                 .Where(f => f.Name.Contains(q))
                 .ToList();
 

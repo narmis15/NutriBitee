@@ -1,30 +1,38 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NUTRIBITE.Models;
-using NUTRIBITE.Services;
-
-using Microsoft.AspNetCore.Identity;
+using global::NUTRIBITE.Services;
+using global::NUTRIBITE.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using global::NUTRIBITE.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Use the configured connection string key "DBCS" (points to FoodDeliveryDB in appsettings.json)
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBCS")));
-
-// 🔥 REGISTER IDENTITY SERVICES
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-// MVC
+// Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient(); // Required for LocationService and others using HttpClient
 
-// 🔥 REQUIRED FOR SESSION
-builder.Services.AddDistributedMemoryCache();
+// Database Context
+var connectionString = builder.Configuration.GetConnectionString("DBCS");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
-// SESSION
+// Custom Services
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IPaymentDistributionService, PaymentDistributionService>();
+builder.Services.AddScoped<ICategorisationService, CategorisationService>();
+builder.Services.AddScoped<IActivityLogger, ActivityLogger>();
+builder.Services.AddScoped<IRecipeAnalysisService, RecipeAnalysisService>();
+builder.Services.AddScoped<IHealthCalculationService, HealthCalculationService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IRazorpayService, RazorpayService>();
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+
+builder.Services.AddSignalR();
+
+// Session
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -32,24 +40,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Register existing services
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<NUTRIBITE.Services.IHealthCalculationService, NUTRIBITE.Services.HealthCalculationService>();
-
-// Razorpay service registration (singleton is safe; client is lightweight)
-// Ensure RazorpayService will validate presence of keys at startup when resolved.
-builder.Services.AddSingleton<IRazorpayService, RazorpayService>();
-
-// Register location service (add near other builder.Services registrations)
-builder.Services.AddHttpClient<NUTRIBITE.Services.ILocationService, NUTRIBITE.Services.LocationService>(client =>
-{
-    // identify your application for Nominatim policy (server-side header)
-    client.DefaultRequestHeaders.Add("User-Agent", "NutriBite/1.0 (https://yourdomain.example)");
-    client.DefaultRequestHeaders.Add("Referer", "https://yourdomain.example/");
-});
-
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -62,21 +55,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "login",
-    pattern: "login",
-    defaults: new { controller = "Auth", action = "Login" });
-
-app.MapControllerRoute(
-    name: "signup",
-    pattern: "signup",
-    defaults: new { controller = "Auth", action = "Register" });
-
-app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Public}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<AnalyticsHub>("/analyticsHub");
 
 app.Run();

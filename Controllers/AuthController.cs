@@ -1,18 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
-using NUTRIBITE.Models;
+using global::NUTRIBITE.Models;
+using global::NUTRIBITE.Services;
+using System.Threading.Tasks;
 
 namespace NUTRIBITE.Controllers
 {
     public class AuthController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IGoogleAuthService _googleAuthService;
 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(ApplicationDbContext context, IGoogleAuthService googleAuthService)
         {
             _context = context;
+            _googleAuthService = googleAuthService;
         }
 
         // =========================
@@ -112,6 +116,16 @@ namespace NUTRIBITE.Controllers
             if (user == null)
                 return Json(new { success = false, message = "Invalid email or password." });
 
+            // ⭐ VENDOR APPROVAL CHECK
+            if (user.Role == "Vendor" && user.Status != "Approved")
+            {
+                return Json(new { 
+                    success = false, 
+                    isPendingVendor = true,
+                    message = "Your vendor account is pending approval. You can login only after the admin approves your request." 
+                });
+            }
+
             // ⭐ STORE ROLE IN SESSION
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("UserName", user.Name ?? "");
@@ -139,6 +153,84 @@ namespace NUTRIBITE.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
+        }
+
+        // =========================
+        // GOOGLE AUTH
+        // =========================
+        [HttpGet]
+        public IActionResult GoogleLogin()
+        {
+            var url = _googleAuthService.GetGoogleLoginUrl();
+            return Redirect(url);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GoogleCallback(string code, string error)
+        {
+            if (!string.IsNullOrEmpty(error) || string.IsNullOrEmpty(code))
+            {
+                TempData["LoginError"] = "Google authentication was cancelled or failed.";
+                return RedirectToAction("Login");
+            }
+
+            var result = await _googleAuthService.AuthenticateUserAsync(code);
+
+            if (!result.Success)
+            {
+                TempData["LoginError"] = result.Error;
+                return RedirectToAction("Login");
+            }
+
+            // ⭐ DETECT DEMO MODE
+            bool isDemoMode = code == "demo_code_123";
+
+            var user = _context.UserSignups.FirstOrDefault(u => u.Email == result.Email);
+
+            if (user == null)
+            {
+                user = new UserSignup
+                {
+                    Name = result.Name,
+                    Email = result.Email,
+                    Password = Guid.NewGuid().ToString("N"), // Random password for social users
+                    Role = "User",
+                    CreatedAt = DateTime.Now,
+                    Status = "Approved"
+                };
+                _context.UserSignups.Add(user);
+                await _context.SaveChangesAsync();
+            }
+
+            // Set session
+            HttpContext.Session.SetInt32("UserId", user.Id);
+            HttpContext.Session.SetString("UserName", user.Name);
+            HttpContext.Session.SetString("UserRole", user.Role);
+
+            TempData["Success"] = isDemoMode 
+                ? $"Demo Mode Active: Successfully logged in as '{user.Name}' ({user.Email})."
+                : $"Welcome back, {user.Name}!";
+            
+            return RedirectToAction("Index", "Home");
+        }
+
+        // =========================
+        // GET DEMO PROFILE (AJAX)
+        // =========================
+        [HttpGet]
+        public async Task<IActionResult> GetDemoProfile()
+        {
+            var result = await _googleAuthService.AuthenticateUserAsync("demo_code_123");
+            if (result.Success)
+            {
+                return Json(new { 
+                    success = true, 
+                    email = result.Email, 
+                    name = result.Name,
+                    picture = result.Picture
+                });
+            }
+            return Json(new { success = false, message = result.Error });
         }
     }
 }

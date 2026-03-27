@@ -3,22 +3,25 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System;
 using System.Collections.Generic;
-using NUTRIBITE.Models;
+using global::NUTRIBITE.Services;
+using global::NUTRIBITE.Models;
 
 namespace NUTRIBITE.Controllers
 {
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IActivityLogger _activityLogger;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context, IActivityLogger activityLogger)
         {
             _context = context;
+            _activityLogger = activityLogger;
         }
 
         // ================= ADD TO CART =================
         [HttpPost]
-        public IActionResult AddToCart(int foodId)
+        public IActionResult AddToCart([FromBody] AddToCartRequest? request, int? foodId, int? quantity)
         {
             var uid = HttpContext.Session.GetInt32("UserId");
 
@@ -27,7 +30,27 @@ namespace NUTRIBITE.Controllers
                 return Json(new { success = false, message = "Please login first" });
             }
 
-            var food = _context.Foods.FirstOrDefault(f => f.Id == foodId);
+            // Resolve parameters from either JSON body or traditional form/query params
+            int finalFoodId = 0;
+            int finalQuantity = 1;
+
+            if (request != null && request.ProductId > 0)
+            {
+                finalFoodId = request.ProductId;
+                finalQuantity = request.Quantity > 0 ? request.Quantity : 1;
+            }
+            else if (foodId.HasValue && foodId.Value > 0)
+            {
+                finalFoodId = foodId.Value;
+                finalQuantity = quantity.HasValue && quantity.Value > 0 ? quantity.Value : 1;
+            }
+
+            if (finalFoodId <= 0)
+            {
+                return Json(new { success = false, message = "Invalid product ID" });
+            }
+
+            var food = _context.Foods.FirstOrDefault(f => f.Id == finalFoodId);
 
             if (food == null)
             {
@@ -35,19 +58,19 @@ namespace NUTRIBITE.Controllers
             }
 
             var existingItem = _context.Carttables
-                .FirstOrDefault(c => c.Uid == uid.Value && c.Pid == foodId);
+                .FirstOrDefault(c => c.Uid == uid.Value && c.Pid == finalFoodId);
 
             if (existingItem != null)
             {
-                existingItem.Qty += 1;
+                existingItem.Qty += finalQuantity;
             }
             else
             {
                 var cartItem = new Carttable
                 {
                     Uid = uid.Value,
-                    Pid = foodId,
-                    Qty = 1,
+                    Pid = finalFoodId,
+                    Qty = finalQuantity,
                     Date = DateTime.Now
                 };
 
@@ -57,6 +80,12 @@ namespace NUTRIBITE.Controllers
             _context.SaveChanges();
 
             return Json(new { success = true });
+        }
+
+        public class AddToCartRequest
+        {
+            public int ProductId { get; set; }
+            public int Quantity { get; set; }
         }
 
 
@@ -202,7 +231,7 @@ namespace NUTRIBITE.Controllers
 
         // ================= CHECKOUT =================
         [HttpPost]
-        public IActionResult Checkout(string pickupSlot = "12:00 PM", string orderType = "Pickup", string deliveryAddress = "", string deliveryNotes = "", string paymentMethod = "Online", bool clearCart = true)
+        public async Task<IActionResult> Checkout(string deliveryAddress = "", string deliveryNotes = "", string paymentMethod = "Online", bool clearCart = true)
         {
             var uid = HttpContext.Session.GetInt32("UserId");
 
@@ -222,6 +251,7 @@ namespace NUTRIBITE.Controllers
 
             int totalItems = 0;
             int totalCalories = 0;
+            decimal totalAmount = 0m;
 
 
             foreach (var item in cartItems)
@@ -233,6 +263,7 @@ namespace NUTRIBITE.Controllers
 
                 totalItems += item.Qty;
                 totalCalories += (food.Calories ?? 0) * item.Qty;
+                totalAmount += (food.Price) * item.Qty;
             }
 
 
@@ -242,21 +273,26 @@ namespace NUTRIBITE.Controllers
                 CustomerName = user?.Name,
                 CustomerPhone = user?.Phone,
                 TotalItems = totalItems,
-                PickupSlot = orderType == "Pickup" ? pickupSlot : null,
-                OrderType = orderType,
-                DeliveryAddress = orderType == "Delivery" ? deliveryAddress : null,
-                DeliveryNotes = orderType == "Delivery" ? deliveryNotes : null,
-                DeliveryStatus = orderType == "Delivery" ? "Pending Assignment" : null,
+                PickupSlot = null,
+                OrderType = "Delivery",
+                DeliveryAddress = deliveryAddress,
+                DeliveryNotes = deliveryNotes,
+                DeliveryStatus = "Pending Assignment",
                 TotalCalories = totalCalories,
+                TotalAmount = totalAmount,
                 PaymentStatus = paymentMethod == "COD" ? "To be Paid (COD)" : "Pending",
                 Status = paymentMethod == "COD" ? "Placed" : "Pending Payment",
+                TrackingProgress = paymentMethod == "COD" ? 1 : 0,
                 IsFlagged = false,
                 CreatedAt = DateTime.Now
             };
 
 
             _context.OrderTables.Add(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            // Log order activity for dashboard alerts
+            await _activityLogger.LogAsync("Order Placed", $"New order #{order.OrderId} placed by {order.CustomerName} for ₹{order.TotalAmount:N2}");
 
 
             // ADD ORDER ITEMS + CALORIE TRACKING
@@ -283,6 +319,7 @@ namespace NUTRIBITE.Controllers
                     Date = DateTime.Today,
                     FoodName = food.Name,
                     Calories = (food.Calories ?? 0) * item.Qty,
+                    MealType = "Order",
                     Protein = 0,
                     Carbs = 0,
                     Fats = 0
@@ -290,14 +327,14 @@ namespace NUTRIBITE.Controllers
             }
 
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
 
             // CLEAR CART if requested
             if (clearCart)
             {
                 _context.Carttables.RemoveRange(cartItems);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")

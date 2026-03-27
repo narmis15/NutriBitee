@@ -1,4 +1,4 @@
-﻿using NUTRIBITE.Services;
+using NUTRIBITE.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Razorpay.Api;
@@ -65,27 +65,47 @@ public class RazorpayService : IRazorpayService, IDisposable
 
         try
         {
+            _logger.LogInformation("Creating Razorpay order for amount: {AmountPaise} {Currency}", amountInPaise, currency);
             // The Razorpay SDK call is synchronous; wrap in Task.Run to avoid blocking
-            var order = await Task.Run(() => _client.Order.Create(payload));
+            Razorpay.Api.Order order = await Task.Run(() => _client.Order.Create(payload));
 
-            var orderId = order["id"]?.ToString() ?? throw new InvalidOperationException("Razorpay order returned no id");
-            var returnedAmount = Convert.ToInt32(order["amount"]); // in paise
-            var returnedCurrency = order["currency"]?.ToString() ?? currency;
-            var returnedReceipt = order["receipt"]?.ToString() ?? payload["receipt"].ToString();
+            if (order == null)
+            {
+                _logger.LogError("Razorpay order creation returned null.");
+                throw new InvalidOperationException("Razorpay returned null order.");
+            }
 
+            string orderId = order.Attributes["id"].ToString();
+            int returnedAmount = Convert.ToInt32(order.Attributes["amount"]); // in paise
+            string returnedCurrency = order.Attributes["currency"].ToString();
+            string returnedReceipt = order.Attributes["receipt"].ToString();
+
+            _logger.LogInformation("Successfully created Razorpay order: {OrderId}", orderId);
+            
             // Return amount in paise (consumer can convert back to major units if needed)
             var raw = new Dictionary<string, object>();
-            foreach (var kv in order.Attributes)
+            if (order.Attributes != null)
             {
-                raw[kv.Key] = kv.Value;
+                foreach (var attr in order.Attributes)
+                {
+                    // Handle both JProperty (older Newtonsoft) and KeyValuePair (newer)
+                    if (attr is Newtonsoft.Json.Linq.JProperty prop)
+                    {
+                        raw[prop.Name] = prop.Value?.ToString() ?? "";
+                    }
+                    else if (attr is KeyValuePair<string, Newtonsoft.Json.Linq.JToken> kvp)
+                    {
+                        raw[kvp.Key] = kvp.Value?.ToString() ?? "";
+                    }
+                }
             }
 
             return new RazorpayOrderResult(orderId, returnedAmount, returnedCurrency, returnedReceipt, raw);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating Razorpay order (amount: {Amount}, currency: {Currency})", amount, currency);
-            throw new InvalidOperationException("Failed to create payment order. See server logs for details.");
+            _logger.LogError(ex, "Error creating Razorpay order (amount: {Amount}, currency: {Currency}). Payload: {Payload}", amount, currency, System.Text.Json.JsonSerializer.Serialize(payload));
+            throw new InvalidOperationException($"Failed to create payment order: {ex.Message}. Inner: {ex.InnerException?.Message}", ex);
         }
     }
 

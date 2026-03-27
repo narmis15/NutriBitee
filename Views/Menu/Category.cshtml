@@ -4,6 +4,56 @@
 
 @model List<NUTRIBITE.Models.Food>
 
+@{
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #e6f9f0;
+            color: #2d6a4f;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            border: 1px solid #c2f0d5;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            margin: 10px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+        }
+
+        .nutrition-item strong {
+            color: #333;
+        }
+
+        .nutritionist-info {
+            font-size: 0.65rem;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+    </style>
+}
+
 <h2 class="text-center mb-4">@ViewBag.CategoryName</h2>
 
 <div class="row">
@@ -17,16 +67,33 @@
                      style="height:200px; object-fit:cover;" />
 
                 <div class="card-body text-center">
+                    
+                    @if (food.IsVerified)
+                    {
+                        <div class="verification-badge">
+                            <i class="bi bi-patch-check-fill"></i> Verified Expert
+                        </div>
+                    }
 
                     <h5>@food.Name</h5>
 
-                    <p class="text-muted">
+                    <p class="text-muted small mb-2">
                         @food.Description
                     </p>
 
-                    <p class="text-muted small">
-                        🔥 @food.Calories kcal
-                    </p>
+                    <div class="nutrition-grid">
+                        <div class="nutrition-item"><span>Calories:</span> <strong>@food.Calories kcal</strong></div>
+                        <div class="nutrition-item"><span>Protein:</span> <strong>@(food.Protein ?? 0)g</strong></div>
+                        <div class="nutrition-item"><span>Carbs:</span> <strong>@(food.Carbs ?? 0)g</strong></div>
+                        <div class="nutrition-item"><span>Fat:</span> <strong>@(food.Fat ?? 0)g</strong></div>
+                    </div>
+
+                    @if (food.Nutritionist != null)
+                    {
+                        <div class="nutritionist-info">
+                            Expert: @food.Nutritionist.Name
+                        </div>
+                    }
 
                     @if (food.Calories <= 400)
                     {
@@ -45,10 +112,15 @@
                         ₹@food.Price
                     </p>
 
-                    <button class="btn btn-success add-to-cart-btn"
-                            data-id="@food.Id">
-                        Add To Cart
-                    </button>
+                    <div class="meal-actions d-flex gap-2">
+                        <button class="btn btn-sm btn-success flex-grow-1 add-to-cart-btn" data-id="@food.Id">
+                            <i class="bi bi-cart-plus"></i> Add
+                        </button>
+                        <a asp-controller="Recipe" asp-action="Details" asp-route-foodId="@food.Id" 
+                           class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-book"></i> Recipe
+                        </a>
+                    </div>
 
                 </div>
 

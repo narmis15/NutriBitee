@@ -3,19 +3,16 @@
 @{
     ViewData["Title"] = "NutriBite — Elderly";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
-
-    // Helper to find food ID by name safely
-    int GetFoodId(string name) => Model?.FirstOrDefault(f => f.Name.Trim().ToLower() == name.Trim().ToLower())?.Id ?? 0;
 }
 
 <link rel="stylesheet" href="~/css/elderly.css" />
 
-<section class="students-hero container my-4" role="region" aria-label="Elderly hero">
+<section class="elderly-hero container my-4" role="region" aria-label="Elderly hero">
     <div class="hero-card">
         <div class="hero-left">
             <h1>Healthy Meals for Happy Seniors</h1>
             <p class="lead">Gentle on the stomach, rich in nutrition.</p>
-            <a class="btn explore-combos" href="#featuredCombos">Explore Combos</a>
+            <a class="btn explore-combos" href="#elderlyMeals">Explore Combos</a>
         </div>
         <div class="hero-right" aria-hidden="true">
             <img src="~/images/categories/elderly.jpeg" alt="Elderly meals" loading="lazy" />
@@ -23,9 +20,8 @@
     </div>
 </section>
 
-<!-- Sticky filter bar -->
-<section class="filter-bar-wrap" aria-label="Student filters">
-    <div class="filter-bar container" role="region" aria-label="Filters" id="studentsFilterBar">
+<section class="filter-bar-wrap" aria-label="Elderly filters">
+    <div class="filter-bar container" role="region" aria-label="Filters" id="elderlyFilterBar">
         <div class="filter-item">
             <label for="priceRange">Budget: <span id="priceValue">₹75</span></label>
             <input id="priceRange" type="range" min="50" max="150" value="100" />
@@ -49,291 +45,159 @@
     </div>
 </section>
 
+@section Styles {
+    <style>
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #e6f9f0;
+            color: #2d6a4f;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border: 1px solid #c2f0d5;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+        }
+
+        .nutrition-item strong {
+            color: #333;
+        }
+
+        .nutritionist-info {
+            font-size: 0.7rem;
+            color: #888;
+            font-style: italic;
+            margin-top: 5px;
+        }
+    </style>
+}
+
 <!-- Elderly Specials Menu -->
 <section id="elderlyMeals" class="container my-5" aria-labelledby="elderlyHeading">
     <h2 id="elderlyHeading">Elderly Specials – Sukoon Meals</h2>
 
     <div class="combos-grid" role="list">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var food in Model)
+            {
+                <article class="combo-card" role="listitem"
+                         data-calories="@food.Calories"
+                         data-price="@food.Price"
+                         data-veg="true">
+                    
+                    @if (food.IsVerified)
+                    {
+                        <div class="verification-badge">
+                            <i class="bi bi-patch-check-fill"></i> Verified by Nutritionist
+                        </div>
+                    }
 
-        <!-- Soft Moong Dal Khichdi -->
-        <article class="combo-card" role="listitem"
-                 data-calories="420"
-                 data-protein="18"
-                 data-price="85"
-                 data-veg="true">
-            <div class="combo-badge">420 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Soft Moong Dal Khichdi</h3>
+                    <div class="combo-badge">@food.Calories kcal</div>
+                    <!-- LEFT SIDE (TEXT CONTENT) -->
+                    <div class="combo-content">
+                        <h3 class="combo-title">@food.Name</h3>
 
-                <div class="combo-meta">Protein: <strong>18g</strong></div>
-                <div class="combo-price">₹<strong>85</strong></div>
-                <div class="combo-burn">Burns in <span>42</span> mins walking</div>
+                        <div class="nutrition-grid">
+                            <div class="nutrition-item"><span>Protein:</span> <strong>@(food.Protein ?? 0)g</strong></div>
+                            <div class="nutrition-item"><span>Carbs:</span> <strong>@(food.Carbs ?? 0)g</strong></div>
+                            <div class="nutrition-item"><span>Fat:</span> <strong>@(food.Fat ?? 0)g</strong></div>
+                            <div class="nutrition-item"><span>Prep:</span> <strong>@food.PreparationTime</strong></div>
+                        </div>
 
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Soft Moong Dal Khichdi")">Add to Cart</button>
-            </div>
+                        <div class="combo-price">₹<strong>@food.Price</strong></div>
+                        
+                        @if (food.Nutritionist != null)
+                        {
+                            <div class="nutritionist-info">
+                                Certified by @food.Nutritionist.Name (@food.Nutritionist.Qualification)
+                            </div>
+                        }
 
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/Dal khichdi.png"
-                     alt="Soft Moong Dal Khichdi"
-                     loading="lazy" />
-            </div>
+                        <button class="btn add-cart" data-id="@food.Id">Add to Cart</button>
+                    </div>
 
-        </article>
-
-        <!-- Oats & Moong Dal Cheela -->
-        <article class="combo-card" role="listitem"
-                 data-calories="380"
-                 data-protein="16"
-                 data-price="80"
-                 data-veg="true">
-            <div class="combo-badge">380 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Oats & Moong Dal Cheela</h3>
-
-                <div class="combo-meta">Protein: <strong>16g</strong></div>
-                <div class="combo-price">₹<strong>80</strong></div>
-                <div class="combo-burn">Burns in <span>38</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Oats & Moong Dal Cheela")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/moong and oats chilla.png"
-                     alt="Oats and Moong Dal Cheela"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Lauki & Chana Dal with Phulka -->
-        <article class="combo-card" role="listitem"
-                 data-calories="450"
-                 data-protein="20"
-                 data-price="90"
-                 data-veg="true">
-            <div class="combo-badge">450 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Lauki & Chana Dal with Phulka</h3>
-
-                <div class="combo-meta">Protein: <strong>20g</strong></div>
-                <div class="combo-price">₹<strong>90</strong></div>
-                <div class="combo-burn">Burns in <span>45</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Lauki & Chana Dal with Phulka")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/chaana and lauki dal with phulka.png"
-                     alt="Lauki and Chana Dal with Phulka"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Vegetable Dalia -->
-        <article class="combo-card" role="listitem"
-                 data-calories="410"
-                 data-protein="15"
-                 data-price="75"
-                 data-veg="true">
-            <div class="combo-badge">410 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Vegetable Dalia</h3>
-
-                <div class="combo-meta">Protein: <strong>15g</strong></div>
-                <div class="combo-price">₹<strong>75</strong></div>
-                <div class="combo-burn">Burns in <span>41</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Vegetable Dalia")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/vegetable daliya.png"
-                     alt="Vegetable Dalia"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Methi Soft Thepla with Dahi -->
-        <article class="combo-card" role="listitem"
-                 data-calories="390"
-                 data-protein="14"
-                 data-price="80"
-                 data-veg="true">
-            <div class="combo-badge">390 kcal</div>
-
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Methi Soft Thepla with Dahi</h3>
-
-                <div class="combo-meta">Protein: <strong>14g</strong></div>
-                <div class="combo-price">₹<strong>80</strong></div>
-                <div class="combo-burn">Burns in <span>39</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Methi Soft Thepla with Dahi")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/methi thelpa with dahi.png"
-                     alt="Methi Soft Thepla with Dahi"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Curd Rice (Mild Tadka) -->
-        <article class="combo-card" role="listitem"
-                 data-calories="370"
-                 data-protein="12"
-                 data-price="70"
-                 data-veg="true">
-            <div class="combo-badge">370 kcal</div>
-
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Curd Rice (Mild Tadka)</h3>
-
-                <div class="combo-meta">Protein: <strong>12g</strong></div>
-                <div class="combo-price">₹<strong>70</strong></div>
-                <div class="combo-burn">Burns in <span>37</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Curd Rice (Mild Tadka)")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/curd rice with pomegranate.png"
-                     alt="Curd Rice Mild Tadka"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Pumpkin Mash & Phulka -->
-        <article class="combo-card" role="listitem"
-                 data-calories="400"
-                 data-protein="13"
-                 data-price="75"
-                 data-veg="true">
-            <div class="combo-badge">400 kcal</div>
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Pumpkin Mash & Phulka</h3>
-
-                <div class="combo-meta">Protein: <strong>13g</strong></div>
-                <div class="combo-price">₹<strong>75</strong></div>
-                <div class="combo-burn">Burns in <span>40</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Pumpkin Mash & Phulka")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/pumpkin mash with phulkas.png"
-                     alt="Pumpkin Mash and Phulka"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Steamed Idli -->
-        <article class="combo-card" role="listitem"
-                 data-calories="350"
-                 data-protein="11"
-                 data-price="85"
-                 data-veg="true">
-            <div class="combo-badge">350 kcal</div>
-
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Steamed Idli with Mild Sambar</h3>
-
-                <div class="combo-meta">Protein: <strong>11g</strong></div>
-                <div class="combo-price">₹<strong>85</strong></div>
-                <div class="combo-burn">Burns in <span>35</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Steamed Idli with Mild Sambar")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/sambhar idli.png"
-                     alt="Steamed Idli with Mild Sambar"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Mashed Aloo Baingan -->
-        <article class="combo-card" role="listitem"
-                 data-calories="430"
-                 data-protein="12"
-                 data-price="80"
-                 data-veg="true">
-            <div class="combo-badge">430 kcal</div>
-
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Mashed Aloo-Baingan Bharta</h3>
-
-                <div class="combo-meta">Protein: <strong>12g</strong></div>
-                <div class="combo-price">₹<strong>80</strong></div>
-                <div class="combo-burn">Burns in <span>43</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Mashed Aloo-Baingan Bharta")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/baigan bharta.png"
-                     alt="Mashed Aloo Baingan Bharta"
-                     loading="lazy" />
-            </div>
-
-        </article>
-
-        <!-- Warm Apple Stew -->
-        <article class="combo-card" role="listitem"
-                 data-calories="240"
-                 data-protein="2"
-                 data-price="50"
-                 data-veg="true">
-            <div class="combo-badge">240 kcal</div>
-
-            <!-- LEFT SIDE (TEXT CONTENT) -->
-            <div class="combo-content">
-                <h3 class="combo-title">Warm Apple & Cinnamon Stew</h3>
-
-                <div class="combo-meta">Protein: <strong>2g</strong></div>
-                <div class="combo-price">₹<strong>50</strong></div>
-                <div class="combo-burn">Burns in <span>24</span> mins walking</div>
-
-                <button class="btn add-to-cart-btn" data-id="@GetFoodId("Warm Apple & Cinnamon Stew")">Add to Cart</button>
-            </div>
-
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="combo-image">
-                <img src="~/images/menu items/cinnamon apple stew.png"
-                     alt="Warm Apple and Cinnamon Stew"
-                     loading="lazy" />
-
-            </div>
-
-        </article>
-
+                    <!-- RIGHT SIDE (IMAGE) -->
+                    <div class="combo-image">
+                        <img src="@(string.IsNullOrEmpty(food.ImagePath) ? "/images/menu items/default.png" : food.ImagePath)"
+                             alt="@food.Name"
+                             loading="lazy" />
+                    </div>
+                </article>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info w-100">No elderly special meals found in the database. Please run SeedData.</div>
+        }
     </div>
 </section>
 
 @section Scripts {
     <script src="~/js/elderly.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const priceRange = document.getElementById("priceRange");
+            const priceValue = document.getElementById("priceValue");
+            const highProtein = document.getElementById("highProtein");
+            const under500 = document.getElementById("under500");
+            const vegOnly = document.getElementById("vegOnly");
+            const resetBtn = document.getElementById("resetFilters");
+            const comboCards = document.querySelectorAll(".combo-card");
+
+            function applyFilters() {
+                const maxPrice = parseInt(priceRange.value);
+                priceValue.textContent = "₹" + maxPrice;
+
+                comboCards.forEach(card => {
+                    const price = parseInt(card.dataset.price);
+                    const calories = parseInt(card.dataset.calories);
+                    const isVeg = card.dataset.veg === "true";
+
+                    let visible = true;
+
+                    if (price > maxPrice) visible = false;
+                    if (highProtein.checked && calories < 600) visible = false;
+                    if (under500.checked && calories >= 500) visible = false;
+                    if (vegOnly.checked && !isVeg) visible = false;
+
+                    card.style.display = visible ? "flex" : "none";
+                });
+            }
+
+            if(priceRange) priceRange.addEventListener("input", applyFilters);
+            if(highProtein) highProtein.addEventListener("change", applyFilters);
+            if(under500) under500.addEventListener("change", applyFilters);
+            if(vegOnly) vegOnly.addEventListener("change", applyFilters);
+
+            if(resetBtn) {
+                resetBtn.addEventListener("click", () => {
+                    priceRange.value = 75;
+                    highProtein.checked = false;
+                    under500.checked = false;
+                    vegOnly.checked = false;
+                    applyFilters();
+                });
+            }
+        });
+    </script>
 }

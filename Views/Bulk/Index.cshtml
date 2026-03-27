@@ -1,21 +1,28 @@
 @{
-    ViewData["Title"] = "Bulk — NutriBite";
+    ViewData["Title"] = "Bulk Ordering â€” NutriBite";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/bulk.css" />
 
-<div class="bulk-page container-fluid">
-    <div class="bulk-inner container bulk-container py-4">
+<div class="bulk-page">
+    <div class="bulk-container">
 
-        <!-- HERO CAROUSEL: visual banners only (1 image per slide) -->
-        <section class="bulk-hero mb-4" aria-label="Bulk hero banners">
+        <!-- Page Header -->
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Bulk Ordering Solutions</h2>
+            <p class="text-muted mx-auto" style="max-width: 600px;">
+                Whether it's for a corporate event, a student gathering, or a large family celebration, 
+                NutriBite provides high-quality homemade food in bulk.
+            </p>
+        </div>
+
+        <!-- HERO CAROUSEL -->
+        <section class="bulk-hero mb-5" aria-label="Bulk hero banners">
             <div id="bulkCarousel"
-                 class="carousel slide"
+                 class="carousel slide carousel-fade"
                  data-bs-ride="carousel"
-                 data-bs-interval="5000"
-                 data-bs-pause="hover"
-                 data-bs-wrap="true">
+                 data-bs-interval="5000">
 
                 <div class="carousel-indicators">
                     @for (int i = 0; i < 6; i++)
@@ -37,45 +44,61 @@
                         <div class="carousel-item @active">
                             <img src="@src"
                                  alt="Bulk banner @i"
-                                 class="bulk-hero-banner w-100"
+                                 class="bulk-hero-banner"
                                  loading="lazy"
                                  onerror="this.onerror=null;this.src='@Url.Content("~/images/bulk/default.jpg")';" />
                         </div>
                     }
                 </div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#bulkCarousel" data-bs-slide="prev" aria-label="Previous">
+                <button class="carousel-control-prev" type="button" data-bs-target="#bulkCarousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#bulkCarousel" data-bs-slide="next" aria-label="Next">
+                <button class="carousel-control-next" type="button" data-bs-target="#bulkCarousel" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
                 </button>
             </div>
         </section>
 
-        <!-- CATEGORY CARDS (unchanged) -->
-        <section class="bulk-categories mb-5" aria-label="Bulk categories">
-            <div class="row g-3">
+        <!-- CATEGORY CARDS -->
+        <section class="bulk-categories" aria-label="Bulk categories">
+            <div class="row g-4">
+                
                 <div class="col-12 col-md-4">
-                    <a class="cat-card cat-meals" asp-controller="Bulk" asp-action="Meals" role="button" aria-label="Meals category">
+                    <a class="cat-card cat-meals" asp-controller="Bulk" asp-action="Meals">
                         <div class="cat-overlay"></div>
-                        <div class="cat-text">Meals</div>
+                        <div class="cat-text">Bulk Meals</div>
                     </a>
+                    <div class="mt-3 text-center">
+                        <h4 class="fw-bold mb-1">Meals</h4>
+                        <p class="small text-muted">Complete thalis and combos</p>
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-4">
-                    <a class="cat-card cat-snacks" asp-controller="Bulk" asp-action="Snacks" role="button" aria-label="Snacks category">
+                    <a class="cat-card cat-snacks" asp-controller="Bulk" asp-action="Snacks">
                         <div class="cat-overlay"></div>
-                        <div class="cat-text">Snacks</div>
+                        <div class="cat-text">Party Snacks</div>
                     </a>
+                    <div class="mt-3 text-center">
+                        <h4 class="fw-bold mb-1">Snacks</h4>
+                        <p class="small text-muted">Bites, wraps, and finger foods</p>
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-4">
-                    <a class="cat-card cat-foodbox" asp-controller="Bulk" asp-action="FoodBox" role="button" aria-label="FoodBox category">
+                    <a class="cat-card cat-foodbox" asp-controller="Bulk" asp-action="FoodBox">
                         <div class="cat-overlay"></div>
-                        <div class="cat-text">FoodBox</div>
+                        <div class="cat-text">Custom Boxes</div>
                     </a>
+                    <div class="mt-3 text-center">
+                        <h4 class="fw-bold mb-1">FoodBox</h4>
+                        <p class="small text-muted">Curated meal boxes for events</p>
+                    </div>
                 </div>
+
             </div>
         </section>
 
@@ -84,11 +107,9 @@
 
 @section Scripts {
     <script>
-        // create Carousel instance to ensure settings (Bootstrap 5)
         (function () {
             const el = document.getElementById('bulkCarousel');
             if (!el) return;
-            // ensure an instance exists and uses provided data attributes
             bootstrap.Carousel.getOrCreateInstance(el);
         })();
     </script>

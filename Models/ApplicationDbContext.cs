@@ -27,8 +27,6 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<Carttable> Carttables { get; set; }
 
-    public virtual DbSet<Coupon> Coupons { get; set; }
-
     public virtual DbSet<DailyCalorieEntry> DailyCalorieEntries { get; set; }
 
     public virtual DbSet<Food> Foods { get; set; }
@@ -39,6 +37,8 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public virtual DbSet<Location> Locations { get; set; }
 
     public virtual DbSet<Notification> Notifications { get; set; }
+
+    public virtual DbSet<Nutritionist> Nutritionists { get; set; }
 
     public virtual DbSet<Offer> Offers { get; set; }
 
@@ -65,15 +65,41 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
     // New DbSet for Bulk items
     public virtual DbSet<BulkItem> BulkItems { get; set; }
 
+    public virtual DbSet<VendorPayout> VendorPayouts { get; set; }
+
+    public virtual DbSet<PaymentAuditLog> PaymentAuditLogs { get; set; }
+
+    public virtual DbSet<Recipe> Recipes { get; set; }
+    public virtual DbSet<IngredientsMaster> IngredientsMaster { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer("Server=SIMRAN\\SQLEXPRESS;Database=FoodDeliveryDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true");
+        }
+    }
 
-        => optionsBuilder.UseSqlServer("Server=SIMRAN\\SQLEXPRESS;Database=FoodDeliveryDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
-
-);
+    public virtual DbSet<ActivityLog> ActivityLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Food>(entity =>
+        {
+            entity.HasOne(f => f.Nutritionist)
+                  .WithMany(n => n.VerifiedFoods)
+                  .HasForeignKey(f => f.NutritionistId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<Nutritionist>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Qualification).IsRequired().HasMaxLength(255);
+        });
+
         modelBuilder.Entity<AddCategory>(entity =>
         {
             entity.HasKey(e => e.Cid).HasName("PK__AddCateg__D837D05F04218349");
@@ -122,12 +148,21 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
             entity.ToTable("Admin");
 
+            // 🔥 INDEXING FOR PERFORMANCE
+            entity.HasIndex(e => e.UserId).IsUnique();
+
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.UserId)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Phone).HasMaxLength(20);
+            entity.Property(e => e.AvatarPath).HasMaxLength(255);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.LastLogin).HasColumnType("datetime");
+            entity.Property(e => e.SettingsJson).IsUnicode(false);
         });
 
         modelBuilder.Entity<Carttable>(entity =>
@@ -148,28 +183,20 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Coupon>(entity =>
-        {
-            entity.ToTable("Coupon");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Code)
-                .HasMaxLength(8)
-                .IsUnicode(false);
-            entity.Property(e => e.Startdate).HasColumnType("datetime");
-            entity.Property(e => e.Validtill).HasColumnType("datetime");
-        });
-
         modelBuilder.Entity<DailyCalorieEntry>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__DailyCal__3214EC0736203BD9");
 
             entity.ToTable("DailyCalorieEntry");
 
+            // 🔥 INDEXING FOR PERFORMANCE
+            entity.HasIndex(e => new { e.UserId, e.Date });
+
             entity.Property(e => e.Carbs).HasColumnType("decimal(6, 2)");
             entity.Property(e => e.Date).HasDefaultValueSql("(CONVERT([date],getdate()))");
             entity.Property(e => e.Fats).HasColumnType("decimal(6, 2)");
             entity.Property(e => e.FoodName).HasMaxLength(256);
+            entity.Property(e => e.MealType).HasMaxLength(50).HasDefaultValue("Other");
             entity.Property(e => e.Protein).HasColumnType("decimal(6, 2)");
         });
 
@@ -322,6 +349,37 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
             entity.HasOne(d => d.User).WithMany(p => p.OrderTables)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_OrderTable_UserSignup");
+
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)").HasDefaultValue(0.00m);
+            entity.Property(e => e.CommissionAmount).HasColumnType("decimal(18, 2)").HasDefaultValue(0.00m);
+            entity.Property(e => e.VendorAmount).HasColumnType("decimal(18, 2)").HasDefaultValue(0.00m);
+            entity.Property(e => e.Version).IsConcurrencyToken().HasDefaultValue(1);
+            entity.Property(e => e.TrackingProgress).HasDefaultValue(0);
+
+            entity.HasOne<VendorSignup>()
+                .WithMany()
+                .HasForeignKey(d => d.VendorId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne<Admin>()
+                .WithMany()
+                .HasForeignKey(d => d.AdminId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<VendorPayout>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.ToTable("VendorPayouts");
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.HasOne(d => d.Order).WithMany().HasForeignKey(d => d.OrderId);
+            entity.HasOne(d => d.Vendor).WithMany().HasForeignKey(d => d.VendorId);
+        });
+
+        modelBuilder.Entity<PaymentAuditLog>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.ToTable("PaymentAuditLogs");
         });
 
         modelBuilder.Entity<Payment>(entity =>
@@ -415,9 +473,6 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
             entity.ToTable("UserSignup");
 
-            // Prevent EF from expecting a Role column when it doesn't exist in the DB
-            entity.Ignore(e => e.Role);
-
             entity.HasIndex(e => e.Email, "UQ__UserSign__A9D10534529A670A").IsUnique();
 
             entity.Property(e => e.CreatedAt)
@@ -426,6 +481,9 @@ public partial class ApplicationDbContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.Email).HasMaxLength(150);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Password).HasMaxLength(100);
+            entity.Property(e => e.ProfilePictureUrl).HasMaxLength(255);
+            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.Role).HasMaxLength(50).HasDefaultValue("User");
         });
 
         modelBuilder.Entity<VendorSignup>(entity =>

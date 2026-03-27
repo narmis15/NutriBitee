@@ -1,4 +1,4 @@
-﻿@model List<NUTRIBITE.Models.Food>
+@model List<NUTRIBITE.Models.Food>
 
 @{
     ViewData["Title"] = "My Foods";
@@ -33,27 +33,45 @@
                          alt="Food">
 
                     <div class="food-body">
+                        
+                        @if (food.IsVerified)
+                        {
+                            <span class="badge bg-success-subtle text-success border border-success-subtle mb-2" style="font-size: 0.7rem;">
+                                <i class="bi bi-patch-check-fill"></i> Verified
+                            </span>
+                        }
+
                         <h4>@food.Name</h4>
 
                         <div class="food-meta">
-                            @food.Calories Calories · ₹@food.Price
+                            @food.Calories kcal · ₹@food.Price
+                        </div>
+
+                        <div class="nutrition-summary mt-2 mb-2" style="font-size: 0.75rem; color: #666;">
+                            P: @(food.Protein ?? 0)g | C: @(food.Carbs ?? 0)g | F: @(food.Fat ?? 0)g
                         </div>
 
                         <div class="tag">
                             @food.CategoryId
                         </div>
 
-                        <div class="actions">
+                        <div class="actions mt-3 d-flex flex-wrap gap-2">
                             <a asp-action="EditFood"
                                asp-route-id="@food.Id"
-                               class="btn edit">
-                                Edit
+                               class="btn edit flex-grow-1">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+
+                            <a asp-action="ManageRecipe"
+                               asp-route-foodId="@food.Id"
+                               class="btn btn-outline-primary flex-grow-1" style="font-size: 0.8rem; padding: 5px 10px;">
+                                <i class="bi bi-book"></i> Recipe
                             </a>
 
                             <a asp-action="DeleteFood"
                                asp-route-id="@food.Id"
-                               class="btn delete">
-                                Delete
+                               class="btn delete w-100 mt-1">
+                                <i class="bi bi-trash"></i> Delete
                             </a>
                         </div>
                     </div>

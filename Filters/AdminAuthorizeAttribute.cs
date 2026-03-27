@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace NutriBite.Filters
+namespace NUTRIBITE.Filters
 {
     public class AdminAuthorizeAttribute : ActionFilterAttribute
     {

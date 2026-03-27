@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Add Food";
     Layout = "~/Views/Shared/_VendorLayout.cshtml";
 }
@@ -47,7 +47,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Category</label>
-                            <<select name="CategoryId" class="form-control" required>
+                            <select name="CategoryId" class="form-control" required>
 
                                 <option value="">Select Category</option>
 
@@ -60,6 +60,18 @@
 
                             </select>
 
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Audience Type (FoodType)</label>
+                            <select name="FoodType" class="form-control">
+                                <option value="">General</option>
+                                <option value="Student">Student</option>
+                                <option value="Elderly">Elderly</option>
+                                <option value="Corporate">Corporate</option>
+                            </select>
                         </div>
                     </div>
 

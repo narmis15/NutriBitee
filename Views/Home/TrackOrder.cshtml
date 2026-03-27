@@ -8,10 +8,17 @@
     
     int progress = 25;
     if (status == "Accepted") progress = 50;
-    if (status == "Ready for Pickup") progress = 60;
-    if (status == "Out for Delivery" || deliveryStatus == "Out for Delivery") progress = 75;
+    if (status == "Ready for Pickup" || status == "Ready for Delivery") progress = 60;
+    if (status == "Picked" || status == "In Transit" || status == "Out for Delivery" || deliveryStatus == "Out for Delivery") progress = 75;
     if (status == "Completed" || status == "Delivered" || deliveryStatus == "Delivered") progress = 100;
     if (status == "Cancelled") progress = 0;
+
+    var displayStatus = status;
+    if (Model.OrderType == "Delivery")
+    {
+        if (displayStatus == "Ready for Pickup") displayStatus = "Ready for Delivery";
+        else if (displayStatus == "Picked") displayStatus = "In Transit";
+    }
 }
 
 <style>
@@ -96,10 +103,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="d-flex align-items-center mb-4">
-                <a href="/Home/MyOrders" class="btn btn-outline-secondary rounded-circle me-3">
-                    <i class="bi bi-arrow-left"></i>
-                </a>
-                <h2 class="fw-bold mb-0">Track Order #@Model.OrderId</h2>
+                <h2 class="mb-0">Track Order #@Model.OrderId</h2>
             </div>
 
             <div class="track-card p-4 p-md-5">
@@ -108,7 +112,7 @@
                         <i class="bi bi-info-circle"></i>
                     </div>
                     <div>
-                        <h6 class="fw-bold mb-0">Current Status: @(status == "Completed" ? "Order Delivered" : status)</h6>
+                        <h6 class="fw-bold mb-0">Current Status: @(displayStatus == "Completed" ? "Order Delivered" : displayStatus)</h6>
                         <small class="text-muted">Estimated arrival: Within 30-45 mins</small>
                     </div>
                 </div>
@@ -123,9 +127,9 @@
                         <div class="step-counter"><i class="bi bi-check2-circle"></i></div>
                         <div class="step-name">Accepted</div>
                     </div>
-                    <div class="stepper-item @(progress >= 75 ? "completed" : "") @(status == "Out for Delivery" || deliveryStatus == "Out for Delivery" ? "active" : "")">
+                    <div class="stepper-item @(progress >= 75 ? "completed" : "") @(status == "Picked" || status == "In Transit" || status == "Out for Delivery" || deliveryStatus == "Out for Delivery" ? "active" : "")">
                         <div class="step-counter"><i class="bi bi-truck"></i></div>
-                        <div class="step-name">On the Way</div>
+                        <div class="step-name">@(Model.OrderType == "Delivery" ? "On the Way" : "Picked Up")</div>
                     </div>
                     <div class="stepper-item @(progress >= 100 ? "completed" : "") @(status == "Completed" || status == "Delivered" || deliveryStatus == "Delivered" ? "active" : "")">
                         <div class="step-counter"><i class="bi bi-house-check"></i></div>
@@ -137,14 +141,23 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-4 mb-md-0">
-                        <h6 class="fw-bold text-muted uppercase small mb-3">Delivery Address</h6>
-                        <p class="mb-1 fw-bold">@Model.CustomerName</p>
-                        <p class="text-muted small mb-0">@Model.DeliveryAddress</p>
-                        @if (!string.IsNullOrEmpty(Model.DeliveryNotes))
+                        @if (Model.OrderType == "Delivery")
                         {
-                            <div class="mt-2 p-2 bg-light rounded small">
-                                <i class="bi bi-chat-left-text me-1"></i> @Model.DeliveryNotes
-                            </div>
+                            <h6 class="fw-bold text-muted uppercase small mb-3">Delivery Address</h6>
+                            <p class="mb-1 fw-bold">@Model.CustomerName</p>
+                            <p class="text-muted small mb-0">@Model.DeliveryAddress</p>
+                            @if (!string.IsNullOrEmpty(Model.DeliveryNotes))
+                            {
+                                <div class="mt-2 p-2 bg-light rounded small">
+                                    <i class="bi bi-chat-left-text me-1"></i> @Model.DeliveryNotes
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <h6 class="fw-bold text-muted uppercase small mb-3">Pickup Details</h6>
+                            <p class="mb-1 fw-bold">@Model.CustomerName</p>
+                            <p class="text-muted small mb-0">Ready for pickup at your selected slot: <strong>@Model.PickupSlot</strong></p>
                         }
                     </div>
                     <div class="col-md-6">
@@ -156,6 +169,10 @@
                         <div class="d-flex justify-content-between mb-2">
                             <span>Payment</span>
                             <span class="fw-bold">@Model.PaymentStatus</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tracking Level</span>
+                            <span class="badge bg-info text-dark">Level @Model.TrackingProgress</span>
                         </div>
                         <div class="d-flex justify-content-between border-top pt-2 mt-2">
                             <span class="fw-bold">Total Items</span>

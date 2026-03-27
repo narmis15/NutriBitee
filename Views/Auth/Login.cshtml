@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Login - NutriBite";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
@@ -27,6 +27,15 @@
             <h4 class="brand">NutriBite</h4>
             <h5 class="mb-4">Welcome Back 👋</h5>
 
+            @if (TempData["LoginError"] != null)
+            {
+                <div class="alert alert-danger small">@TempData["LoginError"]</div>
+            }
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success small">@TempData["Success"]</div>
+            }
+
             <div id="loginError" class="alert alert-danger small" style="display:none;"></div>
 
             <form id="loginForm" method="post" action="javascript:void(0);">
@@ -52,6 +61,18 @@
                 <div class="mt-3 d-flex justify-content-between small">
                     <div>Don't have an account? <a href="/signup" class="link-success">Sign up</a></div>
                     <div><a href="/Auth/Forgot">Forgot password?</a></div>
+                </div>
+
+                <div class="auth-divider">or continue with</div>
+
+                <div class="social-login">
+                    <a href="/Auth/GoogleLogin" class="social-btn" id="googleLoginBtn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" />
+                        <span>Continue with Google</span>
+                    </a>
+                    <div id="demoHint" class="mt-2 text-center small text-muted" style="display:none;">
+                        <i class="bi bi-info-circle"></i> <span id="demoMsg"></span>
+                    </div>
                 </div>
 
             </form>
@@ -101,19 +122,52 @@
                         if (res && res.success) {
                             if (res.isAdmin) {
                                 window.location.href = '/Admin/Dashboard';
+                            } else if (res.isVendor) {
+                                window.location.href = '/Vendor/Dashboard';
                             } else {
                                 // server decides where to go after login
                                 if (res.requiresSurvey) {
                                     window.location.href = '/HealthSurvey';
                                 } else {
-                                         window.location.href = '/Home/Index';                                }
+                                    window.location.href = '/Home/Index';
+                                }
                             }
                         } else {
+                            if (res && res.isPendingVendor) {
+                                // Specific vendor pending alert
+                                alert(res.message);
+                            }
                             $('#loginError').text(res && res.message ? res.message : 'Invalid login credentials.').show();
                         }
                     }).fail(function () {
                         $('#loginError').text('Unable to reach server. Please try again.').show();
                     });
+            });
+
+            // ⭐ DEMO USER FORM POPULATION
+            $('#googleLoginBtn').on('click', function (e) {
+                // If it's a demo link, we fetch data and fill the form
+                const url = $(this).attr('href');
+                if (url.includes('GoogleLogin')) {
+                    // Check if we should intercept (in case of demo mode)
+                    $.get('/Auth/GetDemoProfile').done(function(res) {
+                        if (res.success) {
+                            // Populate form fields
+                            $('#email').val(res.email);
+                            // Highlight the change
+                            $('#email').addClass('is-valid');
+                            $('#demoMsg').text(`Detected actual user: ${res.name}. Form fields populated. Click Login to continue.`);
+                            $('#demoHint').fadeIn();
+                            
+                            // Optional: If we want to fully bypass and just login, we could do:
+                            // window.location.href = '/Auth/GoogleCallback?code=demo_code_123';
+                            // But the user specifically asked to "populate the form fields".
+                        }
+                    });
+                    
+                    // Prevent immediate redirect so user sees the population
+                    e.preventDefault();
+                }
             });
 
         })();

@@ -1,0 +1,149 @@
+@using Microsoft.AspNetCore.Http
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    // Orders active state
+    var ordersActions = new[] { "OrderManagement", "OrderDetails", "CancelledOrders" };
+    var ordersOpen = currentController == "Admin" && ordersActions.Contains(currentAction);
+
+    // Vendor active state
+    var vendorActions = new[] { "NewVendorRequest", "ManageVendor", "Payouts" };
+    var vendorOpen = currentController == "Admin" && vendorActions.Contains(currentAction);
+
+    // Food active state
+    var foodActions = new[] { "AddFoodCategory", "ViewCategory", "ViewMealCategory" };
+    var foodOpen = currentController == "Admin" && foodActions.Contains(currentAction);
+
+    // Reports active state
+    var reportsActions = new[] { "Dashboard", "OrderReports", "SalesAnalytics", "VendorPerformance", "LocationAnalytics", "PaymentReports", "SystemLogs" };
+    var reportsOpen = currentController == "Reports" && reportsActions.Contains(currentAction);
+
+    // Users active state
+    var usersActions = new[] { "Index", "BlockedUsers", "CalorieAnalytics" };
+    var usersOpen = (currentController == "Users") && usersActions.Contains(currentAction);
+
+    // Delivery active state
+    var deliveryActions = new[] { "DeliveryDashboard", "DeliveryOptimization" };
+    var deliveryOpen = currentController == "Admin" && deliveryActions.Contains(currentAction);
+}
+
+<div class="sidebar">
+    <h4><i class="bi bi-shield-check"></i> NUTRIBITE</h4>
+
+    <a asp-controller="Admin" asp-action="Dashboard" class="@(currentController == "Admin" && currentAction == "Dashboard" ? "active" : "")">
+        <i class="bi bi-grid-1x2-fill"></i>
+        <span class="menu-text">Admin Home</span>
+    </a>
+
+    <!-- Orders -->
+    <div class="menu-item has-submenu @(ordersOpen ? "open" : "")">
+        <div class="menu-link">
+            <i class="bi bi-cart-fill"></i>
+            <span class="menu-text">Orders</span>
+            <i class="bi bi-chevron-down menu-arrow"></i>
+        </div>
+        <div class="submenu">
+            <a asp-controller="Admin" asp-action="OrderManagement" class="@(currentAction == "OrderManagement" ? "active" : "")">Management</a>
+            <a asp-controller="Admin" asp-action="CancelledOrders" class="@(currentAction == "CancelledOrders" ? "active" : "")">Cancelled</a>
+        </div>
+    </div>
+
+    <!-- Vendors -->
+    <div class="menu-item has-submenu @(vendorOpen ? "open" : "")">
+        <div class="menu-link">
+            <i class="bi bi-shop"></i>
+            <span class="menu-text">Vendors</span>
+            <i class="bi bi-chevron-down menu-arrow"></i>
+        </div>
+        <div class="submenu">
+            <a asp-controller="Admin" asp-action="NewVendorRequest" class="@(currentAction == "NewVendorRequest" ? "active" : "")">New Requests</a>
+            <a asp-controller="Admin" asp-action="ManageVendor" class="@(currentAction == "ManageVendor" ? "active" : "")">Manage All</a>
+            <a asp-controller="Admin" asp-action="Payouts" class="@(currentAction == "Payouts" ? "active" : "")">Payouts</a>
+        </div>
+    </div>
+
+    <!-- Food Category -->
+    <div class="menu-item has-submenu @(foodOpen ? "open" : "")">
+        <div class="menu-link">
+            <i class="bi bi-tags-fill"></i>
+            <span class="menu-text">Inventory</span>
+            <i class="bi bi-chevron-down menu-arrow"></i>
+        </div>
+        <div class="submenu">
+            <a asp-controller="Admin" asp-action="AddFoodCategory" class="@(currentAction == "AddFoodCategory" ? "active" : "")">Add Category</a>
+            <a asp-controller="Admin" asp-action="ViewCategory" class="@(currentAction == "ViewCategory" ? "active" : "")">View Categories</a>
+            <a asp-controller="Admin" asp-action="ViewMealCategory" class="@(currentAction == "ViewMealCategory" ? "active" : "")">Meal Categories</a>
+        </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="menu-item has-submenu @(reportsOpen ? "open" : "")">
+        <div class="menu-link">
+            <i class="bi bi-bar-chart-line-fill"></i>
+            <span class="menu-text">Analytics</span>
+            <i class="bi bi-chevron-down menu-arrow"></i>
+        </div>
+        <div class="submenu">
+            <a asp-controller="Reports" asp-action="Dashboard" class="@(currentController == "Reports" && currentAction == "Dashboard" ? "active" : "")">Overview</a>
+            <a asp-controller="Reports" asp-action="OrderReports" class="@(currentController == "Reports" && currentAction == "OrderReports" ? "active" : "")">Order Reports</a>
+            <a asp-controller="Reports" asp-action="SalesAnalytics" class="@(currentController == "Reports" && currentAction == "SalesAnalytics" ? "active" : "")">Sales Analytics</a>
+            <a asp-controller="Reports" asp-action="PaymentReports" class="@(currentController == "Reports" && currentAction == "PaymentReports" ? "active" : "")">Payment History</a>
+        </div>
+    </div>
+
+    <!-- Users -->
+    <div class="menu-item has-submenu @(usersOpen ? "open" : "")">
+        <div class="menu-link">
+            <i class="bi bi-people-fill"></i>
+            <span class="menu-text">Customers</span>
+            <i class="bi bi-chevron-down menu-arrow"></i>
+        </div>
+        <div class="submenu">
+            <a asp-controller="Users" asp-action="Index" class="@(currentController == "Users" && currentAction == "Index" ? "active" : "")">Directory</a>
+            <a asp-controller="Users" asp-action="BlockedUsers" class="@(currentController == "Users" && currentAction == "BlockedUsers" ? "active" : "")">Blocked</a>
+            <a asp-controller="Users" asp-action="CalorieAnalytics" class="@(currentController == "Users" && currentAction == "CalorieAnalytics" ? "active" : "")">Calories</a>
+        </div>
+    </div>
+
+    <!-- Delivery -->
+    <div class="menu-item has-submenu @(deliveryOpen ? "open" : "")">
+        <div class="menu-link">
+            <i class="bi bi-truck"></i>
+            <span class="menu-text">Logistics</span>
+            <i class="bi bi-chevron-down menu-arrow"></i>
+        </div>
+        <div class="submenu">
+            <a asp-controller="Admin" asp-action="DeliveryDashboard" class="@(currentAction == "DeliveryDashboard" ? "active" : "")">Live Map</a>
+            <a asp-controller="Admin" asp-action="DeliveryOptimization" class="@(currentAction == "DeliveryOptimization" ? "active" : "")">Optimization</a>
+        </div>
+    </div>
+
+    <div style="margin-top: auto; border-top: 1px solid #1e293b; padding-top: 1rem;">
+        <a asp-controller="Admin" asp-action="Profile" class="@(currentController == "Admin" && currentAction == "Profile" ? "active" : "")">
+            <i class="bi bi-person-circle"></i>
+            <span class="menu-text">Settings</span>
+        </a>
+        <a asp-controller="Admin" asp-action="Logout" class="text-danger">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="menu-text">Logout</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    // Submenu Toggle logic
+    document.querySelectorAll('.menu-link').forEach(item => {
+        item.addEventListener('click', function () {
+            const parent = this.parentElement;
+            const isOpen = parent.classList.contains('open');
+            
+            // Close other open menus
+            document.querySelectorAll('.menu-item.has-submenu').forEach(other => {
+                if (other !== parent) other.classList.remove('open');
+            });
+
+            parent.classList.toggle('open');
+        });
+    });
+</script>

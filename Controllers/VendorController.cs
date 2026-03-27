@@ -4,24 +4,70 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
-using NUTRIBITE.Models;
-using NUTRIBITE.Services;
+using global::NUTRIBITE.Models;
+using global::NUTRIBITE.Services;
 
 namespace NUTRIBITE.Controllers
 {
-    public class VendorController : Controller
+    public partial class VendorController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly IOrderService _orderService;
 
+        private readonly IPaymentDistributionService _distributionService;
+
         public VendorController(ApplicationDbContext context,
                                 IWebHostEnvironment environment,
-                                IOrderService orderService)
+                                IOrderService orderService,
+                                IPaymentDistributionService distributionService)
         {
             _context = context;
             _environment = environment;
             _orderService = orderService;
+            _distributionService = distributionService;
+        }
+
+        [HttpGet("/api/vendor/earnings")]
+        public async Task<IActionResult> GetEarnings()
+        {
+            var vendorId = GetVendorId();
+            if (vendorId == null) return Unauthorized();
+
+            var payouts = await _distributionService.GetVendorPayoutsAsync(vendorId.Value);
+            
+            return Json(new {
+                totalEarnings = payouts.Sum(p => p.Amount),
+                totalCommissionDeducted = payouts.Sum(p => p.CommissionDeducted),
+                pendingPayments = payouts.Where(p => p.Status == PayoutStatus.Pending).Sum(p => p.Amount)
+            });
+        }
+
+        [HttpGet("/api/vendor/payouts")]
+        public async Task<IActionResult> GetPayouts(int page = 1, int pageSize = 10, PayoutStatus? status = null)
+        {
+            var vendorId = GetVendorId();
+            if (vendorId == null) return Unauthorized();
+
+            var query = _context.VendorPayouts
+                .Where(p => p.VendorId == vendorId.Value);
+
+            if (status.HasValue)
+                query = query.Where(p => p.Status == status.Value);
+
+            var totalItems = await query.CountAsync();
+            var items = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Json(new {
+                items,
+                totalItems,
+                page,
+                pageSize
+            });
         }
 
         // ================= PASSWORD HASH =================
@@ -73,6 +119,7 @@ namespace NUTRIBITE.Controllers
             _context.VendorSignups.Add(vendor);
             _context.SaveChanges();
 
+            TempData["VendorSuccess"] = "Your account has been created successfully. It is currently under admin review. You will be able to access full features once your account is verified.";
             return RedirectToAction("Login");
         }
 
@@ -107,6 +154,12 @@ namespace NUTRIBITE.Controllers
 
             return RedirectToAction("Dashboard");
         }
+
+        private static readonly string[] SpecifiedMealCategories = {
+            "Low Calorie Meal", "Protein Meal", "Rice Combo", "Salads",
+            "Classical Thali", "Comfort Thali", "Deluxe Thali",
+            "Jain Thali", "Special Thali", "Standard Thali"
+        };
 
         // ================= DASHBOARD =================
         public IActionResult Dashboard()
@@ -189,7 +242,7 @@ namespace NUTRIBITE.Controllers
                 return RedirectToAction("Login");
 
             ViewBag.Categories = _context.AddCategories
-                .Where(c => c.MealCategory != null)
+                .Where(c => c.MealCategory != null && SpecifiedMealCategories.Contains(c.MealCategory))
                 .OrderBy(c => c.MealCategory)
                 .ToList();
 
@@ -202,6 +255,18 @@ namespace NUTRIBITE.Controllers
             var vendorId = GetVendorId();
             if (vendorId == null)
                 return RedirectToAction("Login");
+
+            // Role-based validation: check if Category belongs to specified list
+            var category = _context.AddCategories.Find(model.CategoryId);
+            if (category == null || string.IsNullOrEmpty(category.MealCategory) || !SpecifiedMealCategories.Contains(category.MealCategory))
+            {
+                ViewBag.Error = "Invalid or restricted category selection.";
+                ViewBag.Categories = _context.AddCategories
+                    .Where(c => c.MealCategory != null && SpecifiedMealCategories.Contains(c.MealCategory))
+                    .OrderBy(c => c.MealCategory)
+                    .ToList();
+                return View(model);
+            }
 
             string imagePath = "";
 
@@ -237,7 +302,12 @@ namespace NUTRIBITE.Controllers
             if (vendorId == null)
                 return RedirectToAction("Login");
 
-            return View(_context.Foods.Where(f => f.VendorId == vendorId).ToList());
+            var foods = _context.Foods
+                .Include(f => f.Nutritionist)
+                .Where(f => f.VendorId == vendorId)
+                .ToList();
+
+            return View(foods);
         }
 
         // ================= ORDERS =================
@@ -278,6 +348,15 @@ namespace NUTRIBITE.Controllers
             var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
             return Json(new { success = ok });
         }
+
+        public IActionResult Earnings()
+        {
+            if (GetVendorId() == null)
+                return RedirectToAction("Login");
+
+            return View();
+        }
+
         public IActionResult Profile()
         {
             var vendorId = GetVendorId();

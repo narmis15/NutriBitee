@@ -13,23 +13,28 @@ using System.IO;
 using System.Text.Json;
 using System.Globalization;
 using System.Linq;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace NUTRIBITE.Controllers
 {
     public class PaymentController : Controller
     {
         private readonly IRazorpayService _razorpayService;
+        private readonly IPaymentDistributionService _distributionService;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _db;
         private readonly ILogger<PaymentController> _logger;
 
         public PaymentController(
             IRazorpayService razorpayService,
+            IPaymentDistributionService distributionService,
             IConfiguration configuration,
             ApplicationDbContext db,
             ILogger<PaymentController> logger)
         {
             _razorpayService = razorpayService ?? throw new ArgumentNullException(nameof(razorpayService));
+            _distributionService = distributionService ?? throw new ArgumentNullException(nameof(distributionService));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -46,6 +51,7 @@ namespace NUTRIBITE.Controllers
 
             try
             {
+                
                 var cartRows = _db.Carttables.Where(c => c.Uid == uid.Value).ToList();
 
                 if (!cartRows.Any())
@@ -88,7 +94,7 @@ namespace NUTRIBITE.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "CreateOrder failed");
-                return StatusCode(500, new { success = false, message = "Failed to create payment order" });
+                return StatusCode(500, new { success = false, message = "Failed to create payment order: " + ex.Message, detail = ex.ToString() });
             }
         }
 
@@ -97,38 +103,62 @@ namespace NUTRIBITE.Controllers
         // razorpay_payment_id, razorpay_order_id, razorpay_signature
         // optional localOrderId to link to your OrderTable
         [HttpPost]
-        public IActionResult VerifyPayment()
+        public async Task<IActionResult> VerifyPayment()
         {
-            // read from form (Razorpay checkout posts form fields) or from JSON body
-            string paymentId = Request.Form["razorpay_payment_id"];
-            string orderId = Request.Form["razorpay_order_id"];
-            string signature = Request.Form["razorpay_signature"];
-            string localOrderIdStr = Request.Form["localOrderId"];
+            string paymentId = null;
+            string orderId = null;
+            string signature = null;
+            string localOrderIdStr = null;
 
-            // fallback: try JSON body if form fields empty
-            if (string.IsNullOrWhiteSpace(paymentId) && Request.ContentLength > 0 && Request.ContentType?.Contains("application/json") == true)
+            // 1. Try reading from form if available
+            if (Request.HasFormContentType)
+            {
+                paymentId = Request.Form["razorpay_payment_id"];
+                orderId = Request.Form["razorpay_order_id"];
+                signature = Request.Form["razorpay_signature"];
+                localOrderIdStr = Request.Form["localOrderId"];
+            }
+
+            // 2. Try reading from JSON body if form fields are still empty
+            if (string.IsNullOrWhiteSpace(paymentId) && Request.ContentLength > 0)
             {
                 try
                 {
-                    using var reader = new System.IO.StreamReader(Request.Body);
-                    var body = reader.ReadToEnd();
+                    // Enable buffering to allow reading the body multiple times if needed
+                    Request.EnableBuffering();
+                    using var reader = new System.IO.StreamReader(Request.Body, Encoding.UTF8, leaveOpen: true);
+                    var body = await reader.ReadToEndAsync();
+                    Request.Body.Position = 0; // Reset position
+
+                    _logger.LogInformation("VerifyPayment JSON Body: {Body}", body);
+
                     if (!string.IsNullOrWhiteSpace(body))
                     {
-                        var json = System.Text.Json.JsonDocument.Parse(body);
+                        using var json = JsonDocument.Parse(body);
                         if (json.RootElement.TryGetProperty("razorpay_payment_id", out var p)) paymentId = p.GetString();
                         if (json.RootElement.TryGetProperty("razorpay_order_id", out var o)) orderId = o.GetString();
                         if (json.RootElement.TryGetProperty("razorpay_signature", out var s)) signature = s.GetString();
-                        if (json.RootElement.TryGetProperty("localOrderId", out var l)) localOrderIdStr = l.GetRawText();
+                        
+                        if (json.RootElement.TryGetProperty("localOrderId", out var l))
+                        {
+                            if (l.ValueKind == JsonValueKind.Number)
+                                localOrderIdStr = l.GetInt32().ToString();
+                            else if (l.ValueKind == JsonValueKind.String)
+                                localOrderIdStr = l.GetString();
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning(ex, "Failed to parse JSON body for VerifyPayment");
+                    _logger.LogError(ex, "Failed to parse JSON body for VerifyPayment");
                 }
             }
 
             if (string.IsNullOrWhiteSpace(paymentId) || string.IsNullOrWhiteSpace(orderId) || string.IsNullOrWhiteSpace(signature))
-                return BadRequest(new { success = false, message = "Missing payment information" });
+            {
+                _logger.LogWarning("Missing payment info: paymentId={P}, orderId={O}, signature={S}", paymentId, orderId, signature);
+                return BadRequest(new { success = false, message = "Payment verification failed. Missing payment information" });
+            }
 
             // get secret
             var keySecret = _configuration["Razorpay:KeySecret"] ?? _configuration["RAZORPAY_KEY_SECRET"];
@@ -214,6 +244,7 @@ namespace NUTRIBITE.Controllers
                     OrderId = localOrderId,
                     PaymentMode = "Razorpay",
                     Amount = amountMajor,
+                    TransactionId = paymentId, // Store the gateway transaction ID
                     IsRefunded = false,
                     CreatedAt = DateTime.UtcNow
                 };
@@ -227,6 +258,22 @@ namespace NUTRIBITE.Controllers
                     {
                         order.PaymentStatus = "Paid";
                         order.Status = "Placed"; // Change from Pending Payment to Placed
+                        order.TrackingProgress = 1; // First tracking increment on "Placed"
+                        order.TotalAmount = amountMajor; // Ensure TotalAmount is set from payment
+
+                        // Trigger Distribution
+                        // Requirements say "immediately after confirmed"
+                        // Since we are in a controller, we'll await it for simplicity/atomicity as requested.
+                        try
+                        {
+                            await _distributionService.DistributePaymentAsync(order.OrderId);
+                            _logger.LogInformation("Payment distribution successful for order {OrderId}", order.OrderId);
+                        }
+                        catch (Exception dex)
+                        {
+                            _logger.LogError(dex, "Payment distribution failed for order {OrderId}", order.OrderId);
+                            // We don't fail the verification if distribution fails, but log it for manual intervention
+                        }
 
                         // Clear cart
                         var cartItems = _db.Carttables.Where(c => c.Uid == order.UserId);

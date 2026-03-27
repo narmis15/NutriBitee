@@ -1,0 +1,121 @@
+@model List<NUTRIBITE.Models.Nutritionist>
+
+@{
+    ViewData["Title"] = "Our Expert Nutritionists";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .expert-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: #f8fcf9;
+            border-radius: 20px;
+            margin: 20px 0 40px 0;
+            border: 1px solid #eef7f2;
+        }
+
+        .expert-header h1 {
+            color: #1b4332;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .expert-header p {
+            color: #40916c;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .expert-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            border: 1px solid #f0f0f0;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .expert-avatar {
+            width: 100px;
+            height: 100px;
+            background: #e6f9f0;
+            color: #2d6a4f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px auto;
+            border: 2px solid #fff;
+            box-shadow: 0 5px 15px rgba(45,106,79,0.1);
+        }
+
+        .expert-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1b4332;
+            margin-bottom: 4px;
+        }
+
+        .expert-qual {
+            color: #40916c;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .expert-exp {
+            display: inline-block;
+            background: #f0fdf4;
+            color: #1b4332;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .expert-bio {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+    </style>
+}
+
+<div class="container py-4">
+    <div class="expert-header">
+        <h1>Meet Our Nutrition Expert</h1>
+        <p>Certified professional ensuring every meal meets your health goals.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var expert in Model)
+            {
+                <div class="col-md-6 col-lg-5">
+                    <div class="expert-card">
+                        <div class="expert-avatar">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+                        <div class="expert-name">@expert.Name</div>
+                        <div class="expert-qual">@expert.Qualification</div>
+                        <div class="expert-exp">@expert.Experience+ Years Experience</div>
+                        
+                        <p class="expert-bio">
+                            Specialized in clinical and sports nutrition, dedicated to crafting balanced diet plans and verifying the nutritional value of every meal served at NutriBite.
+                        </p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace NUTRIBITE.Models;
@@ -29,4 +29,20 @@ public partial class Food
 
     public DateTime? CreatedAt { get; set; }
     public string? FoodType { get; set; }
+
+    public int? ProductCategoryId { get; set; }
+    public int? MealCategoryId { get; set; }
+
+    // Nutritionist Verification Fields
+    public int? NutritionistId { get; set; }
+    public bool IsVerified { get; set; } = false;
+
+    // Additional Nutrition Details
+    public double? Protein { get; set; } // in grams
+    public double? Carbs { get; set; }   // in grams
+    public double? Fat { get; set; }     // in grams
+
+    public virtual Nutritionist? Nutritionist { get; set; }
+
+    public virtual Recipe? Recipe { get; set; }
 }
